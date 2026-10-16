@@ -1,0 +1,139 @@
+{
+  "name": "vscode-font-preview",
+  "displayName": "VSCodeFontPreview",
+  "description": "Browse, test and compare fonts and icon fonts: Google Fonts, Font Awesome and more, local font files, web fonts and system fonts, on a Bootstrap-style typography page.",
+  "version": "0.3.0",
+  "publisher": "bsesic",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1F2A44",
+    "theme": "dark"
+  },
+  "sponsor": {
+    "url": "https://www.buymeacoffee.com/bsesic"
+  },
+  "homepage": "https://github.com/bsesic/VSCodeFontPreview#readme",
+  "bugs": {
+    "url": "https://github.com/bsesic/VSCodeFontPreview/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bsesic/VSCodeFontPreview.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "font",
+    "fonts",
+    "google fonts",
+    "typography",
+    "preview",
+    "icons",
+    "font awesome",
+    "material symbols",
+    "icon font",
+    "glyphs",
+    "unicode",
+    "character map",
+    "css"
+  ],
+  "main": "./out/src/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "fontPreview.open",
+        "title": "Open Font Preview",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.addFontFile",
+        "title": "Add Font File…",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.previewFontFile",
+        "title": "Preview Font",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.refreshCatalog",
+        "title": "Refresh Google Fonts Catalog",
+        "category": "Font Preview"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "fontPreview.previewFontFile",
+          "when": "resourceExtname =~ /^\\.(ttf|otf|woff2?|ttc)$/i",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "fontPreview.previewFontFile",
+          "when": "false"
+        }
+      ]
+    },
+    "customEditors": [
+      {
+        "viewType": "fontPreview.fontFile",
+        "displayName": "Font Preview",
+        "selector": [
+          {
+            "filenamePattern": "*.ttf"
+          },
+          {
+            "filenamePattern": "*.otf"
+          },
+          {
+            "filenamePattern": "*.woff"
+          },
+          {
+            "filenamePattern": "*.woff2"
+          },
+          {
+            "filenamePattern": "*.ttc"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "configuration": {
+      "title": "Font Preview",
+      "properties": {
+        "fontPreview.sampleText": {
+          "type": "string",
+          "default": "The quick brown fox jumps over the lazy dog. Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.",
+          "description": "Default sample text used in the preview."
+        },
+        "fontPreview.catalogUrl": {
+          "type": "string",
+          "default": "https://api.fontsource.org/v1/fonts",
+          "description": "URL of the Fontsource font list used as the Google Fonts catalog."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test out/test/",
+    "package": "vsce package",
+    "vscode:prepublish": "npm run compile"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "1.90.0",
+    "@vscode/vsce": "^3.2.0",
+    "typescript": "^5.6.0"
+  }
+}
