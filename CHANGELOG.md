@@ -7,6 +7,10 @@
 - 🧪 **OpenType features:** toggle ligatures, small caps, figure styles, fractions, stylistic sets, kerning and
   more on the sample text in Inspect. Font files show the features they contain; copy or insert the
   `font-feature-settings` CSS. New *OpenType test* sample text preset.
+- 📦 **Add to project:** download the WOFF2 files of a font (chosen weights, styles and scripts) into the
+  workspace, with a stylesheet of `@font-face` rules and `unicode-range`, and insert its `@import`. Works for
+  Google Fonts, Fontsource fonts, font files and web font URLs. Setting: `fontPreview.projectFontFolder`.
+- **Insert CSS:** the generated CSS can be inserted into the editor, not only copied.
 - 🔍 **Complete font details for Google Fonts:** exact glyph coverage, all variable axes, names, version,
   designer, license and OpenType features, read from the complete font file (only the needed tables are
   downloaded). Feature tests use the complete file, because the files Google serves to browsers lack many

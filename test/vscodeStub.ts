@@ -16,6 +16,11 @@ export const calls = { errors: [] as string[], warnings: [] as string[], clipboa
 
 /** Status bar items, registered commands and the config listener created by `activate`. */
 export const ui = {
+  workspaceFolders: [] as Array<{ uri: { fsPath: string } }>,
+  /** Answers for showQuickPick: a function picking items, called once per picker. */
+  quickPicks: [] as Array<(items: Array<{ label: string; picked?: boolean }>) => Array<{ label: string }> | undefined>,
+  infoAnswers: [] as Array<string | undefined>,
+  shownDocuments: [] as string[],
   statusItems: [] as Array<{ text: string; tooltip?: string; command?: string; visible: boolean; alignment: number; priority?: number }>,
   commands: new Map<string, (...args: unknown[]) => unknown>(),
   configListeners: [] as Array<(e: { affectsConfiguration: (key: string) => boolean }) => void>,
@@ -70,10 +75,11 @@ export const config: Record<string, unknown> = {
 const stub = {
   Uri: {
     file: (fsPath: string) => ({ fsPath, toString: () => fsPath }),
-    joinPath: (base: { fsPath: string }, ...parts: string[]) => ({ fsPath: [base.fsPath, ...parts].join('/') }),
+    joinPath: (base: { fsPath: string }, ...parts: string[]) => ({ fsPath: [base.fsPath, ...parts].join('/'), scheme: 'file' }),
   },
   EventEmitter,
   StatusBarAlignment: { Left: 1, Right: 2 },
+  ProgressLocation: { Notification: 15 },
   ViewColumn: { Active: -1 },
   commands: {
     registerCommand: (id: string, fn: (...args: unknown[]) => unknown) => {
@@ -90,14 +96,28 @@ const stub = {
       return { dispose: () => undefined };
     },
     getConfiguration: () => ({ get: (key: string, fallback?: unknown) => (key in config ? config[key] : fallback) }),
-    fs: { readFile: async (uri: { fsPath: string }) => new Uint8Array(fs.readFileSync(uri.fsPath)) },
+    get workspaceFolders() { return ui.workspaceFolders; },
+    fs: {
+      readFile: async (uri: { fsPath: string }) => new Uint8Array(fs.readFileSync(uri.fsPath)),
+      writeFile: async (uri: { fsPath: string }, data: Uint8Array) => fs.writeFileSync(uri.fsPath, data),
+      createDirectory: async (uri: { fsPath: string }) => { fs.mkdirSync(uri.fsPath, { recursive: true }); },
+    },
   },
   window: {
     showErrorMessage: (message: string) => calls.errors.push(message),
     showWarningMessage: (message: string) => calls.warnings.push(message),
+    showInformationMessage: async () => ui.infoAnswers.shift(),
+    showQuickPick: async (items: Array<{ label: string; picked?: boolean }>) => ui.quickPicks.shift()?.(items),
+    showWorkspaceFolderPick: async () => ui.workspaceFolders[0],
+    withProgress: async (_options: unknown, task: (p: { report: () => void }) => Promise<unknown>) => task({ report: () => undefined }),
     get activeTextEditor() { return editor.open ? fakeEditor : undefined; },
     get visibleTextEditors() { return editor.open ? [fakeEditor] : []; },
-    showTextDocument: async () => fakeEditor,
+    showTextDocument: async (doc: { fsPath?: string }) => {
+      if (doc?.fsPath) {
+        ui.shownDocuments.push(doc.fsPath);
+      }
+      return fakeEditor;
+    },
     onDidChangeActiveTextEditor: () => ({ dispose: () => undefined }),
     createStatusBarItem: (alignment: number, priority?: number) => {
       const item = {

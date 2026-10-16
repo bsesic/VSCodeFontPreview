@@ -844,9 +844,37 @@
       roleSelect('mono', 'Code', 'monospace'),
       h('div', { class: 'stack' },
         h('button', { onclick: () => { state.tab = 'typography'; save(); render(); } }, 'Show typography page'),
-        h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: exportCss(), what: 'CSS' }) }, 'Copy CSS'),
+        cssButtons(exportCss),
       ),
     );
+  }
+
+  /** Copy and Insert buttons for generated CSS. */
+  function cssButtons(css) {
+    return h('div', { class: 'button-row' },
+      h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: css(), what: 'CSS' }) }, 'Copy CSS'),
+      h('button', { class: 'secondary', title: 'Insert into the last active editor', onclick: () => vscode.postMessage({ type: 'insert', text: css(), what: 'CSS' }) }, 'Insert CSS'),
+    );
+  }
+
+  /** Downloads the font files into the workspace and writes a stylesheet (see projectFonts.ts). */
+  function addToProject(font) {
+    const catalog = font.source === 'google' || font.source === 'fontsource';
+    vscode.postMessage({
+      type: 'addToProject',
+      font: {
+        label: font.label,
+        source: font.source,
+        location: catalog ? font.id : font.ref.location,
+        category: font.category,
+        defSubset: font.defSubset,
+        info: font.info,
+      },
+    });
+  }
+
+  function canAddToProject(font) {
+    return ['google', 'fontsource', 'file', 'url'].includes(font.source);
   }
 
   // ---- Typography tab
@@ -986,7 +1014,7 @@
           h('span', null, 'Page'),
           select('Page theme', t.theme, [['light', 'Light'], ['dark', 'Dark'], ['editor', 'Editor theme']], (v) => { t.theme = v; }),
         ),
-        h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: exportCss(), what: 'CSS' }) }, 'Copy CSS'),
+        cssButtons(exportCss),
       ),
       page,
     );
@@ -1012,7 +1040,8 @@
         ),
         statusBadge(font),
         h('button', { class: inCollection(font.key) ? 'icon active' : 'icon', title: 'Collection', onclick: () => toggleCollection(font.key) }, inCollection(font.key) ? '★' : '☆'),
-        h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: cssFor(font), what: 'CSS' }) }, 'Copy CSS'),
+        cssButtons(() => cssFor(font)),
+        canAddToProject(font) ? h('button', { title: 'Download the font files into the workspace and write a stylesheet', onclick: () => addToProject(font) }, 'Add to project…') : null,
       ),
       h('h1', { class: 'specimen', style: { fontFamily: family } }, font.label),
       font.status === 'error' ? h('p', { class: 'error' }, font.error || 'The font could not be loaded.') : null,
