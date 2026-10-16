@@ -11,6 +11,8 @@
   designer, license and OpenType features, read from the complete font file (only the needed tables are
   downloaded). Feature tests use the complete file, because the files Google serves to browsers lack many
   optional features.
+- **System fonts on every platform:** without fontconfig (Windows, macOS), installed fonts are listed by
+  reading the family names from the system and user font folders.
 - **WOFF2 collections:** font files with several fonts are read (the details show the first font and the
   number of fonts).
 - **Status bar button:** **Fonts** in the status bar opens the preview with one click. Hide it with

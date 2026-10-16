@@ -812,7 +812,7 @@
               ),
             ),
           ]
-        : h('p', { class: 'muted small' }, 'Could not list installed fonts (fontconfig not found). You can still add a font by name.'),
+        : h('p', { class: 'muted small' }, 'No installed fonts found. You can still add a font by name.'),
     );
   }
 

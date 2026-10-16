@@ -173,8 +173,8 @@ bar opens the preview with one click.
 | `fontPreview.catalogUrl` | `https://api.fontsource.org/v1/fonts` | Source of the font catalog |
 | `fontPreview.showStatusBarItem` | `true` | Show the **Fonts** button in the status bar |
 
-The list of installed system fonts uses `fc-list` (fontconfig, available on Linux). Without it, you can still
-add system fonts by name.
+Installed system fonts are listed with `fc-list` (fontconfig) when available, otherwise by reading the font
+folders of Windows, macOS or Linux.
 
 ## 🔒 Privacy
 
