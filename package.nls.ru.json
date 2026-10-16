@@ -1,0 +1,13 @@
+{
+  "description": "Просмотр, тестирование и сравнение шрифтов и иконочных шрифтов: Google Fonts, Font Awesome и другие, локальные файлы шрифтов, веб-шрифты и системные шрифты на странице типографики в стиле Bootstrap.",
+  "command.open": "Открыть Font Preview",
+  "command.addFontFile": "Добавить файл шрифта…",
+  "command.insertIcon": "Вставить иконку…",
+  "command.previewFontAtCursor": "Просмотреть шрифт под курсором",
+  "command.previewFontFile": "Просмотреть шрифт",
+  "command.refreshCatalog": "Обновить каталог Google Fonts",
+  "configuration.sampleText": "Образец текста по умолчанию для предварительного просмотра.",
+  "configuration.catalogUrl": "URL списка шрифтов Fontsource, используемого как каталог Google Fonts.",
+  "configuration.showStatusBarItem": "Показывать в строке состояния кнопку, открывающую Font Preview.",
+  "configuration.projectFontFolder": "Папка рабочей области, в которую «Добавить в проект» загружает шрифты. Каждый шрифт получает собственную вложенную папку с таблицей стилей."
+}

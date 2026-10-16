@@ -72,7 +72,7 @@ export class FontSources {
       if (cached) {
         return cached.fonts;
       }
-      throw new Error(`Could not load the font catalog from ${url}: ${(err as Error).message}`);
+      throw new Error(vscode.l10n.t('Could not load the font catalog from {0}: {1}', url, (err as Error).message));
     }
   }
 

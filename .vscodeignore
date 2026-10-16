@@ -9,3 +9,6 @@ out/test/**
 .nvmrc
 images/screenshots/**
 images/icon.svg
+scripts/**
+.githooks/**
+.eslintrc.json

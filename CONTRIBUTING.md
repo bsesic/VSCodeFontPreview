@@ -24,7 +24,8 @@ Press `F5` in VS Code to start an Extension Development Host with the extension 
 | --- | --- |
 | `npm run compile` | Build the extension host (`out/`) |
 | `npm run watch` | Rebuild the extension host on changes |
-| `npm run lint` | Run ESLint on `src/`, `test/` and `media/` |
+| `npm run lint` | Run ESLint on `src/`, `test/`, `media/` and `scripts/` |
+| `npm run l10n` | Update the English localization template `l10n/bundle.l10n.json` |
 | `npm test` | Compile and run the unit tests (`node --test`) |
 | `npm run package` | Create the `.vsix` package |
 | `npm run build` | Compile, run the tests and create the `.vsix` package |
@@ -42,7 +43,13 @@ Node.js version from `.nvmrc` via nvm automatically.
 | `src/fontInfo.ts` | Side-effect free reader for TTF, OTF, TTC, WOFF and WOFF2: names, cmap coverage, variable axes |
 | `src/iconSets.ts` | Icon set definitions and the parsers for their metadata |
 | `src/editorTarget.ts` | Remembers the last text editor and inserts icons and glyphs into it |
+| `src/fontDetails.ts` | Complete font details of Google Fonts via the download manifest and HTTP range requests; Fontsource faces |
+| `src/systemFonts.ts` | Installed fonts from the font folders of Windows, macOS and Linux |
+| `src/projectFonts.ts` | *Add to project*: downloads font files into the workspace and writes the stylesheet |
+| `src/cursorFont.ts` | Finds the font family under the cursor |
 | `media/` | Webview UI (`main.js`, plain DOM without framework) and styles (`main.css`) |
+| `l10n/`, `package.nls*.json` | Translations |
+| `scripts/` | Build helper scripts (localization template) |
 | `test/` | Unit tests, a stub of the `vscode` API (`vscodeStub.ts`) and font fixtures |
 | `images/` | Icon source (`icon.svg`), rendered icon and README screenshots |
 
@@ -51,6 +58,34 @@ New parsing logic belongs in a side-effect free module and should come with unit
 The webview follows the VS Code theme through its CSS variables. Icon set stylesheets style elements by class
 prefix (Lucide, for example, styles every `[class^="icon-"]`), so the classes of the UI itself use the `fp-`
 prefix where they could collide.
+
+## Localization
+
+The extension follows the VS Code display language. All user-visible texts are English in the code and are
+translated via bundles:
+
+| File | Content |
+| --- | --- |
+| `package.nls.json`, `package.nls.<lang>.json` | Commands, settings and the description (`%key%` in `package.json`) |
+| `l10n/bundle.l10n.json` | English template of all texts of the extension host and the webview (generated) |
+| `l10n/bundle.l10n.<lang>.json` | Translations, keyed by the English text |
+
+Supported languages: `de`, `fr`, `es`, `it`, `pt-br`, `ja`, `ko`, `zh-cn`, `zh-tw`, `ru`, `pl`, `cs`, `tr`.
+
+The extension host passes the bundle of the display language to the webview with the initial data.
+
+When you add or change a text:
+
+1. Wrap it in `t('…')` in the webview (`media/main.js`) or `vscode.l10n.t('…')` in the extension host. Use
+   placeholders for values: `t('{0} fonts', count)`. Never build sentences from fragments. For texts in constant
+   tables, mark them with `N('…')` and translate them with `t()` where they are shown. A part in `<…>` (as in
+   `t('Insert into <{0}>', name)`) can be wrapped in an element with `withMarkup()`.
+2. Run `npm run l10n` to update `l10n/bundle.l10n.json`.
+3. Add the translation to every `l10n/bundle.l10n.<lang>.json`.
+
+`npm test` fails if the template is outdated or a language misses a text or uses different placeholders.
+
+Generated code (CSS snippets, stylesheet comments) and the sample texts stay English.
 
 ## Adding an icon set
 
