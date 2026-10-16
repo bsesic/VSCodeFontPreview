@@ -388,10 +388,21 @@
     });
   }
 
-  function googleCssUrl(font, text) {
+  /** Google's axis order: lowercase tags alphabetically, then uppercase tags alphabetically. */
+  function sortAxes(axes) {
+    const lower = (t) => t === t.toLowerCase();
+    return [...axes].sort((a, b) => (lower(a.tag) === lower(b.tag) ? (a.tag < b.tag ? -1 : 1) : lower(a.tag) ? -1 : 1));
+  }
+
+  function googleCssUrl(font, text, allAxes = false) {
     const italic = font.styles.includes('italic');
     let spec;
-    if (font.variable && font.weights.length > 1) {
+    const axes = allAxes ? sortAxes((font.info?.axes || []).filter((a) => a.tag !== 'ital')) : [];
+    if (axes.length) {
+      const tags = axes.map((a) => a.tag).join(',');
+      const values = axes.map((a) => `${a.min}..${a.max}`).join(',');
+      spec = italic ? `ital,${tags}@0,${values};1,${values}` : `${tags}@${values}`;
+    } else if (font.variable && font.weights.length > 1) {
       const range = `${Math.min(...font.weights)}..${Math.max(...font.weights)}`;
       spec = italic ? `ital,wght@0,${range};1,${range}` : `wght@${range}`;
     } else if (italic) {
@@ -991,6 +1002,7 @@
     if (!font) return h('p', { class: 'muted' }, 'Choose "Inspect" on a font to see its glyphs, weights and details.');
     if (font.key !== state.inspect) state.inspect = font.key;
     ensureLoaded(font);
+    loadDetails(font);
     const family = stack(font.key);
     const info = font.info;
 
@@ -1048,6 +1060,26 @@
     if (/^ss\d\d$/.test(tag)) return `Stylistic set ${Number(tag.slice(2))}`;
     if (/^cv\d\d$/.test(tag)) return `Character variant ${Number(tag.slice(2))}`;
     return FEATURES[tag] || tag;
+  }
+
+  /**
+   * Google Fonts and Fontsource serve subsetted files without many optional features. When
+   * features are tested, the complete font file is loaded under a private family name.
+   */
+  function loadFullFont(font) {
+    const url = font.info?.fileUrl;
+    if (!url || font.full) return font.full;
+    const family = `FP full ${font.key}`;
+    const wght = font.info.axes.find((a) => a.tag === 'wght');
+    const face = new FontFace(family, `url(${url})`, wght ? { weight: `${wght.min} ${wght.max}` } : {});
+    document.fonts.add(face);
+    font.full = face.load().then(() => family, () => undefined);
+    return font.full;
+  }
+
+  /** Font stack of the text preview: the complete font file when it is loaded. */
+  function previewStack(font) {
+    return font.fullFamily ? `${quote(font.fullFamily)}, ${stack(font.key)}` : stack(font.key);
   }
 
   /** Feature tags offered for a font, and whether they come from the font itself. */
@@ -1109,7 +1141,7 @@
     const text = h('div', { class: 'text-preview', dir: 'auto', 'data-sample': '' }, sampleText());
     const apply = () => {
       Object.assign(text.style, {
-        fontFamily: stack(font.key),
+        fontFamily: previewStack(font),
         fontSize: `${p.size}px`,
         fontWeight: String(p.weight),
         lineHeight: String(p.lineHeight),
@@ -1118,6 +1150,15 @@
       });
     };
     apply();
+    const useFullFont = () => {
+      if (featureSettings(font) === 'normal' || font.fullFamily) return;
+      loadFullFont(font)?.then((family) => {
+        if (!family) return;
+        font.fullFamily = family;
+        apply();
+      });
+    };
+    useFullFont();
     const slider = (label, prop, min, max, step, unit = '') => {
       const out = h('output', null, `${p[prop]}${unit}`);
       return h('label', { class: 'field inline' },
@@ -1146,7 +1187,10 @@
           ),
         ),
       ),
-      renderFeatures(font, apply),
+      renderFeatures(font, () => {
+        apply();
+        useFullFont();
+      }),
       text,
     );
   }
@@ -1175,6 +1219,8 @@
       font.subsets.length ? ['Scripts', font.subsets.join(', ')] : null,
       font.category !== 'other' ? ['Category', font.category] : null,
       info?.license ? ['License', info.license] : null,
+      !info && font.details && !font.detailsError ? ['Details', 'Reading the complete font file…'] : null,
+      font.detailsError ? ['Details', `Not available: ${font.detailsError}`] : null,
     ].filter(Boolean);
     return h('dl', { class: 'details' }, rows.map(([k, v]) => [h('dt', null, k), h('dd', null, v)]));
   }
@@ -1254,7 +1300,9 @@
         h('select', { 'aria-label': 'Unicode block', onchange: (e) => { state.block = e.target.value; save(); render(); } },
           options.map(([v, label]) => h('option', { value: v, selected: v === block }, label)),
         ),
-        ranges ? null : h('span', { class: 'muted small' }, 'Characters missing from this font are drawn with a fallback font.'),
+        ranges && !font.info.partial ? null : h('span', { class: 'muted small' }, font.info?.partial
+          ? 'Coverage of the default subset only.'
+          : 'Characters missing from this font are drawn with a fallback font.'),
       ),
       h('div', { class: 'glyph-area' },
         h('div', { class: 'glyph-grid', style: { fontFamily: stack(font.key) } },
@@ -1306,6 +1354,37 @@
         h('label', { class: 'field inline' }, h('span', null, 'Weight'), h('input', { type: 'range', min: 100, max: 900, step: 100, value: state.compareWeight, oninput: (e) => { state.compareWeight = Number(e.target.value); applySize(); save(); } })),
       ),
       rows,
+    );
+  }
+
+  let requestId = 0;
+  /** @type {Map<number, { resolve: (v: any) => void, reject: (e: Error) => void }>} */
+  const pending = new Map();
+  /** Sends a message that the extension answers with a `response` carrying the same id. */
+  function request(type, payload) {
+    const id = ++requestId;
+    return new Promise((resolve, reject) => {
+      pending.set(id, { resolve, reject });
+      vscode.postMessage({ type, id, ...payload });
+    });
+  }
+
+  /** Loads exact coverage, axes and features of a catalog font from its full font file. */
+  function loadDetails(font) {
+    if (font.info || font.details || (font.source !== 'google' && font.source !== 'fontsource')) return;
+    font.details = request('fontDetails', { source: font.source, fontId: font.id, family: font.family }).then(
+      (info) => {
+        font.info = info;
+        // Google serves only the requested axes; ask again for all of them.
+        if (font.source === 'google' && info.axes.some((a) => a.tag !== 'wght')) {
+          addStylesheet(googleCssUrl(font, undefined, true)).catch(() => undefined);
+        }
+        if (state.tab === 'inspect' && state.inspect === font.key) render();
+      },
+      (err) => {
+        font.detailsError = err.message;
+        if (state.tab === 'inspect' && state.inspect === font.key) render();
+      },
     );
   }
 
@@ -1576,6 +1655,13 @@
         state.source = font.source === 'system' ? state.source : 'custom';
         save();
         render();
+        break;
+      }
+      case 'response': {
+        const waiting = pending.get(msg.id);
+        pending.delete(msg.id);
+        if (msg.error) waiting?.reject(new Error(msg.error));
+        else waiting?.resolve(msg.result);
         break;
       }
       case 'icons':

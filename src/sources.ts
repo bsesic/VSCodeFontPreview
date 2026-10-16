@@ -3,6 +3,7 @@ import * as path from 'path';
 import { execFile } from 'child_process';
 import { FontInfo, readFontInfo } from './fontInfo';
 import { Icon, IconSetDef, loadIcons } from './iconSets';
+import { fontsourceFontFile, googleFontFile, readRemoteFontInfo } from './fontDetails';
 
 /** Entry of the Fontsource catalog (covers all Google Fonts plus some other open fonts). */
 export interface CatalogFont {
@@ -26,6 +27,13 @@ export interface CustomFontRef {
   location: string;
 }
 
+/** Details of a catalog font and the font file they were read from. */
+export interface RemoteFontInfo extends FontInfo {
+  fileUrl: string;
+  /** Only the default subset was read (other Fontsource fonts). */
+  partial?: boolean;
+}
+
 /** What the webview receives for a custom font. */
 export interface LoadedFont extends CustomFontRef {
   /** Base64 font data for file and url fonts. */
@@ -37,6 +45,7 @@ export interface LoadedFont extends CustomFontRef {
 const CATALOG_KEY = 'catalog.v1';
 const CUSTOM_KEY = 'customFonts.v1';
 const CATALOG_MAX_AGE = 24 * 60 * 60 * 1000;
+const DETAILS_MAX_AGE = 30 * 24 * 60 * 60 * 1000;
 
 export class FontSources {
   constructor(private readonly state: vscode.Memento) {}
@@ -64,6 +73,25 @@ export class FontSources {
       }
       throw new Error(`Could not load the font catalog from ${url}: ${(err as Error).message}`);
     }
+  }
+
+  /**
+   * Names, coverage, axes and features of a catalog font, read from its complete font file
+   * (Google Fonts) or from its default subset (other Fontsource fonts, marked as partial).
+   */
+  async details(source: 'google' | 'fontsource', id: string, family: string): Promise<RemoteFontInfo> {
+    const key = `details.${source}.${id}`;
+    const cached = this.state.get<{ time: number; info: RemoteFontInfo }>(key);
+    if (cached && Date.now() - cached.time < DETAILS_MAX_AGE) {
+      return cached.info;
+    }
+    const url = source === 'google' ? await googleFontFile(family) : await fontsourceFontFile(id);
+    const info: RemoteFontInfo = { ...(await readRemoteFontInfo(url)), fileUrl: url };
+    if (source === 'fontsource') {
+      info.partial = true;
+    }
+    await this.state.update(key, { time: Date.now(), info });
+    return info;
   }
 
   icons(set: IconSetDef, force = false): Promise<Icon[]> {
