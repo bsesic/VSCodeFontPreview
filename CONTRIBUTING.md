@@ -25,6 +25,7 @@ Press `F5` in VS Code to start an Extension Development Host with the extension 
 | `npm run watch` | Rebuild the extension host on changes |
 | `npm test` | Compile and run the unit tests (`node --test`) |
 | `npm run package` | Create the `.vsix` package |
+| `npm run build` | Compile, run the tests and create the `.vsix` package |
 
 ## Project structure
 
