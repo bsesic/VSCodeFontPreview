@@ -74,3 +74,11 @@ test('reports the font count of a TTC collection', () => {
   assert.equal(info.fontCount, 2);
   assert.equal(info.numGlyphs, 154);
 });
+
+test('reads OpenType feature tags from GSUB and GPOS', () => {
+  // Reference values from fontTools.
+  assert.deepEqual(readFontInfo(fixture('noto-sans-hebrew.ttf')).features, ['ccmp', 'kern', 'mark', 'mkmk']);
+  assert.deepEqual(readFontInfo(fixture('noto-sans-hebrew.woff2')).features, ['ccmp', 'kern', 'mark', 'mkmk']);
+  const inter = readFontInfo(fixture('inter-variable.woff2')).features;
+  assert.ok(['calt', 'frac', 'tnum'].every((f) => inter.includes(f)), inter.join(' '));
+});

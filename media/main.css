@@ -1027,3 +1027,56 @@ a:hover {
 .typo-page .sample-paragraph {
   max-width: none;
 }
+
+/* ---------------------------------------------------------------- OpenType features */
+
+.features {
+  margin: 8px 0 4px;
+}
+
+.features-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.features-head h3 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.feature-css {
+  font-family: var(--vscode-editor-font-family, monospace);
+  font-size: 0.9em;
+  color: var(--vscode-textPreformat-foreground);
+  overflow-wrap: anywhere;
+}
+
+.feature-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+button.feature {
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
+  padding: 2px 8px;
+  font-size: 0.9em;
+}
+
+button.feature:hover {
+  background: var(--vscode-button-secondaryHoverBackground);
+}
+
+button.feature.active {
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+}
+
+.feature-tag {
+  font-family: var(--vscode-editor-font-family, monospace);
+  opacity: 0.8;
+}
