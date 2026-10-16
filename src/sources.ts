@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import { execFile } from 'child_process';
+import { fontDirectories, scanFontFamilies, sortedUnique } from './systemFonts';
 import { FontInfo, readFontInfo } from './fontInfo';
 import { Icon, IconSetDef, loadIcons } from './iconSets';
 import { fontsourceFontFile, googleFontFile, readRemoteFontInfo } from './fontDetails';
@@ -153,16 +154,20 @@ export function labelFromLocation(location: string): string {
   return base.replace(/\.(ttf|otf|woff2?|ttc|css)$/i, '') || location;
 }
 
-/** Lists installed font families via fontconfig (Linux, and macOS with fontconfig). */
-export function systemFamilies(): Promise<string[]> {
+/** Lists installed font families: via fontconfig when available, else by reading the font folders. */
+export async function systemFamilies(): Promise<string[]> {
+  const fromFontconfig = await fontconfigFamilies();
+  return fromFontconfig.length ? fromFontconfig : scanFontFamilies(fontDirectories());
+}
+
+function fontconfigFamilies(): Promise<string[]> {
   return new Promise((resolve) => {
     execFile('fc-list', ['--format', '%{family[0]}\\n'], { maxBuffer: 16 * 1024 * 1024 }, (err, stdout) => {
       if (err) {
         resolve([]);
         return;
       }
-      const families = new Set(stdout.split('\n').map((s) => s.trim()).filter(Boolean));
-      resolve([...families].sort((a, b) => a.localeCompare(b)));
+      resolve(sortedUnique(stdout.split('\n')));
     });
   });
 }

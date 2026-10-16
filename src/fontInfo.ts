@@ -257,6 +257,12 @@ function readWoff2Tables(buf: Buffer): { tables: Tables; fontCount?: number } {
   return { tables, fontCount };
 }
 
+/** Family name of a font's `name` table: the typographic family, else the legacy family. */
+export function familyFromNameTable(table: Buffer): string | undefined {
+  const names = readNames(table);
+  return names.get(16) ?? names.get(1);
+}
+
 function readNames(table: Buffer): Map<number, string> {
   const count = table.readUInt16BE(2);
   const storage = table.readUInt16BE(4);
