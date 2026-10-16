@@ -4,6 +4,20 @@
   // @ts-expect-error acquireVsCodeApi is injected by VS Code
   const vscode = acquireVsCodeApi();
 
+  /** Translations of the current VS Code display language, keyed by the English text. */
+  let l10n = {};
+
+  /** Translates `text` and fills its `{0}`, `{1}`, … placeholders. */
+  function t(text, ...args) {
+    const translated = l10n[text] || text;
+    return args.length ? translated.replace(/\{(\d+)\}/g, (m, i) => (i in args ? String(args[i]) : m)) : translated;
+  }
+
+  /** Marks a text for translation where it is defined; it is translated with t() when shown. */
+  function N(text) {
+    return text;
+  }
+
   const GOOGLE_CSS = 'https://fonts.googleapis.com/css2';
   const FONTSOURCE_CDN = 'https://cdn.jsdelivr.net/fontsource/fonts';
   const PAGE_SIZE = 60;
@@ -21,49 +35,49 @@
 
   /** Unicode blocks offered in the glyph view. */
   const BLOCKS = [
-    ['Basic Latin', 0x0020, 0x007f, 'latin'],
-    ['Latin-1 Supplement', 0x00a0, 0x00ff, 'latin'],
-    ['Latin Extended-A', 0x0100, 0x017f, 'latin-ext'],
-    ['Latin Extended-B', 0x0180, 0x024f, 'latin-ext'],
-    ['IPA Extensions', 0x0250, 0x02af],
-    ['Spacing Modifier Letters', 0x02b0, 0x02ff],
-    ['Combining Diacritical Marks', 0x0300, 0x036f],
-    ['Greek and Coptic', 0x0370, 0x03ff, 'greek'],
-    ['Cyrillic', 0x0400, 0x04ff, 'cyrillic'],
-    ['Cyrillic Supplement', 0x0500, 0x052f, 'cyrillic-ext'],
-    ['Armenian', 0x0530, 0x058f, 'armenian'],
-    ['Hebrew', 0x0590, 0x05ff, 'hebrew'],
-    ['Arabic', 0x0600, 0x06ff, 'arabic'],
-    ['Syriac', 0x0700, 0x074f, 'syriac'],
-    ['Devanagari', 0x0900, 0x097f, 'devanagari'],
-    ['Bengali', 0x0980, 0x09ff, 'bengali'],
-    ['Tamil', 0x0b80, 0x0bff, 'tamil'],
-    ['Thai', 0x0e00, 0x0e7f, 'thai'],
-    ['Georgian', 0x10a0, 0x10ff, 'georgian'],
-    ['Ethiopic', 0x1200, 0x137f, 'ethiopic'],
-    ['Latin Extended Additional', 0x1e00, 0x1eff, 'vietnamese'],
-    ['Greek Extended', 0x1f00, 0x1fff, 'greek-ext'],
-    ['General Punctuation', 0x2000, 0x206f],
-    ['Superscripts and Subscripts', 0x2070, 0x209f],
-    ['Currency Symbols', 0x20a0, 0x20cf],
-    ['Letterlike Symbols', 0x2100, 0x214f],
-    ['Number Forms', 0x2150, 0x218f],
-    ['Arrows', 0x2190, 0x21ff],
-    ['Mathematical Operators', 0x2200, 0x22ff, 'math'],
-    ['Miscellaneous Technical', 0x2300, 0x23ff],
-    ['Box Drawing', 0x2500, 0x257f],
-    ['Block Elements', 0x2580, 0x259f],
-    ['Geometric Shapes', 0x25a0, 0x25ff],
-    ['Miscellaneous Symbols', 0x2600, 0x26ff, 'symbols'],
-    ['Dingbats', 0x2700, 0x27bf],
-    ['CJK Symbols and Punctuation', 0x3000, 0x303f],
-    ['Hiragana', 0x3040, 0x309f, 'japanese'],
-    ['Katakana', 0x30a0, 0x30ff],
-    ['CJK Unified Ideographs', 0x4e00, 0x9fff, 'chinese-simplified'],
-    ['Hangul Syllables', 0xac00, 0xd7af, 'korean'],
-    ['Private Use Area', 0xe000, 0xf8ff],
-    ['Alphabetic Presentation Forms', 0xfb00, 0xfb4f],
-    ['Specials', 0xfff0, 0xffff],
+    [N('Basic Latin'), 0x0020, 0x007f, 'latin'],
+    [N('Latin-1 Supplement'), 0x00a0, 0x00ff, 'latin'],
+    [N('Latin Extended-A'), 0x0100, 0x017f, 'latin-ext'],
+    [N('Latin Extended-B'), 0x0180, 0x024f, 'latin-ext'],
+    [N('IPA Extensions'), 0x0250, 0x02af],
+    [N('Spacing Modifier Letters'), 0x02b0, 0x02ff],
+    [N('Combining Diacritical Marks'), 0x0300, 0x036f],
+    [N('Greek and Coptic'), 0x0370, 0x03ff, 'greek'],
+    [N('Cyrillic'), 0x0400, 0x04ff, 'cyrillic'],
+    [N('Cyrillic Supplement'), 0x0500, 0x052f, 'cyrillic-ext'],
+    [N('Armenian'), 0x0530, 0x058f, 'armenian'],
+    [N('Hebrew'), 0x0590, 0x05ff, 'hebrew'],
+    [N('Arabic'), 0x0600, 0x06ff, 'arabic'],
+    [N('Syriac'), 0x0700, 0x074f, 'syriac'],
+    [N('Devanagari'), 0x0900, 0x097f, 'devanagari'],
+    [N('Bengali'), 0x0980, 0x09ff, 'bengali'],
+    [N('Tamil'), 0x0b80, 0x0bff, 'tamil'],
+    [N('Thai'), 0x0e00, 0x0e7f, 'thai'],
+    [N('Georgian'), 0x10a0, 0x10ff, 'georgian'],
+    [N('Ethiopic'), 0x1200, 0x137f, 'ethiopic'],
+    [N('Latin Extended Additional'), 0x1e00, 0x1eff, 'vietnamese'],
+    [N('Greek Extended'), 0x1f00, 0x1fff, 'greek-ext'],
+    [N('General Punctuation'), 0x2000, 0x206f],
+    [N('Superscripts and Subscripts'), 0x2070, 0x209f],
+    [N('Currency Symbols'), 0x20a0, 0x20cf],
+    [N('Letterlike Symbols'), 0x2100, 0x214f],
+    [N('Number Forms'), 0x2150, 0x218f],
+    [N('Arrows'), 0x2190, 0x21ff],
+    [N('Mathematical Operators'), 0x2200, 0x22ff, 'math'],
+    [N('Miscellaneous Technical'), 0x2300, 0x23ff],
+    [N('Box Drawing'), 0x2500, 0x257f],
+    [N('Block Elements'), 0x2580, 0x259f],
+    [N('Geometric Shapes'), 0x25a0, 0x25ff],
+    [N('Miscellaneous Symbols'), 0x2600, 0x26ff, 'symbols'],
+    [N('Dingbats'), 0x2700, 0x27bf],
+    [N('CJK Symbols and Punctuation'), 0x3000, 0x303f],
+    [N('Hiragana'), 0x3040, 0x309f, 'japanese'],
+    [N('Katakana'), 0x30a0, 0x30ff],
+    [N('CJK Unified Ideographs'), 0x4e00, 0x9fff, 'chinese-simplified'],
+    [N('Hangul Syllables'), 0xac00, 0xd7af, 'korean'],
+    [N('Private Use Area'), 0xe000, 0xf8ff],
+    [N('Alphabetic Presentation Forms'), 0xfb00, 0xfb4f],
+    [N('Specials'), 0xfff0, 0xffff],
   ];
 
   const saved = vscode.getState() || {};
@@ -163,6 +177,12 @@
     return `${quote(font.family)}, ${FALLBACKS[font.category] || generic}`;
   }
 
+  /** Splits a translated text at its `<…>` part, so that part can be wrapped in an element. */
+  function withMarkup(text, wrap) {
+    const match = /^(.*)<(.+)>(.*)$/s.exec(text);
+    return match ? [match[1], wrap(match[2]), match[3]] : [text];
+  }
+
   function hex(cp) {
     return cp.toString(16).toUpperCase().padStart(4, '0');
   }
@@ -190,56 +210,61 @@
   }
 
   const SAMPLE_PRESETS = [
-    ['pangram', 'Pangram', () => defaultSample || 'The quick brown fox jumps over the lazy dog.'],
-    ['alphabet', 'Alphabet & numbers', () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789 ½ ¼ ¾ € $ £ ¥ % ‰'],
-    ['punctuation', 'Punctuation', () => '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~\n„Deutsch“ “English” «français» ‚single‘ – — … · • © ® ™ § ¶'],
-    ['paragraph', 'Paragraph', () => 'Typography is the craft of endowing human language with a durable visual form.\n\nGood body text is easy to read at length: a comfortable size, generous line height and a measure of 60–75 characters. Watch how the ascenders and descenders of the lines interact, and whether the rhythm of the paragraph stays even.'],
-    ['diacritics', 'Diacritics', () => 'ÀÁÂÃÄÅ ÇÈÉÊË ÌÍÎÏ ÑÒÓÔÕÖ ÙÚÛÜ Ý ß\nàáâãäå çèéêë ìíîï ñòóôõö ùúûü ý ÿ\nĀ ā Ă ă Ą ą Ć ć Č č Ď ď Ę ę Ě ě Ł ł Ń ń Ő ő Ř ř Ś ś Š š Ť ť Ů ů Ű ű Ź ź Ž ž'],
-    ['hebrew', 'Hebrew', () => 'אבגדהוזחטיכךלמםנןסעפףצץקרשת\nבְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ'],
-    ['greek', 'Greek & Cyrillic', () => 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ αβγδεζηθικλμνξοπρστυφχψω\nАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ абвгдежзийклмнопрстуфхцчшщъыьэюя'],
-    ['opentype', 'OpenType test', () => 'Office affluent fjord, The flight of the waffle. ffi ffl fft Th st ct\nFIGURES 0123456789 · figures 0123456789 · 1/2 3/4 5/8 · 1st 2nd 3rd 4th · H2O E=mc2\nSmall Caps & Capitals: The Quick Brown Fox · 10:45 · (Parentheses) [BRACKETS] {BRACES}'],
-    ['code', 'Code', () => 'const greet = (name) => `Hello, ${name}!`;\nif (a != b && c <= d || e >= f) { return [0, O, 1, l, I]; }\n// -> => == === != !== <= >= ::'],
+    ['pangram', N('Pangram'), () => defaultSample || 'The quick brown fox jumps over the lazy dog.'],
+    ['alphabet', N('Alphabet & numbers'), () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n0123456789 ½ ¼ ¾ € $ £ ¥ % ‰'],
+    ['punctuation', N('Punctuation'), () => '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~\n„Deutsch“ “English” «français» ‚single‘ – — … · • © ® ™ § ¶'],
+    ['paragraph', N('Paragraph'), () => 'Typography is the craft of endowing human language with a durable visual form.\n\nGood body text is easy to read at length: a comfortable size, generous line height and a measure of 60–75 characters. Watch how the ascenders and descenders of the lines interact, and whether the rhythm of the paragraph stays even.'],
+    ['diacritics', N('Diacritics'), () => 'ÀÁÂÃÄÅ ÇÈÉÊË ÌÍÎÏ ÑÒÓÔÕÖ ÙÚÛÜ Ý ß\nàáâãäå çèéêë ìíîï ñòóôõö ùúûü ý ÿ\nĀ ā Ă ă Ą ą Ć ć Č č Ď ď Ę ę Ě ě Ł ł Ń ń Ő ő Ř ř Ś ś Š š Ť ť Ů ů Ű ű Ź ź Ž ž'],
+    ['hebrew', N('Hebrew'), () => 'אבגדהוזחטיכךלמםנןסעפףצץקרשת\nבְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ'],
+    ['greek', N('Greek & Cyrillic'), () => 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ αβγδεζηθικλμνξοπρστυφχψω\nАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ абвгдежзийклмнопрстуфхцчшщъыьэюя'],
+    ['opentype', N('OpenType test'), () => 'Office affluent fjord, The flight of the waffle. ffi ffl fft Th st ct\nFIGURES 0123456789 · figures 0123456789 · 1/2 3/4 5/8 · 1st 2nd 3rd 4th · H2O E=mc2\nSmall Caps & Capitals: The Quick Brown Fox · 10:45 · (Parentheses) [BRACKETS] {BRACES}'],
+    ['code', N('Code'), () => 'const greet = (name) => `Hello, ${name}!`;\nif (a != b && c <= d || e >= f) { return [0, O, 1, l, I]; }\n// -> => == === != !== <= >= ::'],
   ];
 
   /**
    * ASCII and its 8-bit extensions. Each code page fills bytes 0x80–0xFF with the
-   * letters of a different group of languages.
+   * letters of a different group of languages. Entries: id, name, languages, decoder, first byte.
    */
   const CODE_PAGES = [
-    ['iso-8859-1', 'ISO-8859-1 · Latin-1, Western European', 'windows-1252', 0xa0],
-    ['iso-8859-2', 'ISO-8859-2 · Latin-2, Central European', 'iso-8859-2'],
-    ['iso-8859-3', 'ISO-8859-3 · Latin-3, Maltese, Esperanto', 'iso-8859-3'],
-    ['iso-8859-4', 'ISO-8859-4 · Latin-4, Baltic', 'iso-8859-4'],
-    ['iso-8859-5', 'ISO-8859-5 · Cyrillic', 'iso-8859-5'],
-    ['iso-8859-6', 'ISO-8859-6 · Arabic', 'iso-8859-6'],
-    ['iso-8859-7', 'ISO-8859-7 · Greek', 'iso-8859-7'],
-    ['iso-8859-8', 'ISO-8859-8 · Hebrew', 'iso-8859-8'],
-    ['iso-8859-9', 'ISO-8859-9 · Latin-5, Turkish', 'windows-1254', 0xa0],
-    ['iso-8859-10', 'ISO-8859-10 · Latin-6, Nordic', 'iso-8859-10'],
-    ['iso-8859-11', 'ISO-8859-11 · Thai', 'windows-874', 0xa0],
-    ['iso-8859-13', 'ISO-8859-13 · Latin-7, Baltic Rim', 'iso-8859-13'],
-    ['iso-8859-14', 'ISO-8859-14 · Latin-8, Celtic', 'iso-8859-14'],
-    ['iso-8859-15', 'ISO-8859-15 · Latin-9, Western European with €', 'iso-8859-15'],
-    ['iso-8859-16', 'ISO-8859-16 · Latin-10, South-Eastern European', 'iso-8859-16'],
-    ['windows-1250', 'Windows-1250 · Central European', 'windows-1250'],
-    ['windows-1251', 'Windows-1251 · Cyrillic', 'windows-1251'],
-    ['windows-1252', 'Windows-1252 · Western European', 'windows-1252'],
-    ['windows-1253', 'Windows-1253 · Greek', 'windows-1253'],
-    ['windows-1254', 'Windows-1254 · Turkish', 'windows-1254'],
-    ['windows-1255', 'Windows-1255 · Hebrew', 'windows-1255'],
-    ['windows-1256', 'Windows-1256 · Arabic', 'windows-1256'],
-    ['windows-1257', 'Windows-1257 · Baltic', 'windows-1257'],
-    ['windows-1258', 'Windows-1258 · Vietnamese', 'windows-1258'],
-    ['koi8-r', 'KOI8-R · Russian', 'koi8-r'],
-    ['koi8-u', 'KOI8-U · Ukrainian', 'koi8-u'],
-    ['cp437', 'CP437 · DOS, box drawing', null],
-    ['cp866', 'CP866 · DOS Cyrillic', 'ibm866'],
-    ['macintosh', 'Mac OS Roman', 'macintosh'],
-    ['x-mac-cyrillic', 'Mac OS Cyrillic', 'x-mac-cyrillic'],
+    ['iso-8859-1', 'ISO-8859-1', N('Latin-1, Western European'), 'windows-1252', 0xa0],
+    ['iso-8859-2', 'ISO-8859-2', N('Latin-2, Central European'), 'iso-8859-2'],
+    ['iso-8859-3', 'ISO-8859-3', N('Latin-3, Maltese, Esperanto'), 'iso-8859-3'],
+    ['iso-8859-4', 'ISO-8859-4', N('Latin-4, Baltic'), 'iso-8859-4'],
+    ['iso-8859-5', 'ISO-8859-5', N('Cyrillic'), 'iso-8859-5'],
+    ['iso-8859-6', 'ISO-8859-6', N('Arabic'), 'iso-8859-6'],
+    ['iso-8859-7', 'ISO-8859-7', N('Greek'), 'iso-8859-7'],
+    ['iso-8859-8', 'ISO-8859-8', N('Hebrew'), 'iso-8859-8'],
+    ['iso-8859-9', 'ISO-8859-9', N('Latin-5, Turkish'), 'windows-1254', 0xa0],
+    ['iso-8859-10', 'ISO-8859-10', N('Latin-6, Nordic'), 'iso-8859-10'],
+    ['iso-8859-11', 'ISO-8859-11', N('Thai'), 'windows-874', 0xa0],
+    ['iso-8859-13', 'ISO-8859-13', N('Latin-7, Baltic Rim'), 'iso-8859-13'],
+    ['iso-8859-14', 'ISO-8859-14', N('Latin-8, Celtic'), 'iso-8859-14'],
+    ['iso-8859-15', 'ISO-8859-15', N('Latin-9, Western European with €'), 'iso-8859-15'],
+    ['iso-8859-16', 'ISO-8859-16', N('Latin-10, South-Eastern European'), 'iso-8859-16'],
+    ['windows-1250', 'Windows-1250', N('Central European'), 'windows-1250'],
+    ['windows-1251', 'Windows-1251', N('Cyrillic'), 'windows-1251'],
+    ['windows-1252', 'Windows-1252', N('Western European'), 'windows-1252'],
+    ['windows-1253', 'Windows-1253', N('Greek'), 'windows-1253'],
+    ['windows-1254', 'Windows-1254', N('Turkish'), 'windows-1254'],
+    ['windows-1255', 'Windows-1255', N('Hebrew'), 'windows-1255'],
+    ['windows-1256', 'Windows-1256', N('Arabic'), 'windows-1256'],
+    ['windows-1257', 'Windows-1257', N('Baltic'), 'windows-1257'],
+    ['windows-1258', 'Windows-1258', N('Vietnamese'), 'windows-1258'],
+    ['koi8-r', 'KOI8-R', N('Russian'), 'koi8-r'],
+    ['koi8-u', 'KOI8-U', N('Ukrainian'), 'koi8-u'],
+    ['cp437', 'CP437', N('DOS, box drawing'), null],
+    ['cp866', 'CP866', N('DOS Cyrillic'), 'ibm866'],
+    ['macintosh', 'Mac OS Roman', '', 'macintosh'],
+    ['x-mac-cyrillic', 'Mac OS Cyrillic', '', 'x-mac-cyrillic'],
   ];
 
   // The browser has no decoder for the original IBM PC code page, so its upper half is listed here.
   const CP437_HIGH = 'ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜ¢£¥₧ƒáíóúñÑªº¿⌐¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αßΓπΣσµτΦΘΩδ∞φε∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■\u00A0';
+
+  function codePageLabel(page) {
+    const [, name, languages] = page;
+    return languages ? `${name} · ${t(languages)}` : name;
+  }
 
   /** One table row per 16 bytes; control characters and unassigned bytes are left out. */
   function byteRows(from, to, charAt) {
@@ -262,7 +287,7 @@
   function codePageTable(id) {
     const page = CODE_PAGES.find(([pid]) => pid === id);
     if (!page) return '';
-    const [, , encoding, from = 0x80] = page;
+    const [, , , encoding, from = 0x80] = page;
     let charAt;
     if (encoding) {
       const decoder = new TextDecoder(encoding);
@@ -277,7 +302,7 @@
   function headingText() {
     const line = sampleLine().trim();
     const sentence = line.split(/(?<=\p{L}[.!?])\s/u)[0] || line;
-    if (sentence.length <= 60) return sentence || 'Heading';
+    if (sentence.length <= 60) return sentence || t('Heading');
     const cut = sentence.slice(0, 60);
     const space = cut.lastIndexOf(' ');
     return `${(space > 30 ? cut.slice(0, space) : cut).replace(/[\s,;:–—-]+$/, '')}…`;
@@ -286,8 +311,8 @@
   /** Sample text editor; `multiline` gives a resizable textarea. */
   function sampleBox(multiline) {
     const field = multiline
-      ? h('textarea', { class: 'sample-area', rows: 4, spellcheck: false, placeholder: 'Type or paste sample text… (Enter for a new line)', 'aria-label': 'Sample text' })
-      : h('input', { class: 'sample-line', type: 'text', placeholder: 'Sample text…', 'aria-label': 'Sample text' });
+      ? h('textarea', { class: 'sample-area', rows: 4, spellcheck: false, placeholder: t('Type or paste sample text… (Enter for a new line)'), 'aria-label': t('Sample text') })
+      : h('input', { class: 'sample-line', type: 'text', placeholder: t('Sample text…'), 'aria-label': t('Sample text') });
     field.value = multiline ? sampleText() : sampleLine();
     field.addEventListener('input', () => {
       state.sample = field.value;
@@ -297,7 +322,7 @@
     return h('div', { class: `sample-box ${multiline ? 'multiline' : ''}` },
       field,
       h('select', {
-        'aria-label': 'Sample text presets',
+        'aria-label': t('Sample text presets'),
         onchange: (e) => {
           const value = e.target.value;
           const preset = SAMPLE_PRESETS.find(([id]) => id === value);
@@ -305,7 +330,7 @@
           if (preset) text = preset[2]();
           else if (value === 'ascii') text = asciiTable();
           else if (value === 'ascii-all') {
-            text = [`ASCII\n${asciiTable()}`, ...CODE_PAGES.map(([id, label]) => `${label}\n${codePageTable(id)}`)].join('\n\n');
+            text = [`ASCII\n${asciiTable()}`, ...CODE_PAGES.map((page) => `${codePageLabel(page)}\n${codePageTable(page[0])}`)].join('\n\n');
           }
           else if (value.startsWith('cp:')) {
             // Code pages only differ above 0x7F, so ASCII comes first.
@@ -318,12 +343,12 @@
           }
         },
       },
-        h('option', { value: '' }, 'Presets…'),
-        h('optgroup', { label: 'Text' }, SAMPLE_PRESETS.map(([id, label]) => h('option', { value: id }, label))),
-        h('optgroup', { label: 'Character tables' },
+        h('option', { value: '' }, t('Presets…')),
+        h('optgroup', { label: t('Text') }, SAMPLE_PRESETS.map(([id, label]) => h('option', { value: id }, t(label)))),
+        h('optgroup', { label: t('Character tables') },
           h('option', { value: 'ascii' }, 'ASCII (US-ASCII, 0x20–0x7E)'),
-          CODE_PAGES.map(([id, label]) => h('option', { value: `cp:${id}` }, label)),
-          h('option', { value: 'ascii-all' }, 'All code pages at once'),
+          CODE_PAGES.map((page) => h('option', { value: `cp:${page[0]}` }, codePageLabel(page))),
+          h('option', { value: 'ascii-all' }, t('All code pages at once')),
         ),
       ),
     );
@@ -385,7 +410,7 @@
     return new Promise((resolve, reject) => {
       const link = h('link', { rel: 'stylesheet', href, 'data-href': href });
       link.addEventListener('load', () => resolve(undefined));
-      link.addEventListener('error', () => reject(new Error(`Stylesheet could not be loaded: ${href}`)));
+      link.addEventListener('error', () => reject(new Error(t('Stylesheet could not be loaded: {0}', href))));
       document.head.append(link);
     });
   }
@@ -476,7 +501,7 @@
     if (font.source !== 'css' && font.source !== 'system') return;
     await document.fonts.load(`16px ${quote(font.family)}`);
     if (!renders(font.family)) {
-      throw new Error(font.source === 'system' ? 'Font is not installed on this system.' : `No font named "${font.family}" was defined by the stylesheet.`);
+      throw new Error(font.source === 'system' ? t('Font is not installed on this system.') : t('No font named "{0}" was defined by the stylesheet.', font.family));
     }
   }
 
@@ -501,7 +526,7 @@
   }
 
   function statusBadge(font) {
-    const text = { loading: 'loading…', ok: 'works', error: 'failed' }[font.status || ''] || 'not loaded';
+    const text = { loading: t('loading…'), ok: t('works'), error: t('failed') }[font.status || ''] || t('not loaded');
     return h('span', { class: `badge status-${font.status || 'idle'}`, 'data-status-for': font.key, title: font.error || '' }, text);
   }
 
@@ -556,7 +581,7 @@
       case 'css':
         return `@import url("${font.ref.location}");`;
       case 'system':
-        return `/* ${font.label} is an installed system font */`;
+        return `/* ${t('{0} is an installed system font', font.label)} */`;
       default: {
         const fileName = font.ref.location.split(/[\\/]/).pop().split(/[?#]/)[0];
         const ext = (fileName.split('.').pop() || '').toLowerCase();
@@ -576,12 +601,12 @@
   }
 
   function exportCss() {
-    const t = state.typo;
+    const typo = state.typo;
     const keys = [...new Set(Object.values(state.roles).filter(Boolean))];
     const includes = keys.map((k) => fonts.get(k)).filter(Boolean).map((f) => `/* ${f.label} */\n${cssFor(f)}`);
     const rules = [
-      `body {\n  font-family: ${exportStack(state.roles.body, 'sans-serif')};\n  font-size: ${t.size}px;\n  font-weight: ${t.bodyWeight};\n  line-height: ${t.lineHeight};\n  letter-spacing: ${t.letterSpacing}em;\n}`,
-      `h1, h2, h3, h4, h5, h6 {\n  font-family: ${exportStack(state.roles.heading || state.roles.body, 'sans-serif')};\n  font-weight: ${t.headingWeight};\n}`,
+      `body {\n  font-family: ${exportStack(state.roles.body, 'sans-serif')};\n  font-size: ${typo.size}px;\n  font-weight: ${typo.bodyWeight};\n  line-height: ${typo.lineHeight};\n  letter-spacing: ${typo.letterSpacing}em;\n}`,
+      `h1, h2, h3, h4, h5, h6 {\n  font-family: ${exportStack(state.roles.heading || state.roles.body, 'sans-serif')};\n  font-weight: ${typo.headingWeight};\n}`,
       `code, kbd, pre, samp {\n  font-family: ${exportStack(state.roles.mono, 'monospace')};\n}`,
     ];
     return [...includes, ...rules].join('\n\n');
@@ -594,11 +619,11 @@
   function render() {
     const scroll = document.querySelector('.content')?.scrollTop || 0;
     const tabs = [
-      ['fonts', 'Fonts'],
-      ['typography', 'Typography'],
-      ['inspect', 'Inspect'],
-      ['compare', 'Compare'],
-      ['icons', 'Icons'],
+      ['fonts', t('Fonts')],
+      ['typography', t('Typography')],
+      ['inspect', t('Inspect')],
+      ['compare', t('Compare')],
+      ['icons', t('Icons')],
     ];
     app.replaceChildren(
       h('nav', { class: 'tabs', role: 'tablist' },
@@ -642,8 +667,8 @@
   function renderFonts() {
     const sources = [
       ['google', 'Google Fonts'],
-      ['custom', 'My Fonts'],
-      ['system', 'System'],
+      ['custom', t('My Fonts')],
+      ['system', t('System')],
     ];
     return h('div', { class: 'fonts-layout' },
       h('section', { class: 'browser' },
@@ -661,7 +686,7 @@
   function renderCatalog() {
     if (!catalog) {
       requestCatalog();
-      return h('p', { class: 'muted' }, catalogError ? `Catalog unavailable: ${catalogError}` : 'Loading the Google Fonts catalog…');
+      return h('p', { class: 'muted' }, catalogError ? t('Catalog unavailable: {0}', catalogError) : t('Loading the Google Fonts catalog…'));
     }
     const categories = [...new Set(catalog.map((f) => f.category))].sort();
     const subsets = [...new Set(catalog.flatMap((f) => f.subsets))].sort();
@@ -678,20 +703,20 @@
       sampleBox(false),
       h('div', { class: 'filters' },
         h('input', {
-          type: 'search', placeholder: `Search ${pool.length} fonts…`, value: state.query, 'aria-label': 'Search fonts',
+          type: 'search', placeholder: t('Search {0} fonts…', pool.length), value: state.query, 'aria-label': t('Search fonts'),
           oninput: (e) => { state.query = e.target.value; visibleCount = PAGE_SIZE; save(); rerenderKeepingFocus(e.target); },
         }),
-        select('Category', state.category, [['', 'All categories'], ...categories.map((c) => [c, c])], (v) => { state.category = v; visibleCount = PAGE_SIZE; }),
-        select('Script', state.subset, [['', 'All scripts'], ...subsets.map((s) => [s, s])], (v) => { state.subset = v; visibleCount = PAGE_SIZE; }),
+        select(t('Category'), state.category, [['', t('All categories')], ...categories.map((c) => [c, categoryLabel(c)])], (v) => { state.category = v; visibleCount = PAGE_SIZE; }),
+        select(t('Script'), state.subset, [['', t('All scripts')], ...subsets.map((s) => [s, s])], (v) => { state.subset = v; visibleCount = PAGE_SIZE; }),
         h('label', { class: 'check' },
           h('input', { type: 'checkbox', checked: state.includeOther, onchange: (e) => { state.includeOther = e.target.checked; save(); render(); } }),
-          'Other open fonts (Fontsource)',
+          t('Other open fonts (Fontsource)'),
         ),
       ),
-      h('p', { class: 'muted small' }, `${matches.length} fonts`),
+      h('p', { class: 'muted small' }, t('{0} fonts', matches.length)),
       list,
       matches.length > visibleCount
-        ? h('button', { class: 'secondary more', onclick: () => { visibleCount += PAGE_SIZE; render(); } }, `Show more (${matches.length - visibleCount} left)`)
+        ? h('button', { class: 'secondary more', onclick: () => { visibleCount += PAGE_SIZE; render(); } }, t('Show more ({0} left)', matches.length - visibleCount))
         : null,
     );
   }
@@ -706,6 +731,15 @@
     }
   }
 
+  const CATEGORIES = {
+    'sans-serif': N('sans-serif'), serif: N('serif'), display: N('display'), handwriting: N('handwriting'),
+    monospace: N('monospace'), icons: N('icons'), other: N('other'),
+  };
+
+  function categoryLabel(category) {
+    return CATEGORIES[category] ? t(CATEGORIES[category]) : category;
+  }
+
   function select(label, value, options, onChange) {
     return h('select', { 'aria-label': label, onchange: (e) => { onChange(e.target.value); save(); render(); } },
       options.map(([v, text]) => h('option', { value: v, selected: v === value }, text)),
@@ -714,10 +748,10 @@
 
   function fontCard(font) {
     const meta = [
-      font.category !== 'other' ? font.category : null,
+      font.category !== 'other' ? categoryLabel(font.category) : null,
       font.source === 'fontsource' ? 'Fontsource' : null,
-      ['file', 'url', 'css', 'system'].includes(font.source) ? { file: 'local file', url: 'web font URL', css: 'stylesheet', system: 'system font' }[font.source] : null,
-      font.variable ? 'variable' : font.weights.length > 1 ? `${font.weights.length} weights` : null,
+      ['file', 'url', 'css', 'system'].includes(font.source) ? { file: t('local file'), url: t('web font URL'), css: t('stylesheet'), system: t('system font') }[font.source] : null,
+      font.variable ? t('variable') : font.weights.length > 1 ? t('{0} weights', font.weights.length) : null,
       font.subsets.length ? font.subsets.slice(0, 4).join(', ') + (font.subsets.length > 4 ? ` +${font.subsets.length - 4}` : '') : null,
     ].filter(Boolean);
     const isCustom = font.key.startsWith('custom:') || font.key === 'opened-file';
@@ -730,13 +764,13 @@
       h('footer', null,
         h('span', { class: 'muted small' }, meta.join(' · ')),
         h('div', { class: 'actions' },
-          h('button', { class: inCollection(font.key) ? 'icon active' : 'icon', title: inCollection(font.key) ? 'Remove from collection' : 'Add to collection', 'aria-pressed': String(inCollection(font.key)), onclick: () => toggleCollection(font.key) }, inCollection(font.key) ? '★' : '☆'),
-          roleButton('heading', 'H', 'Use for headings', font.key),
-          roleButton('body', 'Body', 'Use for body text', font.key),
-          roleButton('mono', 'Code', 'Use for code', font.key),
-          h('button', { class: 'secondary', onclick: () => inspect(font.key) }, 'Inspect'),
-          font.key === 'opened-file' ? h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'keep', font: font.ref }) }, 'Keep in My Fonts') : null,
-          font.key.startsWith('custom:') ? h('button', { class: 'icon danger', title: 'Remove font', onclick: () => removeCustom(font) }, '✕') : null,
+          h('button', { class: inCollection(font.key) ? 'icon active' : 'icon', title: inCollection(font.key) ? t('Remove from collection') : t('Add to collection'), 'aria-pressed': String(inCollection(font.key)), onclick: () => toggleCollection(font.key) }, inCollection(font.key) ? '★' : '☆'),
+          roleButton('heading', t('H'), t('Use for headings'), font.key),
+          roleButton('body', t('Body'), t('Use for body text'), font.key),
+          roleButton('mono', t('Code'), t('Use for code'), font.key),
+          h('button', { class: 'secondary', onclick: () => inspect(font.key) }, t('Inspect')),
+          font.key === 'opened-file' ? h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'keep', font: font.ref }) }, t('Keep in My Fonts')) : null,
+          font.key.startsWith('custom:') ? h('button', { class: 'icon danger', title: t('Remove font'), onclick: () => removeCustom(font) }, '✕') : null,
         ),
       ),
     );
@@ -763,7 +797,7 @@
       sampleBox(false),
       h('div', { class: 'add-panel' },
         h('div', { class: 'add-row' },
-          h('button', { onclick: () => vscode.postMessage({ type: 'addFile' }) }, 'Add font file…'),
+          h('button', { onclick: () => vscode.postMessage({ type: 'addFile' }) }, t('Add font file…')),
           h('span', { class: 'muted small' }, 'TTF, OTF, WOFF, WOFF2'),
         ),
         h('form', {
@@ -773,20 +807,20 @@
             if (urlInput.value.trim()) vscode.postMessage({ type: 'addUrl', url: urlInput.value, label: labelInput.value });
           },
         },
-          (urlInput = h('input', { type: 'url', placeholder: 'https://… font file or stylesheet (.woff2, .css, Google Fonts / Adobe Fonts link)', 'aria-label': 'Font URL', required: true })),
-          (labelInput = h('input', { type: 'text', placeholder: 'CSS family name (for stylesheets)', 'aria-label': 'Family name', class: 'narrow' })),
-          h('button', { type: 'submit' }, 'Add URL'),
+          (urlInput = h('input', { type: 'url', placeholder: t('https://… font file or stylesheet (.woff2, .css, Google Fonts / Adobe Fonts link)'), 'aria-label': t('Font URL'), required: true })),
+          (labelInput = h('input', { type: 'text', placeholder: t('CSS family name (for stylesheets)'), 'aria-label': t('Family name'), class: 'narrow' })),
+          h('button', { type: 'submit' }, t('Add URL')),
         ),
-        h('p', { class: 'muted small' }, 'For stylesheets, enter the family name the stylesheet defines. Each added font is tested: the badge shows whether it actually renders.'),
+        h('p', { class: 'muted small' }, t('For stylesheets, enter the family name the stylesheet defines. Each added font is tested: the badge shows whether it actually renders.')),
       ),
-      custom.length ? h('div', { class: 'cards' }, custom.map(fontCard)) : h('p', { class: 'muted' }, 'No fonts added yet.'),
+      custom.length ? h('div', { class: 'cards' }, custom.map(fontCard)) : h('p', { class: 'muted' }, t('No fonts added yet.')),
     );
   }
 
   function renderSystem() {
     if (!systemFamilies) {
       vscode.postMessage({ type: 'systemFonts' });
-      return h('p', { class: 'muted' }, 'Reading installed fonts…');
+      return h('p', { class: 'muted' }, t('Reading installed fonts…'));
     }
     let nameInput;
     const q = state.query.toLowerCase();
@@ -796,25 +830,25 @@
         class: 'add-row',
         onsubmit: (e) => { e.preventDefault(); if (nameInput.value.trim()) vscode.postMessage({ type: 'addSystem', family: nameInput.value.trim() }); },
       },
-        (nameInput = h('input', { type: 'text', placeholder: 'Installed font family name, e.g. Arial', 'aria-label': 'System font family' })),
-        h('button', { type: 'submit' }, 'Test & add'),
+        (nameInput = h('input', { type: 'text', placeholder: t('Installed font family name, e.g. Arial'), 'aria-label': t('System font family') })),
+        h('button', { type: 'submit' }, t('Test & add')),
       ),
       systemFamilies.length
         ? [
             h('input', {
-              class: 'system-filter', type: 'search', placeholder: `Filter ${systemFamilies.length} installed families…`, value: state.query, 'aria-label': 'Filter installed fonts',
+              class: 'system-filter', type: 'search', placeholder: t('Filter {0} installed families…', systemFamilies.length), value: state.query, 'aria-label': t('Filter installed fonts'),
               oninput: (e) => { state.query = e.target.value; save(); rerenderKeepingFocus(e.target); },
             }),
             h('ul', { class: 'system-list' },
               shown.slice(0, 400).map((family) =>
                 h('li', null,
                   h('span', { style: { fontFamily: `${quote(family)}, sans-serif` } }, family),
-                  h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'addSystem', family }) }, 'Add'),
+                  h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'addSystem', family }) }, t('Add')),
                 ),
               ),
             ),
           ]
-        : h('p', { class: 'muted small' }, 'No installed fonts found. You can still add a font by name.'),
+        : h('p', { class: 'muted small' }, t('No installed fonts found. You can still add a font by name.')),
     );
   }
 
@@ -823,12 +857,12 @@
       h('label', { class: 'field' },
         h('span', null, label),
         h('select', { onchange: (e) => assign(role, e.target.value) },
-          h('option', { value: '' }, `Default (${generic})`),
+          h('option', { value: '' }, t('Default ({0})', generic)),
           state.collection.map((k) => fonts.get(k)).filter(Boolean).map((f) => h('option', { value: f.key, selected: state.roles[role] === f.key }, f.label)),
         ),
       );
     return h('aside', { class: 'collection' },
-      h('h2', null, 'Collection'),
+      h('h2', null, t('Collection')),
       state.collection.length
         ? h('ul', { class: 'chips' },
             state.collection.map((k) => {
@@ -836,16 +870,16 @@
               if (!font) return null;
               return h('li', null,
                 h('button', { class: 'link', style: { fontFamily: stack(k) }, onclick: () => inspect(k) }, font.label),
-                h('button', { class: 'icon', title: 'Remove from collection', onclick: () => toggleCollection(k) }, '✕'),
+                h('button', { class: 'icon', title: t('Remove from collection'), onclick: () => toggleCollection(k) }, '✕'),
               );
             }),
           )
-        : h('p', { class: 'muted small' }, 'Star fonts to collect them here.'),
-      roleSelect('heading', 'Headings', 'body font'),
-      roleSelect('body', 'Body', 'sans-serif'),
-      roleSelect('mono', 'Code', 'monospace'),
+        : h('p', { class: 'muted small' }, t('Star fonts to collect them here.')),
+      roleSelect('heading', t('Headings'), t('body font')),
+      roleSelect('body', t('Body'), 'sans-serif'),
+      roleSelect('mono', t('Code'), 'monospace'),
       h('div', { class: 'stack' },
-        h('button', { onclick: () => { state.tab = 'typography'; save(); render(); } }, 'Show typography page'),
+        h('button', { onclick: () => { state.tab = 'typography'; save(); render(); } }, t('Show typography page')),
         cssButtons(exportCss),
       ),
     );
@@ -854,8 +888,8 @@
   /** Copy and Insert buttons for generated CSS. */
   function cssButtons(css) {
     return h('div', { class: 'button-row' },
-      h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: css(), what: 'CSS' }) }, 'Copy CSS'),
-      h('button', { class: 'secondary', title: 'Insert into the last active editor', onclick: () => vscode.postMessage({ type: 'insert', text: css(), what: 'CSS' }) }, 'Insert CSS'),
+      h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: css(), what: 'CSS' }) }, t('Copy CSS')),
+      h('button', { class: 'secondary', title: t('Insert into the last active editor'), onclick: () => vscode.postMessage({ type: 'insert', text: css(), what: 'CSS' }) }, t('Insert CSS')),
     );
   }
 
@@ -882,7 +916,7 @@
   // ---- Typography tab
 
   function renderTypography() {
-    const t = state.typo;
+    const typo = state.typo;
     const headingFont = stack(state.roles.heading || state.roles.body);
     const bodyFont = stack(state.roles.body);
     const monoFont = stack(state.roles.mono, 'monospace');
@@ -892,12 +926,12 @@
     }
     const range = (label, prop, min, max, step, unit = '') =>
       h('label', { class: 'field' },
-        h('span', null, label, ' ', h('output', null, `${t[prop]}${unit}`)),
+        h('span', null, label, ' ', h('output', null, `${typo[prop]}${unit}`)),
         h('input', {
-          type: 'range', min, max, step, value: t[prop],
+          type: 'range', min, max, step, value: typo[prop],
           oninput: (e) => {
-            t[prop] = Number(e.target.value);
-            e.target.previousElementSibling.querySelector('output').textContent = `${t[prop]}${unit}`;
+            typo[prop] = Number(e.target.value);
+            e.target.previousElementSibling.querySelector('output').textContent = `${typo[prop]}${unit}`;
             applyTypo();
             save();
           },
@@ -907,114 +941,115 @@
       h('label', { class: 'field' },
         h('span', null, label),
         h('select', { onchange: (e) => assign(role, e.target.value) },
-          h('option', { value: '' }, `Default (${generic})`),
+          h('option', { value: '' }, t('Default ({0})', generic)),
           state.collection.map((k) => fonts.get(k)).filter(Boolean).map((f) => h('option', { value: f.key, selected: state.roles[role] === f.key }, f.label)),
         ),
       );
 
     const sample = sampleText();
     const page = h('article', {
-      class: `typo-page theme-${t.theme}`,
+      class: `typo-page theme-${typo.theme}`,
       style: { '--heading-font': headingFont, '--body-font': bodyFont, '--mono-font': monoFont },
     },
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Sample text'),
+        h('h2', { class: 'section-title' }, t('Sample text')),
         h('p', { class: 'sample-paragraph' }, sample),
         h('p', { class: 'sample-paragraph sample-heading' }, sample),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Headings'),
+        h('h2', { class: 'section-title' }, t('Headings')),
         [1, 2, 3, 4, 5, 6].map((n) => h(`h${n}`, null, `h${n}. ${headingText()}`)),
-        h('h3', null, 'Fancy display heading ', h('small', { class: 'text-muted' }, 'With faded secondary text')),
+        h('h3', null, t('Fancy display heading'), ' ', h('small', { class: 'text-muted' }, t('With faded secondary text'))),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Display headings'),
-        [1, 2, 3, 4, 5, 6].map((n) => h('p', { class: `display-${n}` }, `Display ${n}`)),
+        h('h2', { class: 'section-title' }, t('Display headings')),
+        [1, 2, 3, 4, 5, 6].map((n) => h('p', { class: `display-${n}` }, t('Display {0}', n))),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Lead & body'),
-        h('p', { class: 'lead' }, 'This is a lead paragraph. It stands out from regular paragraphs and introduces the content that follows.'),
+        h('h2', { class: 'section-title' }, t('Lead & body')),
+        h('p', { class: 'lead' }, t('This is a lead paragraph. It stands out from regular paragraphs and introduces the content that follows.')),
         h('p', { class: 'sample-paragraph' }, sample),
         h('p', null,
-          'Typography sets the tone of a page. Good body text is easy to read at length: comfortable size, generous line height and a measure of 60–75 characters. ',
-          'Numbers matter too: 0123456789, ½ ¼ ¾, 1st 2nd 3rd, €12.50, $99, 100 %.',
+          t('Typography sets the tone of a page. Good body text is easy to read at length: comfortable size, generous line height and a measure of 60–75 characters.'),
+          ' ',
+          t('Numbers matter too: {0}.', '0123456789, ½ ¼ ¾, 1st 2nd 3rd, €12.50, $99, 100 %'),
         ),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Inline text elements'),
-        h('p', null, 'You can use the mark tag to ', h('mark', null, 'highlight'), ' text.'),
-        h('p', null, h('del', null, 'This line of text is meant to be treated as deleted text.')),
-        h('p', null, h('s', null, 'This line of text is meant to be treated as no longer accurate.')),
-        h('p', null, h('ins', null, 'This line of text is meant to be treated as an addition to the document.')),
-        h('p', null, h('u', null, 'This line of text will render as underlined.')),
-        h('p', null, h('small', null, 'This line of text is meant to be treated as fine print.')),
-        h('p', null, h('strong', null, 'This line rendered as bold text.')),
-        h('p', null, h('em', null, 'This line rendered as italicized text.')),
-        h('p', null, h('abbr', { title: 'HyperText Markup Language' }, 'HTML'), ' abbreviations, ', h('kbd', null, 'Ctrl'), ' + ', h('kbd', null, 'S'), ', inline ', h('code', null, 'font-family: var(--body)'), ', H', h('sub', null, '2'), 'O and E = mc', h('sup', null, '2'), '.'),
+        h('h2', { class: 'section-title' }, t('Inline text elements')),
+        h('p', null, ...withMarkup(t('You can use the mark tag to <highlight> text.'), (text) => h('mark', null, text))),
+        h('p', null, h('del', null, t('This line of text is meant to be treated as deleted text.'))),
+        h('p', null, h('s', null, t('This line of text is meant to be treated as no longer accurate.'))),
+        h('p', null, h('ins', null, t('This line of text is meant to be treated as an addition to the document.'))),
+        h('p', null, h('u', null, t('This line of text will render as underlined.'))),
+        h('p', null, h('small', null, t('This line of text is meant to be treated as fine print.'))),
+        h('p', null, h('strong', null, t('This line rendered as bold text.'))),
+        h('p', null, h('em', null, t('This line rendered as italicized text.'))),
+        h('p', null, h('abbr', { title: 'HyperText Markup Language' }, 'HTML'), ' · ', h('kbd', null, 'Ctrl'), ' + ', h('kbd', null, 'S'), ' · ', h('code', null, 'font-family: var(--body)'), ' · H', h('sub', null, '2'), 'O · E = mc', h('sup', null, '2')),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Blockquote'),
+        h('h2', { class: 'section-title' }, t('Blockquote')),
         h('figure', null,
-          h('blockquote', { class: 'blockquote' }, h('p', null, 'Typography is what language looks like.')),
+          h('blockquote', { class: 'blockquote' }, h('p', null, t('Typography is what language looks like.'))),
           h('figcaption', { class: 'blockquote-footer' }, 'Ellen Lupton, ', h('cite', null, 'Thinking with Type')),
         ),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Lists'),
+        h('h2', { class: 'section-title' }, t('Lists')),
         h('div', { class: 'columns' },
-          h('ul', null, h('li', null, 'Unordered list item'), h('li', null, 'Another item', h('ul', null, h('li', null, 'Nested item'), h('li', null, 'Nested item'))), h('li', null, 'Last item')),
-          h('ol', null, h('li', null, 'First step'), h('li', null, 'Second step'), h('li', null, 'Third step')),
-          h('dl', null, h('dt', null, 'Description lists'), h('dd', null, 'Perfect for defining terms.'), h('dt', null, 'Term'), h('dd', null, 'Definition of the term.')),
+          h('ul', null, h('li', null, t('Unordered list item')), h('li', null, t('Another item'), h('ul', null, h('li', null, t('Nested item')), h('li', null, t('Nested item')))), h('li', null, t('Last item'))),
+          h('ol', null, h('li', null, t('First step')), h('li', null, t('Second step')), h('li', null, t('Third step'))),
+          h('dl', null, h('dt', null, t('Description lists')), h('dd', null, t('Perfect for defining terms.')), h('dt', null, t('Term')), h('dd', null, t('Definition of the term.'))),
         ),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Code'),
+        h('h2', { class: 'section-title' }, t('Code')),
         h('pre', null, h('code', null, 'function greet(name) {\n  return `Hello, ${name}!`; // 0O 1lI {}[]()\n}')),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Table'),
+        h('h2', { class: 'section-title' }, t('Table')),
         h('table', null,
-          h('thead', null, h('tr', null, h('th', null, '#'), h('th', null, 'Weight'), h('th', null, 'Use'), h('th', { class: 'num' }, 'Size'))),
+          h('thead', null, h('tr', null, h('th', null, '#'), h('th', null, t('Weight')), h('th', null, t('Use')), h('th', { class: 'num' }, t('Size')))),
           h('tbody', null,
-            [['1', 'Regular 400', 'Body copy', '16px'], ['2', 'Semibold 600', 'Subheadings', '20px'], ['3', 'Bold 700', 'Headlines', '40px']].map((row) =>
+            [['1', t('Regular {0}', 400), t('Body copy'), '16px'], ['2', t('Semibold {0}', 600), t('Subheadings'), '20px'], ['3', t('Bold {0}', 700), t('Headlines'), '40px']].map((row) =>
               h('tr', null, row.map((c, i) => h('td', { class: i === 3 ? 'num' : '' }, c))),
             ),
           ),
         ),
       ),
       h('section', null,
-        h('h2', { class: 'section-title' }, 'Form & buttons'),
+        h('h2', { class: 'section-title' }, t('Form & buttons')),
         h('div', { class: 'form-demo' },
-          h('label', null, 'Email address', h('input', { type: 'email', placeholder: 'name@example.com' })),
-          h('div', null, h('button', { class: 'btn' }, 'Primary'), ' ', h('button', { class: 'btn btn-outline' }, 'Secondary')),
+          h('label', null, t('Email address'), h('input', { type: 'email', placeholder: 'name@example.com' })),
+          h('div', null, h('button', { class: 'btn' }, t('Primary')), ' ', h('button', { class: 'btn btn-outline' }, t('Secondary'))),
         ),
       ),
     );
 
     function applyTypo() {
-      page.style.setProperty('--size', `${t.size}px`);
-      page.style.setProperty('--line-height', String(t.lineHeight));
-      page.style.setProperty('--letter-spacing', `${t.letterSpacing}em`);
-      page.style.setProperty('--heading-weight', String(t.headingWeight));
-      page.style.setProperty('--body-weight', String(t.bodyWeight));
+      page.style.setProperty('--size', `${typo.size}px`);
+      page.style.setProperty('--line-height', String(typo.lineHeight));
+      page.style.setProperty('--letter-spacing', `${typo.letterSpacing}em`);
+      page.style.setProperty('--heading-weight', String(typo.headingWeight));
+      page.style.setProperty('--body-weight', String(typo.bodyWeight));
     }
     applyTypo();
 
     return h('div', { class: 'typo-layout' },
       h('aside', { class: 'typo-controls' },
-        h('label', { class: 'field' }, h('span', null, 'Sample text'), sampleBox(true)),
-        state.collection.length ? null : h('p', { class: 'muted small' }, 'Add fonts to your collection on the Fonts tab to choose them here.'),
-        fontSelect('heading', 'Headings', 'body font'),
-        fontSelect('body', 'Body', 'sans-serif'),
-        fontSelect('mono', 'Code', 'monospace'),
-        range('Heading weight', 'headingWeight', 100, 900, 100),
-        range('Body weight', 'bodyWeight', 100, 900, 100),
-        range('Base size', 'size', 12, 24, 1, 'px'),
-        range('Line height', 'lineHeight', 1, 2.2, 0.05),
-        range('Letter spacing', 'letterSpacing', -0.05, 0.2, 0.005, 'em'),
+        h('label', { class: 'field' }, h('span', null, t('Sample text')), sampleBox(true)),
+        state.collection.length ? null : h('p', { class: 'muted small' }, t('Add fonts to your collection on the Fonts tab to choose them here.')),
+        fontSelect('heading', t('Headings'), t('body font')),
+        fontSelect('body', t('Body'), 'sans-serif'),
+        fontSelect('mono', t('Code'), 'monospace'),
+        range(t('Heading weight'), 'headingWeight', 100, 900, 100),
+        range(t('Body weight'), 'bodyWeight', 100, 900, 100),
+        range(t('Base size'), 'size', 12, 24, 1, 'px'),
+        range(t('Line height'), 'lineHeight', 1, 2.2, 0.05),
+        range(t('Letter spacing'), 'letterSpacing', -0.05, 0.2, 0.005, 'em'),
         h('label', { class: 'field' },
-          h('span', null, 'Page'),
-          select('Page theme', t.theme, [['light', 'Light'], ['dark', 'Dark'], ['editor', 'Editor theme']], (v) => { t.theme = v; }),
+          h('span', null, t('Page')),
+          select(t('Page theme'), typo.theme, [['light', t('Light')], ['dark', t('Dark')], ['editor', t('Editor theme')]], (v) => { typo.theme = v; }),
         ),
         cssButtons(exportCss),
       ),
@@ -1028,7 +1063,7 @@
     const customKeys = [...fonts.keys()].filter((k) => k.startsWith('custom:'));
     const choices = [...new Set([openedKey, ...state.collection, ...customKeys, state.inspect].filter(Boolean))].map((k) => fonts.get(k)).filter(Boolean);
     const font = fonts.get(state.inspect) || choices[0];
-    if (!font) return h('p', { class: 'muted' }, 'Choose "Inspect" on a font to see its glyphs, weights and details.');
+    if (!font) return h('p', { class: 'muted' }, t('Choose "Inspect" on a font to see its glyphs, weights and details.'));
     if (font.key !== state.inspect) state.inspect = font.key;
     ensureLoaded(font);
     loadDetails(font);
@@ -1037,31 +1072,31 @@
 
     return h('div', { class: 'inspect' },
       h('header', { class: 'inspect-head' },
-        h('select', { 'aria-label': 'Font', onchange: (e) => inspect(e.target.value) },
+        h('select', { 'aria-label': t('Font'), onchange: (e) => inspect(e.target.value) },
           choices.map((f) => h('option', { value: f.key, selected: f.key === font.key }, f.label)),
         ),
         statusBadge(font),
-        h('button', { class: inCollection(font.key) ? 'icon active' : 'icon', title: 'Collection', onclick: () => toggleCollection(font.key) }, inCollection(font.key) ? '★' : '☆'),
+        h('button', { class: inCollection(font.key) ? 'icon active' : 'icon', title: t('Collection'), onclick: () => toggleCollection(font.key) }, inCollection(font.key) ? '★' : '☆'),
         cssButtons(() => cssFor(font)),
-        canAddToProject(font) ? h('button', { title: 'Download the font files into the workspace and write a stylesheet', onclick: () => addToProject(font) }, 'Add to project…') : null,
+        canAddToProject(font) ? h('button', { title: t('Download the font files into the workspace and write a stylesheet'), onclick: () => addToProject(font) }, t('Add to project…')) : null,
       ),
       h('h1', { class: 'specimen', style: { fontFamily: family } }, font.label),
-      font.status === 'error' ? h('p', { class: 'error' }, font.error || 'The font could not be loaded.') : null,
+      font.status === 'error' ? h('p', { class: 'error' }, font.error || t('The font could not be loaded.')) : null,
       renderTextPreview(font),
-      h('h2', null, 'Details'),
+      h('h2', null, t('Details')),
       renderDetails(font),
       font.variable && info?.axes?.length ? renderAxes(font) : null,
-      h('h2', null, 'Weights'),
+      h('h2', null, t('Weights')),
       h('div', { class: 'weights' },
         weightSteps(font).map((w) =>
           h('div', { class: 'weight-row' },
             h('span', { class: 'muted small' }, w),
             h('span', { style: { fontFamily: family, fontWeight: w }, 'data-sample': 'line' }, sampleLine()),
-            font.styles.includes('italic') ? h('span', { style: { fontFamily: family, fontWeight: w, fontStyle: 'italic' } }, 'Italic') : null,
+            font.styles.includes('italic') ? h('span', { style: { fontFamily: family, fontWeight: w, fontStyle: 'italic' } }, t('Italic')) : null,
           ),
         ),
       ),
-      h('h2', null, 'Sizes'),
+      h('h2', null, t('Sizes')),
       h('div', { class: 'waterfall' },
         [12, 14, 16, 20, 24, 32, 48, 64].map((size) =>
           h('div', { class: 'size-row' }, h('span', { class: 'muted small' }, `${size}px`), h('span', { style: { fontFamily: family, fontSize: `${size}px` }, 'data-sample': 'line' }, sampleLine())),
@@ -1073,13 +1108,13 @@
 
   /** User-facing OpenType features. Shaping features (ccmp, mark, locl, …) are always on and not listed. */
   const FEATURES = {
-    liga: 'Standard ligatures', clig: 'Contextual ligatures', dlig: 'Discretionary ligatures', hlig: 'Historical ligatures',
-    calt: 'Contextual alternates', kern: 'Kerning', smcp: 'Small caps', c2sc: 'Capitals to small caps',
-    pcap: 'Petite caps', c2pc: 'Capitals to petite caps', unic: 'Unicase', case: 'Case-sensitive forms', cpsp: 'Capital spacing',
-    titl: 'Titling', lnum: 'Lining figures', onum: 'Old-style figures', pnum: 'Proportional figures', tnum: 'Tabular figures',
-    zero: 'Slashed zero', frac: 'Fractions', afrc: 'Alternative fractions', ordn: 'Ordinals', sups: 'Superscript',
-    subs: 'Subscript', sinf: 'Scientific inferiors', salt: 'Stylistic alternates', swsh: 'Swash', cswh: 'Contextual swash',
-    hist: 'Historical forms', nalt: 'Alternate annotation forms', ornm: 'Ornaments', jalt: 'Justification alternates',
+    liga: N('Standard ligatures'), clig: N('Contextual ligatures'), dlig: N('Discretionary ligatures'), hlig: N('Historical ligatures'),
+    calt: N('Contextual alternates'), kern: N('Kerning'), smcp: N('Small caps'), c2sc: N('Capitals to small caps'),
+    pcap: N('Petite caps'), c2pc: N('Capitals to petite caps'), unic: N('Unicase'), case: N('Case-sensitive forms'), cpsp: N('Capital spacing'),
+    titl: N('Titling'), lnum: N('Lining figures'), onum: N('Old-style figures'), pnum: N('Proportional figures'), tnum: N('Tabular figures'),
+    zero: N('Slashed zero'), frac: N('Fractions'), afrc: N('Alternative fractions'), ordn: N('Ordinals'), sups: N('Superscript'),
+    subs: N('Subscript'), sinf: N('Scientific inferiors'), salt: N('Stylistic alternates'), swsh: N('Swash'), cswh: N('Contextual swash'),
+    hist: N('Historical forms'), nalt: N('Alternate annotation forms'), ornm: N('Ornaments'), jalt: N('Justification alternates'),
   };
   /** Features browsers turn on by default. */
   const DEFAULT_ON = ['liga', 'clig', 'calt', 'kern'];
@@ -1087,9 +1122,9 @@
   const COMMON_FEATURES = ['liga', 'dlig', 'calt', 'kern', 'smcp', 'c2sc', 'case', 'lnum', 'onum', 'pnum', 'tnum', 'zero', 'frac', 'ordn', 'sups', 'subs', 'salt', 'swsh', 'ss01', 'ss02', 'ss03'];
 
   function featureLabel(tag) {
-    if (/^ss\d\d$/.test(tag)) return `Stylistic set ${Number(tag.slice(2))}`;
-    if (/^cv\d\d$/.test(tag)) return `Character variant ${Number(tag.slice(2))}`;
-    return FEATURES[tag] || tag;
+    if (/^ss\d\d$/.test(tag)) return t('Stylistic set {0}', Number(tag.slice(2)));
+    if (/^cv\d\d$/.test(tag)) return t('Character variant {0}', Number(tag.slice(2)));
+    return FEATURES[tag] ? t(FEATURES[tag]) : tag;
   }
 
   /**
@@ -1116,7 +1151,7 @@
   function fontFeatures(font) {
     const own = font.info?.features;
     if (!own) return { tags: COMMON_FEATURES, known: false };
-    return { tags: own.filter((t) => t in FEATURES || /^(ss|cv)\d\d$/.test(t)), known: true };
+    return { tags: own.filter((tag) => tag in FEATURES || /^(ss|cv)\d\d$/.test(tag)), known: true };
   }
 
   /** CSS value for the features the user changed from the browser default. */
@@ -1151,15 +1186,15 @@
     });
     return h('div', { class: 'features' },
       h('div', { class: 'features-head' },
-        h('h3', null, 'OpenType features'),
+        h('h3', null, t('OpenType features')),
         h('span', { class: 'muted small' }, known
-          ? (tags.length === 1 ? '1 feature in this font' : tags.length ? `${tags.length} features in this font` : 'This font has no optional OpenType features.')
-          : 'The font\'s feature list is unknown; these are common features.'),
+          ? (tags.length === 1 ? t('1 feature in this font') : tags.length ? t('{0} features in this font', tags.length) : t('This font has no optional OpenType features.'))
+          : t('The font\'s feature list is unknown; these are common features.')),
         h('span', { class: 'spacer' }),
         cssOut,
-        h('button', { class: 'icon', title: 'Copy CSS', onclick: () => vscode.postMessage({ type: 'copy', text: css(), what: 'CSS' }) }, '⧉'),
-        h('button', { class: 'icon', title: 'Insert into editor', onclick: () => vscode.postMessage({ type: 'insert', text: css(), what: 'CSS' }) }, '↵'),
-        h('button', { class: 'secondary', onclick: () => { state.features[font.key] = {}; save(); render(); } }, 'Reset'),
+        h('button', { class: 'icon', title: t('Copy CSS'), onclick: () => vscode.postMessage({ type: 'copy', text: css(), what: 'CSS' }) }, '⧉'),
+        h('button', { class: 'icon', title: t('Insert into editor'), onclick: () => vscode.postMessage({ type: 'insert', text: css(), what: 'CSS' }) }, '↵'),
+        h('button', { class: 'secondary', onclick: () => { state.features[font.key] = {}; save(); render(); } }, t('Reset')),
       ),
       h('div', { class: 'feature-chips' }, chips),
     );
@@ -1200,14 +1235,14 @@
       );
     };
     return h('section', { class: 'text-test' },
-      h('h2', null, 'Text'),
+      h('h2', null, t('Text')),
       sampleBox(true),
       h('div', { class: 'filters' },
-        slider('Size', 'size', 10, 160, 1, 'px'),
-        slider('Weight', 'weight', 100, 900, 100),
-        slider('Line height', 'lineHeight', 0.8, 2.4, 0.05),
-        h('div', { class: 'segmented compact', role: 'group', 'aria-label': 'Alignment' },
-          [['start', 'Left'], ['center', 'Center'], ['end', 'Right'], ['justify', 'Justify']].map(([v, label]) =>
+        slider(t('Size'), 'size', 10, 160, 1, 'px'),
+        slider(t('Weight'), 'weight', 100, 900, 100),
+        slider(t('Line height'), 'lineHeight', 0.8, 2.4, 0.05),
+        h('div', { class: 'segmented compact', role: 'group', 'aria-label': t('Alignment') },
+          [['start', t('Left')], ['center', t('Center')], ['end', t('Right')], ['justify', t('Justify')]].map(([v, label]) =>
             h('button', { class: p.align === v ? 'active' : '', onclick: (e) => {
               p.align = v;
               save();
@@ -1237,20 +1272,20 @@
   function renderDetails(font) {
     const info = font.info;
     const rows = [
-      ['Source', { google: 'Google Fonts', fontsource: 'Fontsource', file: 'Local file', url: 'Web font URL', css: 'Stylesheet', system: 'System font' }[font.source]],
-      font.ref ? ['Location', font.ref.location] : null,
-      info?.family && info.family !== font.label ? ['Internal family', info.family] : null,
-      info ? ['Format', info.format.toUpperCase()] : null,
-      info?.fontCount ? ['Collection', `${info.fontCount} fonts, details of the first one`] : null,
-      info?.subfamily ? ['Style', info.subfamily] : null,
-      info?.version ? ['Version', info.version] : null,
-      info?.designer ? ['Designer', info.designer] : null,
-      info?.numGlyphs ? ['Glyphs', `${info.numGlyphs} glyphs, ${info.ranges.reduce((n, [a, b]) => n + b - a + 1, 0)} mapped characters`] : null,
-      font.subsets.length ? ['Scripts', font.subsets.join(', ')] : null,
-      font.category !== 'other' ? ['Category', font.category] : null,
-      info?.license ? ['License', info.license] : null,
-      !info && font.details && !font.detailsError ? ['Details', 'Reading the complete font file…'] : null,
-      font.detailsError ? ['Details', `Not available: ${font.detailsError}`] : null,
+      [t('Source'), { google: 'Google Fonts', fontsource: 'Fontsource', file: t('Local file'), url: t('Web font URL'), css: t('Stylesheet'), system: t('System font') }[font.source]],
+      font.ref ? [t('Location'), font.ref.location] : null,
+      info?.family && info.family !== font.label ? [t('Internal family'), info.family] : null,
+      info ? [t('Format'), info.format.toUpperCase()] : null,
+      info?.fontCount ? [t('Collection'), t('{0} fonts, details of the first one', info.fontCount)] : null,
+      info?.subfamily ? [t('Style'), info.subfamily] : null,
+      info?.version ? [t('Version'), info.version] : null,
+      info?.designer ? [t('Designer'), info.designer] : null,
+      info?.numGlyphs ? [t('Glyphs'), t('{0} glyphs, {1} mapped characters', info.numGlyphs, info.ranges.reduce((n, [a, b]) => n + b - a + 1, 0))] : null,
+      font.subsets.length ? [t('Scripts'), font.subsets.join(', ')] : null,
+      font.category !== 'other' ? [t('Category'), categoryLabel(font.category)] : null,
+      info?.license ? [t('License'), info.license] : null,
+      !info && font.details && !font.detailsError ? [t('Details'), t('Reading the complete font file…')] : null,
+      font.detailsError ? [t('Details'), t('Not available: {0}', font.detailsError)] : null,
     ].filter(Boolean);
     return h('dl', { class: 'details' }, rows.map(([k, v]) => [h('dt', null, k), h('dd', null, v)]));
   }
@@ -1262,7 +1297,7 @@
       target.style.fontVariationSettings = Object.entries(values).map(([tag, v]) => `"${tag}" ${v}`).join(', ');
     };
     return h('div', { class: 'axes' },
-      h('h2', null, 'Variable axes'),
+      h('h2', null, t('Variable axes')),
       font.info.axes.map((axis) => {
         values[axis.tag] = axis.default;
         const out = h('output', null, axis.default);
@@ -1282,12 +1317,12 @@
     const ranges = font.info?.ranges;
     const covered = (a, b) => (ranges ? ranges.reduce((n, [s, e]) => n + Math.max(0, Math.min(b, e) - Math.max(a, s) + 1), 0) : null);
     const options = [];
-    if (ranges) options.push(['covered', `All mapped characters (${covered(0, 0x10ffff)})`]);
+    if (ranges) options.push(['covered', t('All mapped characters ({0})', covered(0, 0x10ffff))]);
     for (const [name, start, end, subset] of BLOCKS) {
       const n = covered(start, end);
       if (n === 0) continue;
       const supported = !ranges && subset && font.subsets.includes(subset);
-      options.push([`${start}-${end}`, `${name}${n !== null ? ` (${n})` : supported ? ' ✓' : ''}`]);
+      options.push([`${start}-${end}`, `${t(name)}${n !== null ? ` (${n})` : supported ? ' ✓' : ''}`]);
     }
     let block = state.block;
     if (!options.some(([v]) => v === block)) {
@@ -1325,20 +1360,20 @@
 
     return h('section', { class: 'glyphs' },
       h('div', { class: 'glyph-head' },
-        h('h2', null, 'Glyphs'),
+        h('h2', null, t('Glyphs')),
         insertBar(false),
-        h('select', { 'aria-label': 'Unicode block', onchange: (e) => { state.block = e.target.value; save(); render(); } },
+        h('select', { 'aria-label': t('Unicode block'), onchange: (e) => { state.block = e.target.value; save(); render(); } },
           options.map(([v, label]) => h('option', { value: v, selected: v === block }, label)),
         ),
         ranges && !font.info.partial ? null : h('span', { class: 'muted small' }, font.info?.partial
-          ? 'Coverage of the default subset only.'
-          : 'Characters missing from this font are drawn with a fallback font.'),
+          ? t('Coverage of the default subset only.')
+          : t('Characters missing from this font are drawn with a fallback font.')),
       ),
       h('div', { class: 'glyph-area' },
         h('div', { class: 'glyph-grid', style: { fontFamily: stack(font.key) } },
           codes.map((cp) =>
             h('button', {
-              class: 'glyph', title: `U+${hex(cp)} · double-click to insert`,
+              class: 'glyph', title: `U+${hex(cp)} · ${t('double-click to insert')}`,
               onclick: (e) => showDetail(cp, e.currentTarget),
               ondblclick: () => insertSnippet(snippets(cp)),
             },
@@ -1349,7 +1384,7 @@
         ),
         detail,
       ),
-      codes.length >= GLYPH_LIMIT ? h('p', { class: 'muted small' }, `Showing the first ${GLYPH_LIMIT} characters.`) : null,
+      codes.length >= GLYPH_LIMIT ? h('p', { class: 'muted small' }, t('Showing the first {0} characters.', GLYPH_LIMIT)) : null,
     );
   }
 
@@ -1357,7 +1392,7 @@
 
   function renderCompare() {
     const keys = state.collection.filter((k) => fonts.has(k));
-    if (!keys.length) return h('p', { class: 'muted' }, 'Star fonts on the Fonts tab to compare them here.');
+    if (!keys.length) return h('p', { class: 'muted' }, t('Star fonts on the Fonts tab to compare them here.'));
     keys.forEach((k) => ensureLoaded(/** @type {Font} */ (fonts.get(k))));
     const rows = h('div', { class: 'compare-rows' },
       keys.map((k) => {
@@ -1366,7 +1401,7 @@
           h('div', { class: 'compare-meta' },
             h('button', { class: 'link', onclick: () => inspect(k) }, font.label),
             statusBadge(font),
-            h('button', { class: 'icon', title: 'Remove from collection', onclick: () => toggleCollection(k) }, '✕'),
+            h('button', { class: 'icon', title: t('Remove from collection'), onclick: () => toggleCollection(k) }, '✕'),
           ),
           h('p', { class: 'compare-text', style: { fontFamily: stack(k) }, 'data-sample': '' }, sampleText()),
         );
@@ -1380,8 +1415,8 @@
     return h('div', null,
       sampleBox(true),
       h('div', { class: 'filters' },
-        h('label', { class: 'field inline' }, h('span', null, 'Size'), h('input', { type: 'range', min: 12, max: 120, value: state.compareSize, oninput: (e) => { state.compareSize = Number(e.target.value); applySize(); save(); } })),
-        h('label', { class: 'field inline' }, h('span', null, 'Weight'), h('input', { type: 'range', min: 100, max: 900, step: 100, value: state.compareWeight, oninput: (e) => { state.compareWeight = Number(e.target.value); applySize(); save(); } })),
+        h('label', { class: 'field inline' }, h('span', null, t('Size')), h('input', { type: 'range', min: 12, max: 120, value: state.compareSize, oninput: (e) => { state.compareSize = Number(e.target.value); applySize(); save(); } })),
+        h('label', { class: 'field inline' }, h('span', null, t('Weight')), h('input', { type: 'range', min: 100, max: 900, step: 100, value: state.compareWeight, oninput: (e) => { state.compareWeight = Number(e.target.value); applySize(); save(); } })),
       ),
       rows,
     );
@@ -1454,8 +1489,12 @@
   const SCRIPT_LANGS = ['javascript', 'typescript', 'json', 'jsonc', 'python', 'java', 'csharp', 'go', 'rust', 'dart', 'kotlin', 'swift'];
 
   const FORMAT_LABELS = {
-    html: 'HTML', jsx: 'JSX', entity: 'HTML entity', css: 'CSS content', js: 'JS escape', char: 'Character', name: 'Name',
+    html: 'HTML', jsx: 'JSX', entity: N('HTML entity'), css: N('CSS content'), js: N('JS escape'), char: N('Character'), name: N('Name'),
   };
+
+  function formatLabel(id) {
+    return t(FORMAT_LABELS[id]);
+  }
 
   /** Format chosen by "Auto" for the editor that receives the insert. */
   function autoFormat(available) {
@@ -1500,20 +1539,20 @@
 
   function insertSnippet(list) {
     const snip = chosenSnippet(list);
-    vscode.postMessage({ type: 'insert', text: snip.text, what: FORMAT_LABELS[snip.id] });
+    vscode.postMessage({ type: 'insert', text: snip.text, what: formatLabel(snip.id) });
   }
 
   /** Shows where inserts go and which format they use. */
   function insertBar(forIcons) {
     const ids = forIcons ? Object.keys(FORMAT_LABELS) : ['css', 'entity', 'js', 'char'];
     return h('div', { class: `insert-bar ${forIcons ? 'for-icons' : ''}` },
-      h('span', { class: 'muted small' }, 'Insert into ', h('strong', null, target ? target.name : 'no open editor')),
+      h('span', { class: 'muted small' }, ...withMarkup(t('Insert into <{0}>', target ? target.name : t('no open editor')), (name) => h('strong', null, name))),
       h('select', {
-        'aria-label': 'Insert format',
+        'aria-label': t('Insert format'),
         onchange: (e) => { state.insertFormat = e.target.value; save(); },
       },
-        h('option', { value: 'auto', selected: state.insertFormat === 'auto' }, `Auto (${FORMAT_LABELS[autoFormat(ids)]})`),
-        ids.map((id) => h('option', { value: id, selected: state.insertFormat === id }, FORMAT_LABELS[id])),
+        h('option', { value: 'auto', selected: state.insertFormat === 'auto' }, t('Auto ({0})', formatLabel(autoFormat(ids)))),
+        ids.map((id) => h('option', { value: id, selected: state.insertFormat === id }, formatLabel(id))),
       ),
     );
   }
@@ -1522,14 +1561,14 @@
   function snippetPanel(list, family) {
     const main = chosenSnippet(list);
     return h('div', { class: 'snippets' },
-      h('button', { class: 'insert-main', onclick: () => insertSnippet(list) }, `Insert ${FORMAT_LABELS[main.id]}`),
+      h('button', { class: 'insert-main', onclick: () => insertSnippet(list) }, t('Insert {0}', formatLabel(main.id))),
       list.map((snip) =>
         h('div', { class: 'snippet' },
-          h('span', { class: 'muted small' }, FORMAT_LABELS[snip.id]),
+          h('span', { class: 'muted small' }, formatLabel(snip.id)),
           h('code', { style: snip.id === 'char' && family ? { fontFamily: family } : null }, snip.text),
           h('div', { class: 'snippet-actions' },
-            h('button', { class: 'icon', title: 'Copy', onclick: () => vscode.postMessage({ type: 'copy', text: snip.text, what: FORMAT_LABELS[snip.id] }) }, '⧉'),
-            h('button', { class: 'icon', title: 'Insert into editor', onclick: () => vscode.postMessage({ type: 'insert', text: snip.text, what: FORMAT_LABELS[snip.id] }) }, '↵'),
+            h('button', { class: 'icon', title: t('Copy'), onclick: () => vscode.postMessage({ type: 'copy', text: snip.text, what: formatLabel(snip.id) }) }, '⧉'),
+            h('button', { class: 'icon', title: t('Insert into editor'), onclick: () => vscode.postMessage({ type: 'insert', text: snip.text, what: formatLabel(snip.id) }) }, '↵'),
           ),
         ),
       ),
@@ -1544,7 +1583,7 @@
 
   function renderIcons() {
     const set = iconSets.find((s) => s.id === state.iconSet) || iconSets[0];
-    if (!set) return h('p', { class: 'muted' }, 'No icon sets available.');
+    if (!set) return h('p', { class: 'muted' }, t('No icon sets available.'));
     const style = set.styles.find((s) => s.id === state.iconStyle) || set.styles[0];
     state.iconStyle = style.id;
     const css = set.id === 'material' ? [set.css[set.styles.indexOf(style)]] : set.css;
@@ -1569,7 +1608,7 @@
         if (icon.name === w) total += 4;
         else if (icon.name.split('-').includes(w)) total += 3;
         else if (icon.name.includes(w)) total += 2;
-        else if (icon.terms?.some((t) => t.includes(w))) total += 1;
+        else if (icon.terms?.some((term) => term.includes(w))) total += 1;
         else return -1;
       }
       return total;
@@ -1603,7 +1642,7 @@
       matches.slice(0, iconVisible).map((icon) => {
         const cell = h('button', {
           class: `fp-icon-cell ${icon.name === state.iconSelected ? 'selected' : ''}`,
-          title: `${icon.name} · double-click to insert`,
+          title: `${icon.name} · ${t('double-click to insert')}`,
           onclick: () => showDetail(icon, cell),
           ondblclick: () => insertSnippet(iconSnippets(icon)),
         },
@@ -1616,7 +1655,7 @@
 
     const view = h('div', { class: 'icons' },
       h('div', { class: 'filters' },
-        h('select', { 'aria-label': 'Icon set', onchange: (e) => { state.iconSet = e.target.value; state.iconStyle = ''; state.iconSelected = ''; iconVisible = ICON_PAGE; save(); render(); } },
+        h('select', { 'aria-label': t('Icon set'), onchange: (e) => { state.iconSet = e.target.value; state.iconStyle = ''; state.iconSelected = ''; iconVisible = ICON_PAGE; save(); render(); } },
           iconSets.map((s) => h('option', { value: s.id, selected: s.id === set.id }, s.label)),
         ),
         set.styles.length > 1
@@ -1625,10 +1664,10 @@
             )
           : null,
         h('input', {
-          type: 'search', class: 'fp-icon-search', placeholder: Array.isArray(data) ? `Search ${all.filter((i) => !i.styles || i.styles.includes(style.id)).length} icons…` : 'Search icons…', value: state.iconQuery, 'aria-label': 'Search icons',
+          type: 'search', class: 'fp-icon-search', placeholder: Array.isArray(data) ? t('Search {0} icons…', all.filter((i) => !i.styles || i.styles.includes(style.id)).length) : t('Search icons…'), value: state.iconQuery, 'aria-label': t('Search icons'),
           oninput: (e) => { state.iconQuery = e.target.value; iconVisible = ICON_PAGE; save(); rerenderKeepingFocus(e.target); },
         }),
-        h('label', { class: 'field inline' }, h('span', null, 'Size'),
+        h('label', { class: 'field inline' }, h('span', null, t('Size')),
           h('input', { type: 'range', min: 16, max: 64, value: state.iconSize, oninput: (e) => { state.iconSize = Number(e.target.value); grid.style.setProperty('--icon-size', `${state.iconSize}px`); for (const g of grid.querySelectorAll('.fp-icon-glyph')) /** @type {HTMLElement} */ (g).style.fontSize = `${state.iconSize}px`; save(); } }),
         ),
       ),
@@ -1636,14 +1675,14 @@
         insertBar(true),
         h('span', { class: 'spacer' }),
         h('span', { class: 'muted small' }, `${set.label} ${set.version !== 'latest' ? set.version : ''} · ${set.license} · `, h('a', { href: set.homepage }, set.homepage.replace('https://', ''))),
-        h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: css.map((href) => `<link rel="stylesheet" href="${href}">`).join('\n'), what: 'Stylesheet link' }) }, 'Copy <link>'),
+        h('button', { class: 'secondary', onclick: () => vscode.postMessage({ type: 'copy', text: css.map((href) => `<link rel="stylesheet" href="${href}">`).join('\n'), what: t('Stylesheet link') }) }, t('Copy <link>')),
       ),
-      data === 'loading' || !data ? h('p', { class: 'muted' }, `Loading ${set.label}…`) : null,
+      data === 'loading' || !data ? h('p', { class: 'muted' }, t('Loading {0}…', set.label)) : null,
       data && !Array.isArray(data) && data !== 'loading' ? h('p', { class: 'error' }, data.error) : null,
-      Array.isArray(data) ? h('p', { class: 'muted small' }, `${matches.length} icons`) : null,
+      Array.isArray(data) ? h('p', { class: 'muted small' }, t('{0} icons', matches.length)) : null,
       h('div', { class: 'glyph-area' }, grid, detail),
       matches.length > iconVisible
-        ? h('button', { class: 'secondary more', onclick: () => { iconVisible += ICON_PAGE; render(); } }, `Show more (${matches.length - iconVisible} left)`)
+        ? h('button', { class: 'secondary more', onclick: () => { iconVisible += ICON_PAGE; render(); } }, t('Show more ({0} left)', matches.length - iconVisible))
         : null,
     );
     const selected = matches.find((i) => i.name === state.iconSelected);
@@ -1672,6 +1711,8 @@
     const msg = event.data;
     switch (msg.type) {
       case 'init':
+        l10n = msg.l10n || {};
+        document.documentElement.lang = msg.language || 'en';
         defaultSample = msg.sampleText || '';
         iconSets = msg.iconSets || [];
         target = msg.target;

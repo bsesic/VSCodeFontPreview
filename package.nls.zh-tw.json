@@ -1,0 +1,13 @@
+{
+  "description": "瀏覽、測試和比較字型與圖示字型: Google Fonts、Font Awesome 等，本機字型檔案、Web 字型和系統字型，都能在 Bootstrap 風格的排版頁面中檢視。",
+  "command.open": "開啟 Font Preview",
+  "command.addFontFile": "新增字型檔案…",
+  "command.insertIcon": "插入圖示…",
+  "command.previewFontAtCursor": "預覽游標處的字型",
+  "command.previewFontFile": "預覽字型",
+  "command.refreshCatalog": "重新整理 Google Fonts 目錄",
+  "configuration.sampleText": "預覽中使用的預設範例文字。",
+  "configuration.catalogUrl": "作為 Google Fonts 目錄使用的 Fontsource 字型清單 URL。",
+  "configuration.showStatusBarItem": "顯示可開啟 Font Preview 的狀態列按鈕。",
+  "configuration.projectFontFolder": "「新增至專案」下載字型的目標工作區資料夾。每個字型都有自己的子資料夾，其中包含一個樣式表。"
+}

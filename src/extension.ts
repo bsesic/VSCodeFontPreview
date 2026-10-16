@@ -13,8 +13,8 @@ export function activate(context: vscode.ExtensionContext) {
   trackEditors(context);
 
   const statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
-  statusItem.text = '$(text-size) Fonts';
-  statusItem.tooltip = 'Open Font Preview';
+  statusItem.text = `$(text-size) ${vscode.l10n.t('Fonts')}`;
+  statusItem.tooltip = vscode.l10n.t('Open Font Preview');
   statusItem.command = 'fontPreview.open';
   const updateStatusItem = (): void => {
     if (vscode.workspace.getConfiguration('fontPreview').get<boolean>('showStatusBarItem', true)) {
@@ -80,7 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
         ? familyAtCursor(document.lineAt(selection.active.line).text, selection.active.character)
         : familyAtCursor(document.getText(selection), 0);
       if (!family) {
-        vscode.window.showWarningMessage('Font Preview: no font family found at the cursor.');
+        vscode.window.showWarningMessage(vscode.l10n.t('Font Preview: no font family found at the cursor.'));
         return;
       }
       runInPanel({ type: 'command', command: 'inspectFamily', family });
@@ -94,7 +94,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('fontPreview.refreshCatalog', async () => {
       try {
         const fonts = await sources.catalog(true);
-        vscode.window.showInformationMessage(`Font Preview: catalog refreshed (${fonts.length} fonts).`);
+        vscode.window.showInformationMessage(vscode.l10n.t('Font Preview: catalog refreshed ({0} fonts).', fonts.length));
         panel?.webview.postMessage({ type: 'catalog', fonts });
       } catch (err) {
         vscode.window.showErrorMessage(`Font Preview: ${(err as Error).message}`);

@@ -1,0 +1,13 @@
+{
+  "description": "Yazı tiplerine ve simge yazı tiplerine göz atın, bunları test edin ve karşılaştırın: Google Fonts, Font Awesome ve daha fazlası, yerel yazı tipi dosyaları, web yazı tipleri ve sistem yazı tipleri, Bootstrap tarzı bir tipografi sayfasında.",
+  "command.open": "Font Preview'u Aç",
+  "command.addFontFile": "Yazı Tipi Dosyası Ekle…",
+  "command.insertIcon": "Simge Ekle…",
+  "command.previewFontAtCursor": "İmlecin Altındaki Yazı Tipini Önizle",
+  "command.previewFontFile": "Yazı Tipini Önizle",
+  "command.refreshCatalog": "Google Fonts Kataloğunu Yenile",
+  "configuration.sampleText": "Önizlemede kullanılan varsayılan örnek metin.",
+  "configuration.catalogUrl": "Google Fonts kataloğu olarak kullanılan Fontsource yazı tipi listesinin URL'si.",
+  "configuration.showStatusBarItem": "Durum çubuğunda Font Preview'u açan bir düğme göster.",
+  "configuration.projectFontFolder": "\"Projeye ekle\" komutunun yazı tiplerini indirdiği çalışma alanı klasörü. Her yazı tipi, stil sayfası içeren kendi alt klasörünü alır."
+}

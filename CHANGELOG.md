@@ -4,6 +4,9 @@
 
 ### New
 
+- 🌍 **14 languages:** the user interface follows the VS Code display language and is available in English,
+  German, French, Spanish, Italian, Portuguese (Brazil), Japanese, Korean, Chinese (Simplified and Traditional),
+  Russian, Polish, Czech and Turkish.
 - 🧪 **OpenType features:** toggle ligatures, small caps, figure styles, fractions, stylistic sets, kerning and
   more on the sample text in Inspect. Font files show the features they contain; copy or insert the
   `font-feature-settings` CSS. New *OpenType test* sample text preset.

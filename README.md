@@ -33,6 +33,7 @@
   ASCII and 30 8-bit code pages.
 - ⭐ **Icon fonts included:** Font Awesome, Bootstrap Icons, Material Symbols, Remix, Lucide, Tabler and
   Phosphor, about 20,000 icons in total.
+- 🗣️ **Speaks your language:** available in 14 languages, following the display language of VS Code.
 - ⚡ **Insert into your code:** icons and glyphs go to your editor at every cursor, in the right format for
   the file: HTML, JSX, CSS `content` or a JS escape.
 - 📦 **Self-host your fonts:** download a font into your project with a ready-made `@font-face` stylesheet.
@@ -166,6 +167,15 @@ every cursor. **Auto** picks the format from the language of the file:
 
 You can also choose HTML entity, character or icon name. Every format can be copied too. Without an open
 editor, the text is copied to the clipboard.
+
+## 🌍 Languages
+
+VSCodeFontPreview follows the display language of VS Code (**Configure Display Language**) and is available in:
+
+English · Deutsch · Français · Español · Italiano · Português (Brasil) · 日本語 · 한국어 · 简体中文 · 繁體中文 ·
+Русский · Polski · Čeština · Türkçe
+
+Found a translation that could be better? Improvements are welcome, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## ⌨️ Commands and shortcuts
 

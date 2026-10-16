@@ -1,0 +1,13 @@
+{
+  "description": "Parcourez, testez et comparez des polices et des polices d'icônes : Google Fonts, Font Awesome et plus encore, fichiers de police locaux, polices web et polices système, sur une page de typographie de style Bootstrap.",
+  "command.open": "Ouvrir Font Preview",
+  "command.addFontFile": "Ajouter un fichier de police…",
+  "command.insertIcon": "Insérer une icône…",
+  "command.previewFontAtCursor": "Aperçu de la police sous le curseur",
+  "command.previewFontFile": "Aperçu de la police",
+  "command.refreshCatalog": "Actualiser le catalogue Google Fonts",
+  "configuration.sampleText": "Texte d'exemple par défaut utilisé dans l'aperçu.",
+  "configuration.catalogUrl": "URL de la liste de polices Fontsource utilisée comme catalogue Google Fonts.",
+  "configuration.showStatusBarItem": "Afficher dans la barre d'état un bouton qui ouvre Font Preview.",
+  "configuration.projectFontFolder": "Dossier de l'espace de travail dans lequel « Ajouter au projet » télécharge les polices. Chaque police obtient son propre sous-dossier avec une feuille de style."
+}

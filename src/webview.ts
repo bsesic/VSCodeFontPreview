@@ -54,7 +54,7 @@ export function attachFontPreview(
   const addAndSend = async (ref: Omit<CustomFontRef, 'id'>) => {
     const loaded = await sources.load({ ...ref, id: 'pending' });
     if (loaded.error) {
-      vscode.window.showErrorMessage(`Font Preview: could not load ${ref.location}: ${loaded.error}`);
+      vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: could not load {0}: {1}', ref.location, loaded.error));
       return;
     }
     const stored = await sources.addCustom(ref);
@@ -83,6 +83,9 @@ export function attachFontPreview(
           custom,
           opened,
           iconSets: ICON_SETS.map(({ source: _source, ...set }) => set),
+          // Translations of the display language for the webview; empty for English.
+          l10n: vscode.l10n.bundle ?? {},
+          language: vscode.env.language,
           target: describeTarget(),
         });
         options.onReady?.();
@@ -107,7 +110,7 @@ export function attachFontPreview(
         try {
           await addFontToProject(message.font);
         } catch (err) {
-          vscode.window.showErrorMessage(`Font Preview: could not add ${message.font.label} to the project: ${(err as Error).message}`);
+          vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: could not add {0} to the project: {1}', message.font.label, (err as Error).message));
         }
         break;
       case 'fontsourceFaces':
@@ -126,10 +129,10 @@ export function attachFontPreview(
         break;
       case 'insert': {
         if (await insertText(message.text)) {
-          vscode.window.setStatusBarMessage(`Font Preview: ${message.what} inserted`, 3000);
+          vscode.window.setStatusBarMessage(vscode.l10n.t('Font Preview: {0} inserted', message.what), 3000);
         } else {
           await vscode.env.clipboard.writeText(message.text);
-          vscode.window.showWarningMessage('Font Preview: no open text editor to insert into. The text was copied to the clipboard instead.');
+          vscode.window.showWarningMessage(vscode.l10n.t('Font Preview: no open text editor to insert into. The text was copied to the clipboard instead.'));
         }
         sendTarget();
         break;
@@ -144,8 +147,8 @@ export function attachFontPreview(
       case 'addFile': {
         const files = await vscode.window.showOpenDialog({
           canSelectMany: true,
-          openLabel: 'Add Font',
-          filters: { Fonts: ['ttf', 'otf', 'woff', 'woff2', 'ttc'] },
+          openLabel: vscode.l10n.t('Add Font'),
+          filters: { [vscode.l10n.t('Fonts')]: ['ttf', 'otf', 'woff', 'woff2', 'ttc'] },
         });
         for (const file of files ?? []) {
           await addAndSend({ kind: 'file', label: labelFromLocation(file.fsPath), location: file.fsPath });
@@ -157,7 +160,7 @@ export function attachFontPreview(
         try {
           url = new URL(message.url.trim());
         } catch {
-          vscode.window.showErrorMessage(`Font Preview: "${message.url}" is not a valid URL.`);
+          vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: "{0}" is not a valid URL.', message.url));
           break;
         }
         const isCss = /\.css$/i.test(url.pathname) || url.hostname === 'fonts.googleapis.com' || url.hostname === 'use.typekit.net';
@@ -184,7 +187,7 @@ export function attachFontPreview(
         break;
       case 'copy':
         await vscode.env.clipboard.writeText(message.text);
-        vscode.window.setStatusBarMessage(`Font Preview: ${message.what} copied to clipboard`, 3000);
+        vscode.window.setStatusBarMessage(vscode.l10n.t('Font Preview: {0} copied to clipboard', message.what), 3000);
         break;
     }
   });

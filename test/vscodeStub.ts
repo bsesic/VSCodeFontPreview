@@ -146,7 +146,11 @@ const stub = {
     showOpenDialog: async () => openDialogResult,
     setStatusBarMessage: () => undefined,
   },
-  env: { clipboard: { writeText: async (text: string) => { calls.clipboard = text; } } },
+  env: { language: 'en', clipboard: { writeText: async (text: string) => { calls.clipboard = text; } } },
+  l10n: {
+    bundle: undefined,
+    t: (message: string, ...args: unknown[]) => message.replace(/\{(\d+)\}/g, (m, i) => (i in args ? String(args[i]) : m)),
+  },
 };
 
 const originalResolve = (Module as any)._resolveFilename;

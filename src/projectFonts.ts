@@ -82,7 +82,7 @@ async function pickCatalogFaces(font: ProjectFontRequest): Promise<FontFaceSourc
   const variants = [...new Set(faces.map(variantLabel))].sort((a, b) => parseInt(a) - parseInt(b) || a.localeCompare(b));
   const pickedVariants = await vscode.window.showQuickPick(
     variants.map((label) => ({ label, picked: label === '400 normal' || label === '700 normal' })),
-    { canPickMany: true, title: `Add ${font.label} to the project (1/2)`, placeHolder: 'Weights and styles' },
+    { canPickMany: true, title: vscode.l10n.t('Add {0} to the project (1/2)', font.label), placeHolder: vscode.l10n.t('Weights and styles') },
   );
   if (!pickedVariants?.length) {
     return undefined;
@@ -93,12 +93,12 @@ async function pickCatalogFaces(font: ProjectFontRequest): Promise<FontFaceSourc
   const CJK = 'cjk';
   const subsetItems = named.map((label) => ({ label, picked: label === 'latin' || label === 'latin-ext' || label === font.defSubset }));
   if (numbered.size) {
-    subsetItems.push({ label: CJK, picked: true, description: `${numbered.size} files per style, the browser loads only what a page needs` } as typeof subsetItems[number]);
+    subsetItems.push({ label: CJK, picked: true, description: vscode.l10n.t('{0} files per style, the browser loads only what a page needs', numbered.size) } as typeof subsetItems[number]);
   }
   const pickedSubsets = await vscode.window.showQuickPick(subsetItems, {
     canPickMany: true,
-    title: `Add ${font.label} to the project (2/2)`,
-    placeHolder: 'Scripts (subsets)',
+    title: vscode.l10n.t('Add {0} to the project (2/2)', font.label),
+    placeHolder: vscode.l10n.t('Scripts (subsets)'),
   });
   if (!pickedSubsets?.length) {
     return undefined;
@@ -133,11 +133,11 @@ export async function addFontToProject(font: ProjectFontRequest): Promise<void> 
   const folders = vscode.workspace.workspaceFolders ?? [];
   const workspace =
     folders.length > 1
-      ? (await vscode.window.showWorkspaceFolderPick({ placeHolder: `Workspace folder for ${font.label}` }))
+      ? (await vscode.window.showWorkspaceFolderPick({ placeHolder: vscode.l10n.t('Workspace folder for {0}', font.label) }))
       : folders[0];
   if (!workspace) {
     if (!folders.length) {
-      vscode.window.showErrorMessage('Font Preview: open a folder to add fonts to a project.');
+      vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: open a folder to add fonts to a project.'));
     }
     return;
   }
@@ -156,6 +156,7 @@ export async function addFontToProject(font: ProjectFontRequest): Promise<void> 
       const file = `${name}-${f.subset}-${f.weight}-${f.style}.woff2`;
       return { name: file, data: () => download(f.url), face: { file, weight: String(f.weight), style: f.style, unicodeRange: f.unicodeRange, format: 'woff2' } };
     });
+    // The stylesheet comment stays English like the rest of the generated code.
     comment = `${font.label} from ${font.source === 'google' ? 'Google Fonts' : 'Fontsource'} (files: Fontsource). Check the font license before you publish it.`;
   } else {
     const ext = path.extname(font.location.split(/[?#]/)[0]) || '.woff2';
@@ -171,7 +172,7 @@ export async function addFontToProject(font: ProjectFontRequest): Promise<void> 
 
   const stylesheet = vscode.Uri.joinPath(dir, `${name}.css`);
   await vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Notification, title: `Adding ${font.label} to the project` },
+    { location: vscode.ProgressLocation.Notification, title: vscode.l10n.t('Adding {0} to the project', font.label) },
     async (progress) => {
       await vscode.workspace.fs.createDirectory(dir);
       let done = 0;
@@ -184,16 +185,20 @@ export async function addFontToProject(font: ProjectFontRequest): Promise<void> 
   );
 
   const relative = path.posix.join(base, name, `${name}.css`);
+  const insertImport = vscode.l10n.t('Insert @import');
+  const openStylesheet = vscode.l10n.t('Open Stylesheet');
   const choice = await vscode.window.showInformationMessage(
-    `Font Preview: added ${files.length} file${files.length === 1 ? '' : 's'} and ${relative}.`,
-    'Insert @import',
-    'Open Stylesheet',
+    files.length === 1
+      ? vscode.l10n.t('Font Preview: added 1 file and {0}.', relative)
+      : vscode.l10n.t('Font Preview: added {0} files and {1}.', files.length, relative),
+    insertImport,
+    openStylesheet,
   );
-  if (choice === 'Insert @import') {
+  if (choice === insertImport) {
     if (!(await insertText(importRule(stylesheet.fsPath, targetPath())))) {
-      vscode.window.showWarningMessage('Font Preview: no open text editor to insert into.');
+      vscode.window.showWarningMessage(vscode.l10n.t('Font Preview: no open text editor to insert into.'));
     }
-  } else if (choice === 'Open Stylesheet') {
+  } else if (choice === openStylesheet) {
     await vscode.window.showTextDocument(stylesheet);
   }
 }

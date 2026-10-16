@@ -200,6 +200,6 @@ export async function loadIcons(state: vscode.Memento, set: IconSetDef, force = 
     if (cached) {
       return cached.icons;
     }
-    throw new Error(`Could not load ${set.label}: ${(err as Error).message}`);
+    throw new Error(vscode.l10n.t('Could not load {0}: {1}', set.label, (err as Error).message));
   }
 }

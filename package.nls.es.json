@@ -1,0 +1,13 @@
+{
+  "description": "Explore, pruebe y compare fuentes y fuentes de iconos: Google Fonts, Font Awesome y más, archivos de fuente locales, fuentes web y fuentes del sistema, en una página de tipografía al estilo de Bootstrap.",
+  "command.open": "Abrir Font Preview",
+  "command.addFontFile": "Agregar archivo de fuente…",
+  "command.insertIcon": "Insertar icono…",
+  "command.previewFontAtCursor": "Vista previa de la fuente bajo el cursor",
+  "command.previewFontFile": "Vista previa de la fuente",
+  "command.refreshCatalog": "Actualizar el catálogo de Google Fonts",
+  "configuration.sampleText": "Texto de ejemplo predeterminado que se usa en la vista previa.",
+  "configuration.catalogUrl": "URL de la lista de fuentes de Fontsource que se usa como catálogo de Google Fonts.",
+  "configuration.showStatusBarItem": "Mostrar en la barra de estado un botón que abre Font Preview.",
+  "configuration.projectFontFolder": "Carpeta del área de trabajo en la que \"Agregar al proyecto\" descarga las fuentes. Cada fuente obtiene su propia subcarpeta con una hoja de estilos."
+}

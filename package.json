@@ -1,7 +1,7 @@
 {
   "name": "vscode-font-preview",
   "displayName": "VSCodeFontPreview",
-  "description": "Browse, test and compare fonts and icon fonts: Google Fonts, Font Awesome and more, local font files, web fonts and system fonts, on a Bootstrap-style typography page.",
+  "description": "%description%",
   "version": "0.3.0",
   "publisher": "bsesic",
   "license": "MIT",
@@ -44,6 +44,7 @@
     "css"
   ],
   "main": "./out/src/extension.js",
+  "l10n": "./l10n",
   "activationEvents": [
     "onStartupFinished"
   ],
@@ -51,32 +52,32 @@
     "commands": [
       {
         "command": "fontPreview.open",
-        "title": "Open Font Preview",
+        "title": "%command.open%",
         "category": "Font Preview"
       },
       {
         "command": "fontPreview.addFontFile",
-        "title": "Add Font File…",
+        "title": "%command.addFontFile%",
         "category": "Font Preview"
       },
       {
         "command": "fontPreview.insertIcon",
-        "title": "Insert Icon…",
+        "title": "%command.insertIcon%",
         "category": "Font Preview"
       },
       {
         "command": "fontPreview.previewFontAtCursor",
-        "title": "Preview Font Under Cursor",
+        "title": "%command.previewFontAtCursor%",
         "category": "Font Preview"
       },
       {
         "command": "fontPreview.previewFontFile",
-        "title": "Preview Font",
+        "title": "%command.previewFontFile%",
         "category": "Font Preview"
       },
       {
         "command": "fontPreview.refreshCatalog",
-        "title": "Refresh Google Fonts Catalog",
+        "title": "%command.refreshCatalog%",
         "category": "Font Preview"
       }
     ],
@@ -148,22 +149,22 @@
         "fontPreview.sampleText": {
           "type": "string",
           "default": "The quick brown fox jumps over the lazy dog. Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.",
-          "description": "Default sample text used in the preview."
+          "description": "%configuration.sampleText%"
         },
         "fontPreview.catalogUrl": {
           "type": "string",
           "default": "https://api.fontsource.org/v1/fonts",
-          "description": "URL of the Fontsource font list used as the Google Fonts catalog."
+          "description": "%configuration.catalogUrl%"
         },
         "fontPreview.showStatusBarItem": {
           "type": "boolean",
           "default": true,
-          "description": "Show a status bar button that opens the Font Preview."
+          "description": "%configuration.showStatusBarItem%"
         },
         "fontPreview.projectFontFolder": {
           "type": "string",
           "default": "fonts",
-          "description": "Workspace folder that \"Add to project\" downloads fonts into. Each font gets its own subfolder with a stylesheet."
+          "description": "%configuration.projectFontFolder%"
         }
       }
     }
@@ -171,7 +172,8 @@
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "eslint src test media --ext ts,js",
+    "lint": "eslint src test media scripts --ext ts,js",
+    "l10n": "node scripts/extract-l10n.js",
     "test": "npm run compile && node --test out/test/",
     "package": "vsce package",
     "build": "npm test && npm run package",
