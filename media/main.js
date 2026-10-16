@@ -85,6 +85,7 @@
     iconQuery: '',
     iconSize: 28,
     iconSelected: '',
+    features: /** @type {Record<string, Record<string, boolean>>} */ ({}),
     insertFormat: 'auto',
     compareSize: 32,
     compareWeight: 400,
@@ -194,6 +195,7 @@
     ['diacritics', 'Diacritics', () => 'ÀÁÂÃÄÅ ÇÈÉÊË ÌÍÎÏ ÑÒÓÔÕÖ ÙÚÛÜ Ý ß\nàáâãäå çèéêë ìíîï ñòóôõö ùúûü ý ÿ\nĀ ā Ă ă Ą ą Ć ć Č č Ď ď Ę ę Ě ě Ł ł Ń ń Ő ő Ř ř Ś ś Š š Ť ť Ů ů Ű ű Ź ź Ž ž'],
     ['hebrew', 'Hebrew', () => 'אבגדהוזחטיכךלמםנןסעפףצץקרשת\nבְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ'],
     ['greek', 'Greek & Cyrillic', () => 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ αβγδεζηθικλμνξοπρστυφχψω\nАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ абвгдежзийклмнопрстуфхцчшщъыьэюя'],
+    ['opentype', 'OpenType test', () => 'Office affluent fjord, The flight of the waffle. ffi ffl fft Th st ct\nFIGURES 0123456789 · figures 0123456789 · 1/2 3/4 5/8 · 1st 2nd 3rd 4th · H2O E=mc2\nSmall Caps & Capitals: The Quick Brown Fox · 10:45 · (Parentheses) [BRACKETS] {BRACES}'],
     ['code', 'Code', () => 'const greet = (name) => `Hello, ${name}!`;\nif (a != b && c <= d || e >= f) { return [0, O, 1, l, I]; }\n// -> => == === != !== <= >= ::'],
   ];
 
@@ -1027,6 +1029,80 @@
     );
   }
 
+  /** User-facing OpenType features. Shaping features (ccmp, mark, locl, …) are always on and not listed. */
+  const FEATURES = {
+    liga: 'Standard ligatures', clig: 'Contextual ligatures', dlig: 'Discretionary ligatures', hlig: 'Historical ligatures',
+    calt: 'Contextual alternates', kern: 'Kerning', smcp: 'Small caps', c2sc: 'Capitals to small caps',
+    pcap: 'Petite caps', c2pc: 'Capitals to petite caps', unic: 'Unicase', case: 'Case-sensitive forms', cpsp: 'Capital spacing',
+    titl: 'Titling', lnum: 'Lining figures', onum: 'Old-style figures', pnum: 'Proportional figures', tnum: 'Tabular figures',
+    zero: 'Slashed zero', frac: 'Fractions', afrc: 'Alternative fractions', ordn: 'Ordinals', sups: 'Superscript',
+    subs: 'Subscript', sinf: 'Scientific inferiors', salt: 'Stylistic alternates', swsh: 'Swash', cswh: 'Contextual swash',
+    hist: 'Historical forms', nalt: 'Alternate annotation forms', ornm: 'Ornaments', jalt: 'Justification alternates',
+  };
+  /** Features browsers turn on by default. */
+  const DEFAULT_ON = ['liga', 'clig', 'calt', 'kern'];
+  /** Shown when the font's feature list is unknown (system fonts, stylesheets). */
+  const COMMON_FEATURES = ['liga', 'dlig', 'calt', 'kern', 'smcp', 'c2sc', 'case', 'lnum', 'onum', 'pnum', 'tnum', 'zero', 'frac', 'ordn', 'sups', 'subs', 'salt', 'swsh', 'ss01', 'ss02', 'ss03'];
+
+  function featureLabel(tag) {
+    if (/^ss\d\d$/.test(tag)) return `Stylistic set ${Number(tag.slice(2))}`;
+    if (/^cv\d\d$/.test(tag)) return `Character variant ${Number(tag.slice(2))}`;
+    return FEATURES[tag] || tag;
+  }
+
+  /** Feature tags offered for a font, and whether they come from the font itself. */
+  function fontFeatures(font) {
+    const own = font.info?.features;
+    if (!own) return { tags: COMMON_FEATURES, known: false };
+    return { tags: own.filter((t) => t in FEATURES || /^(ss|cv)\d\d$/.test(t)), known: true };
+  }
+
+  /** CSS value for the features the user changed from the browser default. */
+  function featureSettings(font) {
+    const changed = Object.entries(state.features[font.key] || {})
+      .filter(([tag, on]) => on !== DEFAULT_ON.includes(tag))
+      .map(([tag, on]) => `"${tag}" ${on ? 1 : 0}`);
+    return changed.length ? changed.join(', ') : 'normal';
+  }
+
+  function renderFeatures(font, onChange) {
+    const { tags, known } = fontFeatures(font);
+    const values = (state.features[font.key] ||= {});
+    const css = () => `font-feature-settings: ${featureSettings(font)};`;
+    const cssOut = h('code', { class: 'feature-css' }, css());
+    const chips = tags.map((tag) => {
+      const on = () => values[tag] ?? DEFAULT_ON.includes(tag);
+      const chip = h('button', {
+        class: `feature ${on() ? 'active' : ''}`,
+        title: `${tag}: ${featureLabel(tag)}`,
+        'aria-pressed': String(on()),
+        onclick: () => {
+          values[tag] = !on();
+          chip.classList.toggle('active', on());
+          chip.setAttribute('aria-pressed', String(on()));
+          cssOut.textContent = css();
+          save();
+          onChange();
+        },
+      }, h('span', { class: 'feature-tag' }, tag), ' ', featureLabel(tag));
+      return chip;
+    });
+    return h('div', { class: 'features' },
+      h('div', { class: 'features-head' },
+        h('h3', null, 'OpenType features'),
+        h('span', { class: 'muted small' }, known
+          ? (tags.length === 1 ? '1 feature in this font' : tags.length ? `${tags.length} features in this font` : 'This font has no optional OpenType features.')
+          : 'The font\'s feature list is unknown; these are common features.'),
+        h('span', { class: 'spacer' }),
+        cssOut,
+        h('button', { class: 'icon', title: 'Copy CSS', onclick: () => vscode.postMessage({ type: 'copy', text: css(), what: 'CSS' }) }, '⧉'),
+        h('button', { class: 'icon', title: 'Insert into editor', onclick: () => vscode.postMessage({ type: 'insert', text: css(), what: 'CSS' }) }, '↵'),
+        h('button', { class: 'secondary', onclick: () => { state.features[font.key] = {}; save(); render(); } }, 'Reset'),
+      ),
+      h('div', { class: 'feature-chips' }, chips),
+    );
+  }
+
   /** Multi-line sample text set in the font, with size, weight, leading and alignment controls. */
   function renderTextPreview(font) {
     const p = state.preview;
@@ -1038,6 +1114,7 @@
         fontWeight: String(p.weight),
         lineHeight: String(p.lineHeight),
         textAlign: p.align,
+        fontFeatureSettings: featureSettings(font),
       });
     };
     apply();
@@ -1069,6 +1146,7 @@
           ),
         ),
       ),
+      renderFeatures(font, apply),
       text,
     );
   }

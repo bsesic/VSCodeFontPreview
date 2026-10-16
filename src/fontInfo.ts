@@ -24,6 +24,8 @@ export interface FontInfo {
   /** Covered code points as inclusive [start, end] ranges. */
   ranges: Array<[number, number]>;
   axes: FontAxis[];
+  /** OpenType feature tags from the GSUB and GPOS tables, sorted. */
+  features: string[];
 }
 
 type Tables = Map<string, Buffer>;
@@ -53,7 +55,7 @@ export function readFontInfo(buf: Buffer): FontInfo {
     throw new Error('Unknown font format');
   }
 
-  const info: FontInfo = { format, ranges: [], axes: [] };
+  const info: FontInfo = { format, ranges: [], axes: [], features: [] };
   if (fontCount !== undefined) {
     info.fontCount = fontCount;
   }
@@ -79,7 +81,36 @@ export function readFontInfo(buf: Buffer): FontInfo {
   if (fvar) {
     info.axes = readAxes(fvar);
   }
+  const features = new Set<string>();
+  for (const tag of ['GSUB', 'GPOS']) {
+    const table = tables.get(tag);
+    if (table) {
+      readFeatureTags(table).forEach((f) => features.add(f));
+    }
+  }
+  info.features = [...features].sort();
   return info;
+}
+
+/** Feature tags of a GSUB or GPOS table (its FeatureList). */
+function readFeatureTags(table: Buffer): string[] {
+  if (table.length < 10) {
+    return [];
+  }
+  const listOffset = table.readUInt16BE(6);
+  if (listOffset === 0 || listOffset + 2 > table.length) {
+    return [];
+  }
+  const count = table.readUInt16BE(listOffset);
+  const tags: string[] = [];
+  for (let i = 0; i < count; i++) {
+    const rec = listOffset + 2 + i * 6;
+    if (rec + 4 > table.length) {
+      break;
+    }
+    tags.push(table.toString('latin1', rec, rec + 4));
+  }
+  return tags;
 }
 
 function readSfntTables(buf: Buffer, base: number): Tables {

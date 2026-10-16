@@ -4,6 +4,9 @@
 
 ### New
 
+- 🧪 **OpenType features:** toggle ligatures, small caps, figure styles, fractions, stylistic sets, kerning and
+  more on the sample text in Inspect. Font files show the features they contain; copy or insert the
+  `font-feature-settings` CSS. New *OpenType test* sample text preset.
 - **WOFF2 collections:** font files with several fonts are read (the details show the first font and the
   number of fonts).
 - **Status bar button:** **Fonts** in the status bar opens the preview with one click. Hide it with

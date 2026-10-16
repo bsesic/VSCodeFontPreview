@@ -90,6 +90,8 @@ Everything about one font on a single page:
 - A large, **multi-line text box** set live in the font, with size, weight, line height and alignment
 - **Presets:** pangram, alphabet, punctuation, paragraph, diacritics, Hebrew, Greek and Cyrillic, code
 - Metadata read from font files: format, version, designer, license, glyph count
+- **OpenType features:** toggle ligatures, small caps, old-style and tabular figures, fractions, stylistic
+  sets, kerning and more, then copy or insert the `font-feature-settings` CSS
 - All weights, a size waterfall and sliders for **variable font axes**
 
 ![Inspect: multi-line sample text in Playfair Display](images/screenshots/inspect.png)
