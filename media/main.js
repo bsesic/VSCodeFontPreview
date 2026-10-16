@@ -438,16 +438,15 @@
       if (font.source === 'google') {
         await addStylesheet(googleCssUrl(font));
       } else if (font.source === 'fontsource') {
-        await Promise.all(
-          font.weights.flatMap((w) =>
-            font.styles.map((style) => {
-              const url = `${FONTSOURCE_CDN}/${font.id}@latest/${font.defSubset}-${w}-${style}.woff2`;
-              const face = new FontFace(font.family, `url(${url})`, { weight: String(w), style });
-              document.fonts.add(face);
-              return face.load();
-            }),
-          ),
-        );
+        // Every subset gets its unicode-range; the browser downloads a subset only when text needs it.
+        const faces = await request('fontsourceFaces', { fontId: font.id });
+        const loads = [];
+        for (const f of faces) {
+          const face = new FontFace(font.family, `url(${f.url})`, { weight: String(f.weight), style: f.style, ...(f.unicodeRange ? { unicodeRange: f.unicodeRange } : {}) });
+          document.fonts.add(face);
+          if (f.subset === font.defSubset) loads.push(face.load());
+        }
+        await Promise.all(loads);
       } else if (font.source === 'css') {
         await addStylesheet(font.ref.location);
       } else if (font.data) {
