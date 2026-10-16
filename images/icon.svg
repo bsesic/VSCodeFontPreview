@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#26365C"/>
+      <stop offset="1" stop-color="#1F2A44"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="240" height="240" rx="48" fill="url(#bg)"/>
+  <!-- baseline and x-height guides of a type specimen -->
+  <line x1="36" y1="178" x2="226" y2="178" stroke="#2A9D8F" stroke-width="4" stroke-linecap="round"/>
+  <line x1="36" y1="118" x2="226" y2="118" stroke="#2A9D8F" stroke-width="2" stroke-dasharray="6 8" stroke-linecap="round" opacity="0.8"/>
+  <!-- serif "A" -->
+  <path fill-rule="evenodd" d="M40 178 L84 62 h12 L140 178 h-22 l-11 -31 h-34 l-11 31 Z M78 130 h24 l-12 -36 Z" fill="#F4F1EA"/>
+  <!-- sans "a" -->
+  <g transform="translate(14 0)"><path fill-rule="evenodd" d="M190 178 v-9 c-6 8 -15 12 -26 12 c-17 0 -28 -10 -28 -25 c0 -17 14 -27 37 -27 h16 v-4 c0 -10 -6 -15 -18 -15 c-9 0 -17 3 -25 8 l-7 -15 c10 -7 22 -10 35 -10 c24 0 37 11 37 33 v52 Z M189 140 h-14 c-12 0 -18 4 -18 12 c0 7 5 11 13 11 c11 0 19 -7 19 -17 Z" fill="#F4A261"/></g>
+  <!-- cursor marker -->
+  <rect x="222" y="56" width="6" height="64" rx="3" fill="#E76F51"/>
+</svg>
