@@ -4,6 +4,8 @@
 
 ### New
 
+- **WOFF2 collections:** font files with several fonts are read (the details show the first font and the
+  number of fonts).
 - **Status bar button:** **Fonts** in the status bar opens the preview with one click. Hide it with
   `fontPreview.showStatusBarItem`.
 
