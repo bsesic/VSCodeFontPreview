@@ -1,7 +1,7 @@
 // @ts-check
 /* Font Preview webview. Plain DOM, no framework. */
 (function () {
-  // @ts-ignore acquireVsCodeApi is injected by VS Code
+  // @ts-expect-error acquireVsCodeApi is injected by VS Code
   const vscode = acquireVsCodeApi();
 
   const GOOGLE_CSS = 'https://fonts.googleapis.com/css2';

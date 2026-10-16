@@ -8,11 +8,12 @@ welcome.
 
 ## Development setup
 
-The tooling (`node --test`, `vsce`) requires **Node.js 20** or newer (see `.nvmrc`).
+The tooling (`node --test`, `vsce`, typescript-eslint) requires **Node.js 20** or newer (see `.nvmrc`).
 
 ```bash
 nvm use                                  # Node.js 20 from .nvmrc
 npm install
+git config core.hooksPath .githooks      # enable the pre-commit hook (once)
 ```
 
 Press `F5` in VS Code to start an Extension Development Host with the extension loaded.
@@ -23,9 +24,13 @@ Press `F5` in VS Code to start an Extension Development Host with the extension 
 | --- | --- |
 | `npm run compile` | Build the extension host (`out/`) |
 | `npm run watch` | Rebuild the extension host on changes |
+| `npm run lint` | Run ESLint on `src/`, `test/` and `media/` |
 | `npm test` | Compile and run the unit tests (`node --test`) |
 | `npm run package` | Create the `.vsix` package |
 | `npm run build` | Compile, run the tests and create the `.vsix` package |
+
+The pre-commit hook in `.githooks/` runs ESLint and the unit tests before every commit and switches to the
+Node.js version from `.nvmrc` via nvm automatically.
 
 ## Project structure
 

@@ -133,15 +133,20 @@
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "lint": "eslint src test media --ext ts,js",
     "test": "npm run compile && node --test out/test/",
     "package": "vsce package",
     "build": "npm test && npm run package",
-    "vscode:prepublish": "npm run compile"
+    "vscode:prepublish": "npm run compile",
+    "precommit": "npm run lint && npm test"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "1.90.0",
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/parser": "^8.71.2",
     "@vscode/vsce": "^3.2.0",
+    "eslint": "^8.57.1",
     "typescript": "^5.6.0"
   }
 }

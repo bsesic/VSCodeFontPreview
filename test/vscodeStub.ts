@@ -1,6 +1,6 @@
 // Minimal stand-in for the `vscode` module so host code can run under node:test.
 import * as fs from 'fs';
-import Module = require('module');
+import Module from 'module';
 
 export class Memento {
   private data = new Map<string, unknown>();
