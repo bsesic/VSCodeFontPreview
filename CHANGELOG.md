@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### New
+
+- **Status bar button:** **Fonts** in the status bar opens the preview with one click. Hide it with
+  `fontPreview.showStatusBarItem`.
+
 ## 0.3.0
 
 ### New

@@ -44,7 +44,9 @@
     "css"
   ],
   "main": "./out/src/extension.js",
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "contributes": {
     "commands": [
       {
@@ -119,6 +121,11 @@
           "type": "string",
           "default": "https://api.fontsource.org/v1/fonts",
           "description": "URL of the Fontsource font list used as the Google Fonts catalog."
+        },
+        "fontPreview.showStatusBarItem": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a status bar button that opens the Font Preview."
         }
       }
     }
