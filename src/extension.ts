@@ -2,8 +2,11 @@ import * as vscode from 'vscode';
 import { FontSources } from './sources';
 import { attachFontPreview, webviewOptions } from './webview';
 import { trackEditors } from './editorTarget';
+import { familyAtCursor } from './cursorFont';
 
 let panel: vscode.WebviewPanel | undefined;
+/** Messages for the panel's webview, held until it has started. */
+let queued: unknown[] | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
   const sources = new FontSources(context.globalState);
@@ -31,12 +34,30 @@ export function activate(context: vscode.ExtensionContext) {
       ...webviewOptions(context.extensionUri),
       retainContextWhenHidden: true,
     });
-    const listener = attachFontPreview(panel.webview, context.extensionUri, sources);
+    queued = [];
+    const webview = panel.webview;
+    const listener = attachFontPreview(webview, context.extensionUri, sources, {
+      onReady: () => {
+        queued?.forEach((message) => webview.postMessage(message));
+        queued = undefined;
+      },
+    });
     panel.onDidDispose(() => {
       listener.dispose();
       panel = undefined;
+      queued = undefined;
     });
     return panel;
+  };
+
+  /** Opens the panel and runs a webview command once the webview is ready. */
+  const runInPanel = (message: { type: 'command'; command: string; [key: string]: unknown }): void => {
+    const target = openPanel();
+    if (queued) {
+      queued.push(message);
+    } else {
+      target.webview.postMessage(message);
+    }
   };
 
   context.subscriptions.push(
@@ -47,8 +68,22 @@ export function activate(context: vscode.ExtensionContext) {
       }
     }),
     vscode.commands.registerCommand('fontPreview.open', openPanel),
-    vscode.commands.registerCommand('fontPreview.addFontFile', () => {
-      openPanel().webview.postMessage({ type: 'command', command: 'addFile' });
+    vscode.commands.registerCommand('fontPreview.addFontFile', () => runInPanel({ type: 'command', command: 'addFile' })),
+    vscode.commands.registerCommand('fontPreview.insertIcon', () => runInPanel({ type: 'command', command: 'showIcons' })),
+    vscode.commands.registerCommand('fontPreview.previewFontAtCursor', () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        return;
+      }
+      const { selection, document } = editor;
+      const family = selection.isEmpty
+        ? familyAtCursor(document.lineAt(selection.active.line).text, selection.active.character)
+        : familyAtCursor(document.getText(selection), 0);
+      if (!family) {
+        vscode.window.showWarningMessage('Font Preview: no font family found at the cursor.');
+        return;
+      }
+      runInPanel({ type: 'command', command: 'inspectFamily', family });
     }),
     vscode.commands.registerCommand('fontPreview.previewFontFile', (uri?: vscode.Uri) => {
       const target = uri ?? vscode.window.activeTextEditor?.document.uri;

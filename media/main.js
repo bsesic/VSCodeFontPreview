@@ -117,6 +117,8 @@
   /** @type {{ name: string, languageId: string } | undefined} */
   let target;
   let defaultSample = '';
+  /** Family requested by "Preview Font Under Cursor", until it is found or added. */
+  let pendingFamily = '';
   let openedKey = '';
 
   // ---------------------------------------------------------------- helpers
@@ -1416,6 +1418,28 @@
     );
   }
 
+  /**
+   * Inspects the font of `pendingFamily`: a font of the collection, My Fonts or the catalog with
+   * that name, else the installed font of that name (added to My Fonts and tested).
+   */
+  function inspectPendingFamily() {
+    if (!pendingFamily) return;
+    const name = pendingFamily.toLowerCase();
+    const all = [...fonts.values()];
+    const found =
+      all.find((f) => f.key.startsWith('custom:') && f.label.toLowerCase() === name) ||
+      all.find((f) => f.source === 'google' && f.label.toLowerCase() === name) ||
+      all.find((f) => f.label.toLowerCase() === name);
+    if (found) {
+      pendingFamily = '';
+      inspect(found.key);
+    } else if (catalog) {
+      vscode.postMessage({ type: 'addSystem', family: pendingFamily });
+    } else {
+      requestCatalog();
+    }
+  }
+
   function requestCatalog() {
     if (catalogRequested) return;
     catalogRequested = true;
@@ -1670,6 +1694,7 @@
         state.collection = state.collection.filter((k) => fonts.has(k));
         for (const k of state.collection) ensureLoaded(/** @type {Font} */ (fonts.get(k)));
         render();
+        inspectPendingFamily();
         break;
       case 'catalogError':
         catalogError = msg.message;
@@ -1683,6 +1708,7 @@
         state.source = font.source === 'system' ? state.source : 'custom';
         save();
         render();
+        inspectPendingFamily();
         break;
       }
       case 'response': {
@@ -1714,6 +1740,13 @@
           state.source = 'custom';
           render();
           vscode.postMessage({ type: 'addFile' });
+        } else if (msg.command === 'showIcons') {
+          state.tab = 'icons';
+          save();
+          render();
+        } else if (msg.command === 'inspectFamily') {
+          pendingFamily = msg.family;
+          inspectPendingFamily();
         }
         break;
     }
