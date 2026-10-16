@@ -30,7 +30,7 @@ export interface CustomFontRef {
 /** Details of a catalog font and the font file they were read from. */
 export interface RemoteFontInfo extends FontInfo {
   fileUrl: string;
-  /** Only the default subset was read (other Fontsource fonts). */
+  /** Only one of several subsets was read (other Fontsource fonts). */
   partial?: boolean;
 }
 
@@ -77,7 +77,8 @@ export class FontSources {
 
   /**
    * Names, coverage, axes and features of a catalog font, read from its complete font file
-   * (Google Fonts) or from its default subset (other Fontsource fonts, marked as partial).
+   * (Google Fonts) or from its default subset file (other Fontsource fonts; marked as partial
+   * when the font has further subsets).
    */
   async details(source: 'google' | 'fontsource', id: string, family: string): Promise<RemoteFontInfo> {
     const key = `details.${source}.${id}`;
@@ -85,9 +86,9 @@ export class FontSources {
     if (cached && Date.now() - cached.time < DETAILS_MAX_AGE) {
       return cached.info;
     }
-    const url = source === 'google' ? await googleFontFile(family) : await fontsourceFontFile(id);
+    const { url, partial } = source === 'google' ? { url: await googleFontFile(family), partial: false } : await fontsourceFontFile(id);
     const info: RemoteFontInfo = { ...(await readRemoteFontInfo(url)), fileUrl: url };
-    if (source === 'fontsource') {
+    if (partial) {
       info.partial = true;
     }
     await this.state.update(key, { time: Date.now(), info });

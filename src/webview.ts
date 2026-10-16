@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as crypto from 'crypto';
 import { CustomFontRef, FontSources, LoadedFont, labelFromLocation, systemFamilies } from './sources';
 import { ICON_SETS } from './iconSets';
+import { fontsourceFaces } from './fontDetails';
 import { describeTarget, insertText, onDidChangeTarget } from './editorTarget';
 
 /** Messages the webview sends to the extension. */
@@ -18,7 +19,8 @@ type FromWebview =
   | { type: 'icons'; set: string; force?: boolean }
   | { type: 'target' }
   | { type: 'insert'; text: string; what: string }
-  | { type: 'fontDetails'; id: number; source: 'google' | 'fontsource'; fontId: string; family: string };
+  | { type: 'fontDetails'; id: number; source: 'google' | 'fontsource'; fontId: string; family: string }
+  | { type: 'fontsourceFaces'; id: number; fontId: string };
 
 export interface WebviewOptions {
   /** A font file that is opened directly (custom editor), shown but not stored. */
@@ -95,6 +97,13 @@ export function attachFontPreview(
       }
       case 'target':
         sendTarget();
+        break;
+      case 'fontsourceFaces':
+        try {
+          post({ type: 'response', id: message.id, result: await fontsourceFaces(message.fontId) });
+        } catch (err) {
+          post({ type: 'response', id: message.id, error: (err as Error).message });
+        }
         break;
       case 'fontDetails':
         try {

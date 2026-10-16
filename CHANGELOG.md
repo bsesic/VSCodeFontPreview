@@ -16,6 +16,12 @@
 - **Status bar button:** **Fonts** in the status bar opens the preview with one click. Hide it with
   `fontPreview.showStatusBarItem`.
 
+### Fixed
+
+- Font details of fonts from the *Other open fonts (Fontsource)* source failed, because jsDelivr answers
+  range requests over HTTP/1.1 with an empty response; the whole file is downloaded instead.
+- Fonts with several Fontsource subsets register every subset with its `unicode-range`.
+
 ## 0.3.0
 
 ### New
