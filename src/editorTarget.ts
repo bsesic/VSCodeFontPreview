@@ -31,6 +31,12 @@ function targetEditor(): vscode.TextEditor | undefined {
   return vscode.window.visibleTextEditors[0];
 }
 
+/** File path of the editor that inserts go to. */
+export function targetPath(): string | undefined {
+  const uri = targetEditor()?.document.uri;
+  return uri?.scheme === 'file' ? uri.fsPath : undefined;
+}
+
 export interface TargetInfo {
   name: string;
   languageId: string;

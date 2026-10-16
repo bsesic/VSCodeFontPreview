@@ -126,6 +126,11 @@
           "type": "boolean",
           "default": true,
           "description": "Show a status bar button that opens the Font Preview."
+        },
+        "fontPreview.projectFontFolder": {
+          "type": "string",
+          "default": "fonts",
+          "description": "Workspace folder that \"Add to project\" downloads fonts into. Each font gets its own subfolder with a stylesheet."
         }
       }
     }

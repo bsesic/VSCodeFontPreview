@@ -3,6 +3,7 @@ import * as crypto from 'crypto';
 import { CustomFontRef, FontSources, LoadedFont, labelFromLocation, systemFamilies } from './sources';
 import { ICON_SETS } from './iconSets';
 import { fontsourceFaces } from './fontDetails';
+import { ProjectFontRequest, addFontToProject } from './projectFonts';
 import { describeTarget, insertText, onDidChangeTarget } from './editorTarget';
 
 /** Messages the webview sends to the extension. */
@@ -20,7 +21,8 @@ type FromWebview =
   | { type: 'target' }
   | { type: 'insert'; text: string; what: string }
   | { type: 'fontDetails'; id: number; source: 'google' | 'fontsource'; fontId: string; family: string }
-  | { type: 'fontsourceFaces'; id: number; fontId: string };
+  | { type: 'fontsourceFaces'; id: number; fontId: string }
+  | { type: 'addToProject'; font: ProjectFontRequest };
 
 export interface WebviewOptions {
   /** A font file that is opened directly (custom editor), shown but not stored. */
@@ -97,6 +99,13 @@ export function attachFontPreview(
       }
       case 'target':
         sendTarget();
+        break;
+      case 'addToProject':
+        try {
+          await addFontToProject(message.font);
+        } catch (err) {
+          vscode.window.showErrorMessage(`Font Preview: could not add ${message.font.label} to the project: ${(err as Error).message}`);
+        }
         break;
       case 'fontsourceFaces':
         try {

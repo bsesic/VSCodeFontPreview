@@ -35,6 +35,7 @@
   Phosphor, about 20,000 icons in total.
 - ⚡ **Insert into your code:** icons and glyphs go to your editor at every cursor, in the right format for
   the file: HTML, JSX, CSS `content` or a JS escape.
+- 📦 **Self-host your fonts:** download a font into your project with a ready-made `@font-face` stylesheet.
 
 ## 🚀 Quick start
 
@@ -67,7 +68,8 @@ text, inline elements, blockquote, lists, code, table and form.
 - Separate fonts for **headings**, **body text** and **code**
 - Sliders for heading and body weight, base size, line height and letter spacing
 - Light, dark and editor themes
-- **Copy CSS** exports the `<link>` or `@font-face` rules and the matching `body`, `h1–h6` and `code` styles
+- **Copy CSS** or **Insert CSS** exports the `<link>` or `@font-face` rules and the matching `body`, `h1–h6` and
+  `code` styles
 
 ### 🧪 Your own fonts, tested
 
@@ -82,6 +84,18 @@ Every font gets a badge: `works`, or `failed` with the reason, for example a fam
 not define or a font that is not installed. Added fonts are remembered.
 
 ![My Fonts with load test badges](images/screenshots/my-fonts.png)
+
+### 📦 Add fonts to your project
+
+**Add to project…** in Inspect downloads a font into your workspace, so your site does not depend on a font
+CDN:
+
+1. Choose the weights and styles, then the scripts (subsets)
+2. The WOFF2 files and a stylesheet are written to `fonts/<font>/` (see `fontPreview.projectFontFolder`)
+3. Insert the `@import` of the stylesheet into your code with one click
+
+The stylesheet contains one `@font-face` rule per file with `unicode-range`, so browsers only download the
+scripts a page uses. This works for Google Fonts, Fontsource fonts, your font files and web font URLs.
 
 ### 🔍 Inspect
 
@@ -172,6 +186,7 @@ bar opens the preview with one click.
 | `fontPreview.sampleText` | pangram (English and German) | Initial sample text |
 | `fontPreview.catalogUrl` | `https://api.fontsource.org/v1/fonts` | Source of the font catalog |
 | `fontPreview.showStatusBarItem` | `true` | Show the **Fonts** button in the status bar |
+| `fontPreview.projectFontFolder` | `fonts` | Workspace folder that **Add to project** downloads fonts into |
 
 Installed system fonts are listed with `fc-list` (fontconfig) when available, otherwise by reading the font
 folders of Windows, macOS or Linux.
