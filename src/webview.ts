@@ -75,7 +75,7 @@ export function attachFontPreview(
           sampleText: vscode.workspace.getConfiguration('fontPreview').get<string>('sampleText'),
           custom,
           opened,
-          iconSets: ICON_SETS.map(({ source, ...set }) => set),
+          iconSets: ICON_SETS.map(({ source: _source, ...set }) => set),
           target: describeTarget(),
         });
         break;
