@@ -14,6 +14,13 @@ export class Memento {
 
 export const calls = { errors: [] as string[], warnings: [] as string[], clipboard: '' };
 
+/** Status bar items, registered commands and the config listener created by `activate`. */
+export const ui = {
+  statusItems: [] as Array<{ text: string; tooltip?: string; command?: string; visible: boolean; alignment: number; priority?: number }>,
+  commands: new Map<string, (...args: unknown[]) => unknown>(),
+  configListeners: [] as Array<(e: { affectsConfiguration: (key: string) => boolean }) => void>,
+};
+
 class EventEmitter<T> {
   private listeners: Array<(value: T) => void> = [];
   event = (fn: (value: T) => void) => {
@@ -55,7 +62,7 @@ export function setOpenDialogResult(files: string[] | undefined) {
   openDialogResult = files?.map((fsPath) => ({ fsPath }));
 }
 
-const config: Record<string, unknown> = {
+export const config: Record<string, unknown> = {
   catalogUrl: 'https://catalog.test/fonts',
   sampleText: 'Sample',
 };
@@ -66,10 +73,23 @@ const stub = {
     joinPath: (base: { fsPath: string }, ...parts: string[]) => ({ fsPath: [base.fsPath, ...parts].join('/') }),
   },
   EventEmitter,
+  StatusBarAlignment: { Left: 1, Right: 2 },
+  ViewColumn: { Active: -1 },
+  commands: {
+    registerCommand: (id: string, fn: (...args: unknown[]) => unknown) => {
+      ui.commands.set(id, fn);
+      return { dispose: () => ui.commands.delete(id) };
+    },
+    executeCommand: async (id: string, ...args: unknown[]) => ui.commands.get(id)?.(...args),
+  },
   Disposable: { from: (...items: Array<{ dispose(): unknown }>) => ({ dispose: () => items.forEach((i) => i.dispose()) }) },
   workspace: {
     onDidCloseTextDocument: () => ({ dispose: () => undefined }),
-    getConfiguration: () => ({ get: (key: string) => config[key] }),
+    onDidChangeConfiguration: (fn: (e: { affectsConfiguration: (key: string) => boolean }) => void) => {
+      ui.configListeners.push(fn);
+      return { dispose: () => undefined };
+    },
+    getConfiguration: () => ({ get: (key: string, fallback?: unknown) => (key in config ? config[key] : fallback) }),
     fs: { readFile: async (uri: { fsPath: string }) => new Uint8Array(fs.readFileSync(uri.fsPath)) },
   },
   window: {
@@ -79,6 +99,17 @@ const stub = {
     get visibleTextEditors() { return editor.open ? [fakeEditor] : []; },
     showTextDocument: async () => fakeEditor,
     onDidChangeActiveTextEditor: () => ({ dispose: () => undefined }),
+    createStatusBarItem: (alignment: number, priority?: number) => {
+      const item = {
+        alignment, priority, text: '', tooltip: undefined as string | undefined, command: undefined as string | undefined, visible: false,
+        show() { item.visible = true; },
+        hide() { item.visible = false; },
+        dispose() {},
+      };
+      ui.statusItems.push(item);
+      return item;
+    },
+    registerCustomEditorProvider: () => ({ dispose: () => undefined }),
     showOpenDialog: async () => openDialogResult,
     setStatusBarMessage: () => undefined,
   },

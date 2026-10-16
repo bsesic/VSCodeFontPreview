@@ -9,6 +9,19 @@ export function activate(context: vscode.ExtensionContext) {
   const sources = new FontSources(context.globalState);
   trackEditors(context);
 
+  const statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+  statusItem.text = '$(text-size) Fonts';
+  statusItem.tooltip = 'Open Font Preview';
+  statusItem.command = 'fontPreview.open';
+  const updateStatusItem = (): void => {
+    if (vscode.workspace.getConfiguration('fontPreview').get<boolean>('showStatusBarItem', true)) {
+      statusItem.show();
+    } else {
+      statusItem.hide();
+    }
+  };
+  updateStatusItem();
+
   const openPanel = (): vscode.WebviewPanel => {
     if (panel) {
       panel.reveal();
@@ -27,6 +40,12 @@ export function activate(context: vscode.ExtensionContext) {
   };
 
   context.subscriptions.push(
+    statusItem,
+    vscode.workspace.onDidChangeConfiguration((e) => {
+      if (e.affectsConfiguration('fontPreview.showStatusBarItem')) {
+        updateStatusItem();
+      }
+    }),
     vscode.commands.registerCommand('fontPreview.open', openPanel),
     vscode.commands.registerCommand('fontPreview.addFontFile', () => {
       openPanel().webview.postMessage({ type: 'command', command: 'addFile' });

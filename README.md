@@ -39,7 +39,8 @@
 ## 🚀 Quick start
 
 1. Install **VSCodeFontPreview** from the Visual Studio Marketplace.
-2. Run **Font Preview: Open Font Preview** from the command palette (`Ctrl+Shift+P` / `Cmd+Shift+P`).
+2. Click **Fonts** in the status bar, or run **Font Preview: Open Font Preview** from the command palette
+   (`Ctrl+Shift+P` / `Cmd+Shift+P`).
 3. Star fonts (☆) or assign them with **H**, **Body** and **Code**, then open the **Typography** tab.
 
 Opening a `.ttf`, `.otf`, `.woff`, `.woff2` or `.ttc` file shows it in the preview directly.
@@ -151,7 +152,8 @@ editor, the text is copied to the clipboard.
 
 ## ⌨️ Commands
 
-All commands are available in the command palette under **Font Preview**.
+All commands are available in the command palette under **Font Preview**. The **Fonts** button in the status
+bar opens the preview with one click.
 
 | Command | Description |
 | --- | --- |
@@ -166,6 +168,7 @@ All commands are available in the command palette under **Font Preview**.
 | --- | --- | --- |
 | `fontPreview.sampleText` | pangram (English and German) | Initial sample text |
 | `fontPreview.catalogUrl` | `https://api.fontsource.org/v1/fonts` | Source of the font catalog |
+| `fontPreview.showStatusBarItem` | `true` | Show the **Fonts** button in the status bar |
 
 The list of installed system fonts uses `fc-list` (fontconfig, available on Linux). Without it, you can still
 add system fonts by name.
