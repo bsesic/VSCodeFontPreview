@@ -1089,6 +1089,7 @@
       font.ref ? ['Location', font.ref.location] : null,
       info?.family && info.family !== font.label ? ['Internal family', info.family] : null,
       info ? ['Format', info.format.toUpperCase()] : null,
+      info?.fontCount ? ['Collection', `${info.fontCount} fonts, details of the first one`] : null,
       info?.subfamily ? ['Style', info.subfamily] : null,
       info?.version ? ['Version', info.version] : null,
       info?.designer ? ['Designer', info.designer] : null,

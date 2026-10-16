@@ -19,6 +19,8 @@ export interface FontInfo {
   designer?: string;
   license?: string;
   numGlyphs?: number;
+  /** Number of fonts in a TTC or WOFF2 collection; the info describes the first one. */
+  fontCount?: number;
   /** Covered code points as inclusive [start, end] ranges. */
   ranges: Array<[number, number]>;
   axes: FontAxis[];
@@ -30,14 +32,16 @@ export function readFontInfo(buf: Buffer): FontInfo {
   const sig = buf.toString('latin1', 0, 4);
   let format: FontInfo['format'];
   let tables: Tables;
+  let fontCount: number | undefined;
   if (sig === 'wOFF') {
     format = 'woff';
     tables = readWoffTables(buf);
   } else if (sig === 'wOF2') {
     format = 'woff2';
-    tables = readWoff2Tables(buf);
+    ({ tables, fontCount } = readWoff2Tables(buf));
   } else if (sig === 'ttcf') {
     format = 'collection';
+    fontCount = buf.readUInt32BE(8);
     tables = readSfntTables(buf, buf.readUInt32BE(12));
   } else if (sig === 'OTTO') {
     format = 'opentype';
@@ -50,6 +54,9 @@ export function readFontInfo(buf: Buffer): FontInfo {
   }
 
   const info: FontInfo = { format, ranges: [], axes: [] };
+  if (fontCount !== undefined) {
+    info.fontCount = fontCount;
+  }
   const name = tables.get('name');
   if (name) {
     const names = readNames(name);
@@ -111,12 +118,9 @@ const WOFF2_KNOWN_TAGS = [
   'mort', 'morx', 'opbd', 'prop', 'trak', 'Zapf', 'Silf', 'Glat', 'Gloc', 'Feat', 'Sill',
 ];
 
-function readWoff2Tables(buf: Buffer): Tables {
+function readWoff2Tables(buf: Buffer): { tables: Tables; fontCount?: number } {
   const numTables = buf.readUInt16BE(12);
-  const flavor = buf.toString('latin1', 4, 8);
-  if (flavor === 'ttcf') {
-    throw new Error('WOFF2 collections are not supported');
-  }
+  const isCollection = buf.toString('latin1', 4, 8) === 'ttcf';
   const totalCompressedSize = buf.readUInt32BE(20);
   let pos = 48;
   const readBase128 = (): number => {
@@ -129,6 +133,20 @@ function readWoff2Tables(buf: Buffer): Tables {
       }
     }
     throw new Error('Invalid UIntBase128');
+  };
+  const read255UInt16 = (): number => {
+    const code = buf[pos++];
+    if (code === 253) {
+      pos += 2;
+      return buf.readUInt16BE(pos - 2);
+    }
+    if (code === 255) {
+      return buf[pos++] + 253;
+    }
+    if (code === 254) {
+      return buf[pos++] + 506;
+    }
+    return code;
   };
 
   const entries: Array<{ tag: string; length: number }> = [];
@@ -149,14 +167,36 @@ function readWoff2Tables(buf: Buffer): Tables {
     entries.push({ tag, length });
   }
 
+  // A collection directory follows the table directory and lists, per font, which
+  // of the shared tables it uses. Only the first font is read.
+  let fontCount: number | undefined;
+  let firstFont: number[] | undefined;
+  if (isCollection) {
+    pos += 4; // version
+    fontCount = read255UInt16();
+    for (let font = 0; font < fontCount; font++) {
+      const count = read255UInt16();
+      pos += 4; // flavor
+      const indices = Array.from({ length: count }, read255UInt16);
+      firstFont ??= indices;
+    }
+  }
+
   const stream = zlib.brotliDecompressSync(buf.subarray(pos, pos + totalCompressedSize));
-  const tables: Tables = new Map();
+  const offsets: number[] = [];
   let offset = 0;
-  for (const { tag, length } of entries) {
-    tables.set(tag, stream.subarray(offset, offset + length));
+  for (const { length } of entries) {
+    offsets.push(offset);
     offset += length;
   }
-  return tables;
+  const tables: Tables = new Map();
+  for (const index of firstFont ?? entries.map((_, i) => i)) {
+    const entry = entries[index];
+    if (entry) {
+      tables.set(entry.tag, stream.subarray(offsets[index], offsets[index] + entry.length));
+    }
+  }
+  return { tables, fontCount };
 }
 
 function readNames(table: Buffer): Map<number, string> {
