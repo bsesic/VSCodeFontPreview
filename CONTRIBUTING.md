@@ -71,7 +71,7 @@ The icon has a single source: `images/icon.svg`. After editing it, export it as 
 `images/icon.png`, which is used as marketplace icon, for example:
 
 ```bash
-rsvg-convert -w 256 -h 256 images/icon.svg -o images/icon.png
+inkscape images/icon.svg --export-type=png --export-filename=images/icon.png -w 256 -h 256
 ```
 
 ## Screenshots
