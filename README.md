@@ -89,7 +89,7 @@ Everything about one font on a single page:
 
 - A large, **multi-line text box** set live in the font, with size, weight, line height and alignment
 - **Presets:** pangram, alphabet, punctuation, paragraph, diacritics, Hebrew, Greek and Cyrillic, code
-- Metadata read from font files: format, version, designer, license, glyph count
+- Metadata of font files and Google Fonts: format, version, designer, license, glyph count, all variable axes
 - **OpenType features:** toggle ligatures, small caps, old-style and tabular figures, fractions, stylistic
   sets, kerning and more, then copy or insert the `font-feature-settings` CSS
 - All weights, a size waterfall and sliders for **variable font axes**
@@ -98,7 +98,8 @@ Everything about one font on a single page:
 
 ### 🔣 Glyphs
 
-A glyph grid per Unicode block. For font files, it shows exactly the characters the font contains. Select a
+A glyph grid per Unicode block. It shows exactly the characters the font contains, for font files and for
+Google Fonts (read from the complete font file). Select a
 glyph to see its code point and insert it as HTML entity, CSS `content`, JS escape or character.
 
 ![Glyph grid of a Hebrew font with the insert panel](images/screenshots/glyphs.png)

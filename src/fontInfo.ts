@@ -28,7 +28,31 @@ export interface FontInfo {
   features: string[];
 }
 
-type Tables = Map<string, Buffer>;
+export type Tables = Map<string, Buffer>;
+
+/** The tables `infoFromTables` reads. */
+export const INFO_TABLES = ['name', 'maxp', 'cmap', 'fvar', 'GSUB', 'GPOS'];
+
+export interface TableRecord {
+  tag: string;
+  offset: number;
+  length: number;
+}
+
+/** Reads the table directory of a TTF/OTF file; `buf` needs to hold at least the directory. */
+export function readTableDirectory(buf: Buffer): { format: 'truetype' | 'opentype'; records: TableRecord[] } {
+  const sig = buf.toString('latin1', 0, 4);
+  if (sig !== 'OTTO' && sig !== 'true' && buf.readUInt32BE(0) !== 0x00010000) {
+    throw new Error('Not a TrueType or OpenType font');
+  }
+  const numTables = buf.readUInt16BE(4);
+  const records: TableRecord[] = [];
+  for (let i = 0; i < numTables; i++) {
+    const rec = 12 + i * 16;
+    records.push({ tag: buf.toString('latin1', rec, rec + 4), offset: buf.readUInt32BE(rec + 8), length: buf.readUInt32BE(rec + 12) });
+  }
+  return { format: sig === 'OTTO' ? 'opentype' : 'truetype', records };
+}
 
 export function readFontInfo(buf: Buffer): FontInfo {
   const sig = buf.toString('latin1', 0, 4);
@@ -54,7 +78,10 @@ export function readFontInfo(buf: Buffer): FontInfo {
   } else {
     throw new Error('Unknown font format');
   }
+  return infoFromTables(format, tables, fontCount);
+}
 
+export function infoFromTables(format: FontInfo['format'], tables: Tables, fontCount?: number): FontInfo {
   const info: FontInfo = { format, ranges: [], axes: [], features: [] };
   if (fontCount !== undefined) {
     info.fontCount = fontCount;

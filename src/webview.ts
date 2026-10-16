@@ -17,7 +17,8 @@ type FromWebview =
   | { type: 'copy'; text: string; what: string }
   | { type: 'icons'; set: string; force?: boolean }
   | { type: 'target' }
-  | { type: 'insert'; text: string; what: string };
+  | { type: 'insert'; text: string; what: string }
+  | { type: 'fontDetails'; id: number; source: 'google' | 'fontsource'; fontId: string; family: string };
 
 export interface WebviewOptions {
   /** A font file that is opened directly (custom editor), shown but not stored. */
@@ -94,6 +95,13 @@ export function attachFontPreview(
       }
       case 'target':
         sendTarget();
+        break;
+      case 'fontDetails':
+        try {
+          post({ type: 'response', id: message.id, result: await sources.details(message.source, message.fontId, message.family) });
+        } catch (err) {
+          post({ type: 'response', id: message.id, error: (err as Error).message });
+        }
         break;
       case 'insert': {
         if (await insertText(message.text)) {

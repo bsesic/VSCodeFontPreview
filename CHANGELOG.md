@@ -7,6 +7,10 @@
 - 🧪 **OpenType features:** toggle ligatures, small caps, figure styles, fractions, stylistic sets, kerning and
   more on the sample text in Inspect. Font files show the features they contain; copy or insert the
   `font-feature-settings` CSS. New *OpenType test* sample text preset.
+- 🔍 **Complete font details for Google Fonts:** exact glyph coverage, all variable axes, names, version,
+  designer, license and OpenType features, read from the complete font file (only the needed tables are
+  downloaded). Feature tests use the complete file, because the files Google serves to browsers lack many
+  optional features.
 - **WOFF2 collections:** font files with several fonts are read (the details show the first font and the
   number of fonts).
 - **Status bar button:** **Fonts** in the status bar opens the preview with one click. Hide it with
