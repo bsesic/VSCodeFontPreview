@@ -27,6 +27,8 @@ type FromWebview =
 export interface WebviewOptions {
   /** A font file that is opened directly (custom editor), shown but not stored. */
   file?: vscode.Uri;
+  /** Called once the webview has started and received its initial data. */
+  onReady?: () => void;
 }
 
 export function webviewOptions(extensionUri: vscode.Uri): vscode.WebviewOptions {
@@ -83,6 +85,7 @@ export function attachFontPreview(
           iconSets: ICON_SETS.map(({ source: _source, ...set }) => set),
           target: describeTarget(),
         });
+        options.onReady?.();
         break;
       }
       case 'icons': {

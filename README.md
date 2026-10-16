@@ -40,8 +40,8 @@
 ## 🚀 Quick start
 
 1. Install **VSCodeFontPreview** from the Visual Studio Marketplace.
-2. Click **Fonts** in the status bar, or run **Font Preview: Open Font Preview** from the command palette
-   (`Ctrl+Shift+P` / `Cmd+Shift+P`).
+2. Click **Fonts** in the status bar or press `Ctrl+Alt+Shift+F` (`Cmd+Alt+Shift+F` on macOS).
+   Right-click a `font-family` in your code and choose **Preview Font Under Cursor** to inspect it directly.
 3. Star fonts (☆) or assign them with **H**, **Body** and **Code**, then open the **Typography** tab.
 
 Opening a `.ttf`, `.otf`, `.woff`, `.woff2` or `.ttc` file shows it in the preview directly.
@@ -167,14 +167,16 @@ every cursor. **Auto** picks the format from the language of the file:
 You can also choose HTML entity, character or icon name. Every format can be copied too. Without an open
 editor, the text is copied to the clipboard.
 
-## ⌨️ Commands
+## ⌨️ Commands and shortcuts
 
 All commands are available in the command palette under **Font Preview**. The **Fonts** button in the status
 bar opens the preview with one click.
 
-| Command | Description |
+| Command | Shortcut / menu |
 | --- | --- |
-| Open Font Preview | Opens the preview panel |
+| Open Font Preview | `Ctrl+Alt+Shift+F` / `Cmd+Alt+Shift+F` |
+| Preview Font Under Cursor: inspects the family of a `font-family`, `font` or `fontFamily` declaration, or the quoted name at the cursor | Editor context menu |
+| Insert Icon... | Editor context menu |
 | Add Font File... | Opens the panel and a file picker |
 | Preview Font (explorer context menu of font files) | Opens a font file in the preview |
 | Refresh Google Fonts Catalog | Reloads the font list |

@@ -21,6 +21,7 @@ export const ui = {
   quickPicks: [] as Array<(items: Array<{ label: string; picked?: boolean }>) => Array<{ label: string }> | undefined>,
   infoAnswers: [] as Array<string | undefined>,
   shownDocuments: [] as string[],
+  panels: [] as Array<ReturnType<typeof fakeWebview>>,
   statusItems: [] as Array<{ text: string; tooltip?: string; command?: string; visible: boolean; alignment: number; priority?: number }>,
   commands: new Map<string, (...args: unknown[]) => unknown>(),
   configListeners: [] as Array<(e: { affectsConfiguration: (key: string) => boolean }) => void>,
@@ -46,6 +47,8 @@ export const editor = {
 };
 const fakeDocument = {
   get isClosed() { return !editor.open; },
+  lineAt: (line: number) => ({ text: editor.text.split('\n')[line] ?? '' }),
+  getText: (range?: { start: number; end: number }) => (range ? editor.text.slice(range.start, range.end) : editor.text),
   languageId: 'html',
   uri: { path: '/work/index.html', scheme: 'file', toString: () => 'file:///work/index.html' },
 };
@@ -53,6 +56,11 @@ const fakeEditor = {
   document: fakeDocument,
   viewColumn: 1,
   get selections() { return editor.selections; },
+  /** Single selection as offsets on line 0; enough for the commands under test. */
+  get selection() {
+    const [start, end] = editor.selections[0] ?? [0, 0];
+    return { isEmpty: start === end, start, end, active: { line: 0, character: end } };
+  },
   edit: async (fn: (b: { replace: (sel: [number, number], text: string) => void }) => void) => {
     const edits: Array<[[number, number], string]> = [];
     fn({ replace: (sel, text) => edits.push([sel, text]) });
@@ -119,6 +127,11 @@ const stub = {
       return fakeEditor;
     },
     onDidChangeActiveTextEditor: () => ({ dispose: () => undefined }),
+    createWebviewPanel: () => {
+      const view = fakeWebview();
+      ui.panels.push(view);
+      return { webview: view.webview, reveal: () => undefined, onDidDispose: () => ({ dispose: () => undefined }) };
+    },
     createStatusBarItem: (alignment: number, priority?: number) => {
       const item = {
         alignment, priority, text: '', tooltip: undefined as string | undefined, command: undefined as string | undefined, visible: false,

@@ -7,6 +7,9 @@
 - 🧪 **OpenType features:** toggle ligatures, small caps, figure styles, fractions, stylistic sets, kerning and
   more on the sample text in Inspect. Font files show the features they contain; copy or insert the
   `font-feature-settings` CSS. New *OpenType test* sample text preset.
+- ⌨️ **Keyboard shortcut and context menus:** `Ctrl+Alt+Shift+F` / `Cmd+Alt+Shift+F` opens the preview. The
+  editor context menu has **Preview Font Under Cursor** (reads `font-family`, `font` and `fontFamily`, else
+  the quoted string or word at the cursor) and **Insert Icon…**.
 - 📦 **Add to project:** download the WOFF2 files of a font (chosen weights, styles and scripts) into the
   workspace, with a stylesheet of `@font-face` rules and `unicode-range`, and insert its `@import`. Works for
   Google Fonts, Fontsource fonts, font files and web font URLs. Setting: `fontPreview.projectFontFolder`.
@@ -24,6 +27,8 @@
 
 ### Fixed
 
+- **Add Font File…** from the command palette did nothing when the panel was not open yet; commands now wait
+  until the panel has started.
 - Font details of fonts from the *Other open fonts (Fontsource)* source failed, because jsDelivr answers
   range requests over HTTP/1.1 with an empty response; the whole file is downloaded instead.
 - Fonts with several Fontsource subsets register every subset with its `unicode-range`.

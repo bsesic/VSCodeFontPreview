@@ -60,6 +60,16 @@
         "category": "Font Preview"
       },
       {
+        "command": "fontPreview.insertIcon",
+        "title": "Insert Icon…",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.previewFontAtCursor",
+        "title": "Preview Font Under Cursor",
+        "category": "Font Preview"
+      },
+      {
         "command": "fontPreview.previewFontFile",
         "title": "Preview Font",
         "category": "Font Preview"
@@ -82,9 +92,32 @@
         {
           "command": "fontPreview.previewFontFile",
           "when": "false"
+        },
+        {
+          "command": "fontPreview.previewFontAtCursor",
+          "when": "editorIsOpen"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "fontPreview.previewFontAtCursor",
+          "when": "editorTextFocus",
+          "group": "9_fontPreview@1"
+        },
+        {
+          "command": "fontPreview.insertIcon",
+          "when": "editorTextFocus && !editorReadonly",
+          "group": "9_fontPreview@2"
         }
       ]
     },
+    "keybindings": [
+      {
+        "command": "fontPreview.open",
+        "key": "ctrl+alt+shift+f",
+        "mac": "cmd+alt+shift+f"
+      }
+    ],
     "customEditors": [
       {
         "viewType": "fontPreview.fontFile",
