@@ -1,0 +1,13 @@
+{
+  "description": "Schriftarten und Icon-Fonts durchsuchen, testen und vergleichen: Google Fonts, Font Awesome und mehr, lokale Schriftdateien, Webfonts und Systemschriftarten, auf einer Typografieseite im Bootstrap-Stil.",
+  "command.open": "Font Preview öffnen",
+  "command.addFontFile": "Schriftdatei hinzufügen…",
+  "command.insertIcon": "Symbol einfügen…",
+  "command.previewFontAtCursor": "Vorschau der Schriftart unter dem Cursor",
+  "command.previewFontFile": "Vorschau der Schriftart",
+  "command.refreshCatalog": "Google Fonts-Katalog aktualisieren",
+  "configuration.sampleText": "Standardbeispieltext für die Vorschau.",
+  "configuration.catalogUrl": "URL der Fontsource-Schriftartenliste, die als Google Fonts-Katalog verwendet wird.",
+  "configuration.showStatusBarItem": "Eine Schaltfläche in der Statusleiste anzeigen, die die Font Preview öffnet.",
+  "configuration.projectFontFolder": "Arbeitsbereichsordner, in den „Zum Projekt hinzufügen“ Schriftarten herunterlädt. Jede Schriftart erhält einen eigenen Unterordner mit einem Stylesheet."
+}

@@ -1,0 +1,14 @@
+.vscode/**
+src/**
+test/**
+out/test/**
+**/*.map
+**/tsconfig.json
+.gitignore
+.github/**
+.nvmrc
+images/screenshots/**
+images/icon.svg
+scripts/**
+.githooks/**
+.eslintrc.json

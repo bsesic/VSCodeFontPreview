@@ -1,0 +1,192 @@
+{
+  "name": "vscode-font-preview",
+  "displayName": "VSCodeFontPreview",
+  "description": "%description%",
+  "version": "0.4.0",
+  "publisher": "bsesic",
+  "license": "MIT",
+  "icon": "images/icon.png",
+  "galleryBanner": {
+    "color": "#1F2A44",
+    "theme": "dark"
+  },
+  "sponsor": {
+    "url": "https://www.buymeacoffee.com/bsesic"
+  },
+  "homepage": "https://github.com/bsesic/VSCodeFontPreview#readme",
+  "bugs": {
+    "url": "https://github.com/bsesic/VSCodeFontPreview/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bsesic/VSCodeFontPreview.git"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "font",
+    "fonts",
+    "google fonts",
+    "typography",
+    "preview",
+    "icons",
+    "font awesome",
+    "material symbols",
+    "icon font",
+    "glyphs",
+    "unicode",
+    "character map",
+    "css"
+  ],
+  "main": "./out/src/extension.js",
+  "l10n": "./l10n",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "fontPreview.open",
+        "title": "%command.open%",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.addFontFile",
+        "title": "%command.addFontFile%",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.insertIcon",
+        "title": "%command.insertIcon%",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.previewFontAtCursor",
+        "title": "%command.previewFontAtCursor%",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.previewFontFile",
+        "title": "%command.previewFontFile%",
+        "category": "Font Preview"
+      },
+      {
+        "command": "fontPreview.refreshCatalog",
+        "title": "%command.refreshCatalog%",
+        "category": "Font Preview"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "fontPreview.previewFontFile",
+          "when": "resourceExtname =~ /^\\.(ttf|otf|woff2?|ttc)$/i",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "fontPreview.previewFontFile",
+          "when": "false"
+        },
+        {
+          "command": "fontPreview.previewFontAtCursor",
+          "when": "editorIsOpen"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "fontPreview.previewFontAtCursor",
+          "when": "editorTextFocus",
+          "group": "9_fontPreview@1"
+        },
+        {
+          "command": "fontPreview.insertIcon",
+          "when": "editorTextFocus && !editorReadonly",
+          "group": "9_fontPreview@2"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "fontPreview.open",
+        "key": "ctrl+alt+shift+f",
+        "mac": "cmd+alt+shift+f"
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "fontPreview.fontFile",
+        "displayName": "Font Preview",
+        "selector": [
+          {
+            "filenamePattern": "*.ttf"
+          },
+          {
+            "filenamePattern": "*.otf"
+          },
+          {
+            "filenamePattern": "*.woff"
+          },
+          {
+            "filenamePattern": "*.woff2"
+          },
+          {
+            "filenamePattern": "*.ttc"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "configuration": {
+      "title": "Font Preview",
+      "properties": {
+        "fontPreview.sampleText": {
+          "type": "string",
+          "default": "The quick brown fox jumps over the lazy dog. Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich.",
+          "description": "%configuration.sampleText%"
+        },
+        "fontPreview.catalogUrl": {
+          "type": "string",
+          "default": "https://api.fontsource.org/v1/fonts",
+          "description": "%configuration.catalogUrl%"
+        },
+        "fontPreview.showStatusBarItem": {
+          "type": "boolean",
+          "default": true,
+          "description": "%configuration.showStatusBarItem%"
+        },
+        "fontPreview.projectFontFolder": {
+          "type": "string",
+          "default": "fonts",
+          "description": "%configuration.projectFontFolder%"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src test media scripts --ext ts,js",
+    "l10n": "node scripts/extract-l10n.js",
+    "test": "npm run compile && node --test out/test/",
+    "package": "vsce package",
+    "build": "npm test && npm run package",
+    "vscode:prepublish": "npm run compile",
+    "precommit": "npm run lint && npm test"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "1.90.0",
+    "@typescript-eslint/eslint-plugin": "^8.71.2",
+    "@typescript-eslint/parser": "^8.71.2",
+    "@vscode/vsce": "^3.2.0",
+    "eslint": "^8.57.1",
+    "typescript": "^5.6.0"
+  }
+}

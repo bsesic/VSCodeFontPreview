@@ -1,0 +1,13 @@
+{
+  "description": "Browse, test and compare fonts and icon fonts: Google Fonts, Font Awesome and more, local font files, web fonts and system fonts, on a Bootstrap-style typography page.",
+  "command.open": "Open Font Preview",
+  "command.addFontFile": "Add Font File…",
+  "command.insertIcon": "Insert Icon…",
+  "command.previewFontAtCursor": "Preview Font Under Cursor",
+  "command.previewFontFile": "Preview Font",
+  "command.refreshCatalog": "Refresh Google Fonts Catalog",
+  "configuration.sampleText": "Default sample text used in the preview.",
+  "configuration.catalogUrl": "URL of the Fontsource font list used as the Google Fonts catalog.",
+  "configuration.showStatusBarItem": "Show a status bar button that opens the Font Preview.",
+  "configuration.projectFontFolder": "Workspace folder that \"Add to project\" downloads fonts into. Each font gets its own subfolder with a stylesheet."
+}

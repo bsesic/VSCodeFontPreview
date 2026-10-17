@@ -1,0 +1,1092 @@
+/* Chrome follows the VS Code theme; the typography page has its own themes. */
+
+:root {
+  --gap: 12px;
+  --radius: 4px;
+  --border: var(--vscode-panel-border, rgba(128, 128, 128, 0.35));
+  --muted: var(--vscode-descriptionForeground);
+  --accent: var(--vscode-focusBorder);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--vscode-foreground);
+  background: var(--vscode-editor-background);
+  font-family: var(--vscode-font-family);
+  font-size: var(--vscode-font-size);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+h2 {
+  font-size: 1.1em;
+  margin: 24px 0 8px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.small {
+  font-size: 0.9em;
+}
+
+.error {
+  color: var(--vscode-errorForeground);
+}
+
+/* ---------------------------------------------------------------- controls */
+
+button {
+  font: inherit;
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+  border: 1px solid var(--vscode-button-border, transparent);
+  border-radius: var(--radius);
+  padding: 4px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--vscode-button-hoverBackground);
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button.secondary,
+button.role,
+button.icon {
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
+}
+
+button.secondary:hover,
+button.role:hover,
+button.icon:hover {
+  background: var(--vscode-button-secondaryHoverBackground);
+}
+
+button.role.active,
+button.icon.active {
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+}
+
+button.icon {
+  min-width: 28px;
+  padding: 4px 6px;
+}
+
+button.danger:hover {
+  color: var(--vscode-errorForeground);
+}
+
+button.link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--vscode-textLink-foreground);
+  text-align: left;
+}
+
+button.link:hover {
+  background: none;
+  text-decoration: underline;
+}
+
+input[type='text'],
+input[type='search'],
+input[type='url'],
+textarea,
+select {
+  font: inherit;
+  color: var(--vscode-input-foreground);
+  background: var(--vscode-input-background);
+  border: 1px solid var(--vscode-input-border, var(--border));
+  border-radius: var(--radius);
+  padding: 4px 6px;
+  min-width: 0;
+}
+
+select {
+  color: var(--vscode-dropdown-foreground);
+  background: var(--vscode-dropdown-background);
+  border-color: var(--vscode-dropdown-border, var(--border));
+}
+
+input[type='range'] {
+  accent-color: var(--vscode-button-background);
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field > span {
+  color: var(--muted);
+  font-size: 0.9em;
+}
+
+.field.inline {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.field.inline > span {
+  white-space: nowrap;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.badge {
+  font-size: 0.8em;
+  padding: 1px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.badge.status-ok {
+  color: var(--vscode-testing-iconPassed, #3fb950);
+  border-color: currentColor;
+}
+
+.badge.status-error {
+  color: var(--vscode-errorForeground);
+  border-color: currentColor;
+}
+
+/* ---------------------------------------------------------------- layout */
+
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  color: var(--vscode-foreground);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 6px 12px;
+  opacity: 0.75;
+}
+
+.tab:hover {
+  background: none;
+  opacity: 1;
+}
+
+.tab.active {
+  opacity: 1;
+  border-bottom-color: var(--vscode-panelTitle-activeBorder, var(--accent));
+}
+
+.count {
+  margin-left: 6px;
+  font-size: 0.8em;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: var(--vscode-badge-background);
+  color: var(--vscode-badge-foreground);
+}
+
+.spacer {
+  flex: 1;
+}
+
+
+.content {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+.fonts-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 760px) {
+  .fonts-layout,
+  .typo-layout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+.segmented {
+  display: inline-flex;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.segmented button {
+  border: 0;
+  border-radius: 0;
+  color: var(--vscode-foreground);
+  background: none;
+}
+
+.segmented button.active {
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+}
+
+.filters,
+.add-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.filters input[type='search'],
+.add-row input {
+  flex: 1 1 220px;
+}
+
+.add-row input.narrow {
+  flex: 0 1 220px;
+}
+
+.add-panel {
+  margin-bottom: 16px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* ---------------------------------------------------------------- cards */
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.card header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.35em;
+  font-weight: 400;
+}
+
+.card-sample {
+  margin: 8px 0;
+  font-size: 26px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.more {
+  margin-top: 12px;
+}
+
+.system-filter {
+  width: 100%;
+  margin: 8px 0;
+}
+
+.system-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.system-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.3em;
+}
+
+.system-list button {
+  font-size: var(--vscode-font-size);
+}
+
+/* ---------------------------------------------------------------- collection */
+
+.collection {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.collection h2 {
+  margin: 0;
+}
+
+.chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chips li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 1.15em;
+}
+
+/* ---------------------------------------------------------------- typography page */
+
+.typo-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.typo-controls {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.typo-page {
+  --size: 16px;
+  --line-height: 1.5;
+  --letter-spacing: 0;
+  --heading-weight: 600;
+  --body-weight: 400;
+  --page-bg: #fff;
+  --page-fg: #212529;
+  --page-muted: #6c757d;
+  --page-border: #dee2e6;
+  --page-mark: #fff3cd;
+  --page-code: #d63384;
+  --page-pre: #f8f9fa;
+  --page-primary: #0d6efd;
+  --page-primary-fg: #fff;
+
+  padding: 32px 40px;
+  border-radius: 6px;
+  border: 1px solid var(--page-border);
+  background: var(--page-bg);
+  color: var(--page-fg);
+  font-family: var(--body-font);
+  font-size: var(--size);
+  font-weight: var(--body-weight);
+  line-height: var(--line-height);
+  letter-spacing: var(--letter-spacing);
+  max-width: 960px;
+}
+
+.typo-page.theme-dark {
+  --page-bg: #212529;
+  --page-fg: #dee2e6;
+  --page-muted: #adb5bd;
+  --page-border: #495057;
+  --page-mark: #664d03;
+  --page-code: #e685b5;
+  --page-pre: #2b3035;
+  --page-primary: #6ea8fe;
+  --page-primary-fg: #000;
+}
+
+.typo-page.theme-editor {
+  --page-bg: var(--vscode-editor-background);
+  --page-fg: var(--vscode-editor-foreground);
+  --page-muted: var(--vscode-descriptionForeground);
+  --page-border: var(--border);
+  --page-mark: var(--vscode-editor-findMatchHighlightBackground);
+  --page-code: var(--vscode-textPreformat-foreground);
+  --page-pre: var(--vscode-textCodeBlock-background);
+  --page-primary: var(--vscode-button-background);
+  --page-primary-fg: var(--vscode-button-foreground);
+}
+
+.typo-page section {
+  margin-bottom: 40px;
+}
+
+.typo-page .section-title {
+  font-family: var(--vscode-font-family);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--page-muted);
+  margin: 0 0 16px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--page-border);
+}
+
+.typo-page :is(h1, h2, h3, h4, h5, h6):not(.section-title),
+.typo-page [class^='display-'] {
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  line-height: 1.2;
+  margin: 0 0 0.5rem;
+}
+
+.typo-page h1 { font-size: calc(var(--size) * 2.5); }
+.typo-page h2:not(.section-title) { font-size: calc(var(--size) * 2); }
+.typo-page h3 { font-size: calc(var(--size) * 1.75); }
+.typo-page h4 { font-size: calc(var(--size) * 1.5); }
+.typo-page h5 { font-size: calc(var(--size) * 1.25); }
+.typo-page h6 { font-size: var(--size); }
+
+.typo-page [class^='display-'] {
+  font-weight: 300;
+}
+.typo-page .display-1 { font-size: calc(var(--size) * 5); }
+.typo-page .display-2 { font-size: calc(var(--size) * 4.5); }
+.typo-page .display-3 { font-size: calc(var(--size) * 4); }
+.typo-page .display-4 { font-size: calc(var(--size) * 3.5); }
+.typo-page .display-5 { font-size: calc(var(--size) * 3); }
+.typo-page .display-6 { font-size: calc(var(--size) * 2.5); }
+
+.typo-page .text-muted,
+.typo-page small {
+  color: var(--page-muted);
+}
+
+.typo-page h3 small {
+  font-size: 0.65em;
+}
+
+.typo-page p {
+  margin: 0 0 1rem;
+  max-width: 70ch;
+}
+
+.typo-page .lead {
+  font-size: calc(var(--size) * 1.25);
+  font-weight: 300;
+}
+
+.typo-page mark {
+  background: var(--page-mark);
+  color: inherit;
+  padding: 0.1875em;
+}
+
+.typo-page abbr[title] {
+  text-decoration: underline dotted;
+  cursor: help;
+}
+
+.typo-page code,
+.typo-page kbd,
+.typo-page pre {
+  font-family: var(--mono-font);
+  font-size: 0.875em;
+}
+
+.typo-page code {
+  color: var(--page-code);
+}
+
+.typo-page kbd {
+  padding: 0.1875rem 0.375rem;
+  color: var(--page-bg);
+  background: var(--page-fg);
+  border-radius: 0.25rem;
+}
+
+.typo-page pre {
+  padding: 16px;
+  background: var(--page-pre);
+  border-radius: 6px;
+  overflow: auto;
+}
+
+.typo-page pre code {
+  color: inherit;
+}
+
+.typo-page .blockquote {
+  margin: 0 0 0.5rem;
+  font-size: calc(var(--size) * 1.25);
+}
+
+.typo-page figure {
+  margin: 0;
+}
+
+.typo-page .blockquote-footer {
+  color: var(--page-muted);
+  font-size: 0.875em;
+}
+
+.typo-page .blockquote-footer::before {
+  content: '— ';
+}
+
+.typo-page .columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.typo-page dt {
+  font-weight: 700;
+}
+
+.typo-page dd {
+  margin: 0 0 0.5rem;
+}
+
+.typo-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.typo-page th,
+.typo-page td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid var(--page-border);
+}
+
+.typo-page .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.typo-page .form-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 360px;
+}
+
+.typo-page .form-demo label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.typo-page .form-demo input {
+  font: inherit;
+  padding: 6px 12px;
+  color: var(--page-fg);
+  background: var(--page-bg);
+  border: 1px solid var(--page-border);
+  border-radius: 6px;
+}
+
+.typo-page .btn {
+  font: inherit;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: var(--page-primary-fg);
+  background: var(--page-primary);
+  border: 1px solid var(--page-primary);
+}
+
+.typo-page .btn-outline {
+  color: var(--page-primary);
+  background: transparent;
+}
+
+/* ---------------------------------------------------------------- inspect */
+
+.inspect-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.specimen {
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 16px 0;
+  overflow-wrap: anywhere;
+}
+
+.details {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 16px;
+  margin: 0;
+}
+
+.details dt {
+  color: var(--muted);
+}
+
+.details dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.weight-row,
+.size-row {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 12px;
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.weight-row > span:nth-child(2),
+.size-row > span:nth-child(2) {
+  font-size: 22px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.size-row > span:nth-child(2) {
+  line-height: 1.25;
+}
+
+.axes-sample {
+  font-size: 40px;
+  margin: 12px 0;
+}
+
+.axes .field.inline {
+  max-width: 480px;
+}
+
+.glyph-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.glyph-head h2 {
+  margin-right: auto;
+}
+
+.glyph-area {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.glyph-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 4px;
+}
+
+.glyph {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 2px 2px;
+  color: var(--vscode-foreground);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+}
+
+.glyph:hover {
+  background: var(--vscode-list-hoverBackground);
+}
+
+.glyph-char {
+  font-size: 30px;
+  line-height: 1.3;
+  min-height: 39px;
+}
+
+.glyph-code {
+  font-family: var(--vscode-editor-font-family, monospace);
+  font-size: 10px;
+  color: var(--muted);
+}
+
+.glyph-detail {
+  position: sticky;
+  top: 0;
+  width: 220px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.glyph-detail[hidden] {
+  display: none;
+}
+
+.glyph-big {
+  font-size: 120px;
+  line-height: 1.2;
+  text-align: center;
+  border: 1px dashed var(--border);
+}
+
+/* ---------------------------------------------------------------- compare */
+
+.compare-rows {
+  --compare-size: 32px;
+  --compare-weight: 400;
+}
+
+.compare-row {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.compare-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.compare-text {
+  margin: 6px 0 0;
+  font-size: var(--compare-size);
+  font-weight: var(--compare-weight);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+/* ---------------------------------------------------------------- sample text */
+
+.sample-box {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.sample-box > input,
+.sample-box > textarea {
+  flex: 1;
+}
+
+.sample-box textarea {
+  font-size: 1.15em;
+  line-height: 1.45;
+  min-height: 5.5em;
+  resize: vertical;
+}
+
+.typo-controls .sample-box {
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+}
+
+.typo-controls .sample-box textarea {
+  font-size: 1em;
+  min-height: 7em;
+}
+
+.text-test .filters {
+  gap: 16px;
+}
+
+.text-preview {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 16px 0 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.typo-page .sample-paragraph,
+.compare-text,
+.axes-sample {
+  white-space: pre-line;
+}
+
+.segmented.compact {
+  margin-bottom: 0;
+}
+
+.segmented.compact button {
+  padding: 3px 8px;
+}
+
+/* ---------------------------------------------------------------- inserting */
+
+.insert-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.glyph.selected,
+.fp-icon-cell.selected {
+  outline: 2px solid var(--accent);
+  outline-offset: -1px;
+}
+
+.glyph-title {
+  margin: 0;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.snippets {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.insert-main {
+  margin-bottom: 4px;
+}
+
+.snippet {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'label actions' 'code actions';
+  column-gap: 6px;
+  align-items: center;
+}
+
+.snippet > span {
+  grid-area: label;
+}
+
+.snippet > code {
+  grid-area: code;
+  font-family: var(--vscode-editor-font-family, monospace);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+  color: var(--vscode-textPreformat-foreground);
+}
+
+.snippet-actions {
+  grid-area: actions;
+  display: flex;
+  gap: 2px;
+}
+
+.glyph-detail {
+  width: 260px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------- icons */
+
+.fp-icon-search {
+  flex: 1 1 220px;
+}
+
+.fp-icon-grid {
+  --icon-size: 28px;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(max(96px, calc(var(--icon-size) * 2.4)), 1fr));
+  gap: 4px;
+  align-content: start;
+}
+
+.fp-icon-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 4px 6px;
+  min-width: 0;
+  color: var(--vscode-foreground);
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.fp-icon-cell:hover {
+  background: var(--vscode-list-hoverBackground);
+}
+
+.fp-icon-glyph {
+  line-height: 1;
+  font-style: normal;
+  font-feature-settings: 'liga';
+}
+
+.fp-icon-name {
+  max-width: 100%;
+  font-size: 10px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fp-icon-detail .glyph-big {
+  line-height: 1.4;
+}
+
+@media (max-width: 760px) {
+  .glyph-area {
+    flex-direction: column-reverse;
+  }
+
+  .glyph-detail {
+    position: static;
+    width: 100%;
+  }
+}
+
+a {
+  color: var(--vscode-textLink-foreground);
+}
+
+a:hover {
+  color: var(--vscode-textLink-activeForeground);
+}
+
+.typo-page .sample-heading {
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  font-size: calc(var(--size) * 1.5);
+  line-height: 1.3;
+}
+
+.typo-page .sample-paragraph {
+  max-width: none;
+}
+
+/* ---------------------------------------------------------------- OpenType features */
+
+.features {
+  margin: 8px 0 4px;
+}
+
+.features-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.features-head h3 {
+  margin: 0;
+  font-size: 1em;
+}
+
+.feature-css {
+  font-family: var(--vscode-editor-font-family, monospace);
+  font-size: 0.9em;
+  color: var(--vscode-textPreformat-foreground);
+  overflow-wrap: anywhere;
+}
+
+.feature-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+button.feature {
+  color: var(--vscode-button-secondaryForeground);
+  background: var(--vscode-button-secondaryBackground);
+  padding: 2px 8px;
+  font-size: 0.9em;
+}
+
+button.feature:hover {
+  background: var(--vscode-button-secondaryHoverBackground);
+}
+
+button.feature.active {
+  color: var(--vscode-button-foreground);
+  background: var(--vscode-button-background);
+}
+
+.feature-tag {
+  font-family: var(--vscode-editor-font-family, monospace);
+  opacity: 0.8;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.button-row > button {
+  flex: 1 1 auto;
+}
