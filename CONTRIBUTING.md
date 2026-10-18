@@ -128,7 +128,7 @@ they do not show private paths, project names or other extensions.
 4. Publish to the marketplace:
 
    ```bash
-   npm run package                 # creates vscode-font-studio-<version>.vsix
+   npm run package                 # creates vscode-font-preview-<version>.vsix
    npx vsce login bsesic           # once, with an Azure DevOps personal access token
    npx vsce publish
    ```
