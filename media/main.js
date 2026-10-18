@@ -1,5 +1,5 @@
 // @ts-check
-/* Font Preview webview. Plain DOM, no framework. */
+/* Font Studio webview. Plain DOM, no framework. */
 (function () {
   // @ts-expect-error acquireVsCodeApi is injected by VS Code
   const vscode = acquireVsCodeApi();

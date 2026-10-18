@@ -1,16 +1,16 @@
 <p align="center">
-  <img src="images/icon.png" alt="Font Preview" width="128" height="128">
+  <img src="images/icon.png" alt="Font Studio" width="128" height="128">
 </p>
 
-<h1 align="center">Font Preview</h1>
+<h1 align="center">Font Studio</h1>
 
 <p align="center">
   <strong>Find, test and compare fonts and icon fonts without leaving VS Code, and insert icons and glyphs straight into your code.</strong>
 </p>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-preview"><img src="https://badgen.net/vs-marketplace/v/bsesic.vscode-font-preview?label=Marketplace&color=2A9D8F" alt="Marketplace version"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-preview&ssr=false#review-details"><img src="https://vsmarketplacebadges.dev/rating-short/bsesic.vscode-font-preview.svg?color=F4A261" alt="Rating"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-studio"><img src="https://badgen.net/vs-marketplace/v/bsesic.vscode-font-studio?label=Marketplace&color=2A9D8F" alt="Marketplace version"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-studio&ssr=false#review-details"><img src="https://vsmarketplacebadges.dev/rating-short/bsesic.vscode-font-studio.svg?color=F4A261" alt="Rating"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/bsesic/VSCodeFontPreview?color=E76F51" alt="License"></a>
 </p>
 
@@ -19,9 +19,9 @@
   <a href="https://github.com/sponsors/bsesic"><img src="https://img.shields.io/badge/GitHub_Sponsors-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="48"></a>
 </p>
 
-![Font Preview: Bootstrap-style typography page with separate fonts for headings, body text and code](images/screenshots/typography.png)
+![Font Studio: Bootstrap-style typography page with separate fonts for headings, body text and code](images/screenshots/typography.png)
 
-## ✨ Why Font Preview?
+## ✨ Why Font Studio?
 
 - 🔤 **All Google Fonts at hand:** search about 2,000 families by name, category and script, with live previews
   of your own text.
@@ -40,7 +40,7 @@
 
 ## 🚀 Quick start
 
-1. Install **Font Preview** from the Visual Studio Marketplace.
+1. Install **Font Studio** from the Visual Studio Marketplace.
 2. Click **Fonts** in the status bar or press `Ctrl+Alt+Shift+F` (`Cmd+Alt+Shift+F` on macOS).
    Right-click a `font-family` in your code and choose **Preview Font Under Cursor** to inspect it directly.
 3. Star fonts (☆) or assign them with **H**, **Body** and **Code**, then open the **Typography** tab.
@@ -170,7 +170,7 @@ editor, the text is copied to the clipboard.
 
 ## 🌍 Languages
 
-Font Preview follows the display language of VS Code (**Configure Display Language**) and is available in:
+Font Studio follows the display language of VS Code (**Configure Display Language**) and is available in:
 
 English · Deutsch · Français · Español · Italiano · Português (Brasil) · 日本語 · 한국어 · 简体中文 · 繁體中文 ·
 Русский · Polski · Čeština · Türkçe
@@ -179,12 +179,12 @@ Found a translation that could be better? Improvements are welcome, see [CONTRIB
 
 ## ⌨️ Commands and shortcuts
 
-All commands are available in the command palette under **Font Preview**. The **Fonts** button in the status
+All commands are available in the command palette under **Font Studio**. The **Fonts** button in the status
 bar opens the preview with one click.
 
 | Command | Shortcut / menu |
 | --- | --- |
-| Open Font Preview | `Ctrl+Alt+Shift+F` / `Cmd+Alt+Shift+F` |
+| Open Font Studio | `Ctrl+Alt+Shift+F` / `Cmd+Alt+Shift+F` |
 | Preview Font Under Cursor: inspects the family of a `font-family`, `font` or `fontFamily` declaration, or the quoted name at the cursor | Editor context menu |
 | Insert Icon... | Editor context menu |
 | Add Font File... | Opens the panel and a file picker |
@@ -211,7 +211,7 @@ Material Symbols, from Google's GitHub repository. Local font files never leave 
 
 ## ☕ Support
 
-Font Preview is free and open source. If it saves you time, you can support its development:
+Font Studio is free and open source. If it saves you time, you can support its development:
 
 <a href="https://www.buymeacoffee.com/bsesic"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" height="48"></a>
 <a href="https://github.com/sponsors/bsesic"><img src="https://img.shields.io/badge/GitHub_Sponsors-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="48"></a>
@@ -251,7 +251,7 @@ DAfwox4hQ7dFB4t914ckMbEiqFYWgHpTwTVyGiy4eo7D
 ```
 
 A ⭐ on [GitHub](https://github.com/bsesic/VSCodeFontPreview) or a review on the
-[Marketplace](https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-preview&ssr=false#review-details)
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-studio&ssr=false#review-details)
 helps too!
 
 ## 🤝 Contributing

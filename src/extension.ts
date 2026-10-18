@@ -14,7 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   const statusItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
   statusItem.text = `$(text-size) ${vscode.l10n.t('Fonts')}`;
-  statusItem.tooltip = vscode.l10n.t('Open Font Preview');
+  statusItem.tooltip = vscode.l10n.t('Open Font Studio');
   statusItem.command = 'fontPreview.open';
   const updateStatusItem = (): void => {
     if (vscode.workspace.getConfiguration('fontPreview').get<boolean>('showStatusBarItem', true)) {
@@ -30,7 +30,7 @@ export function activate(context: vscode.ExtensionContext) {
       panel.reveal();
       return panel;
     }
-    panel = vscode.window.createWebviewPanel('fontPreview', 'Font Preview', vscode.ViewColumn.Active, {
+    panel = vscode.window.createWebviewPanel('fontPreview', 'Font Studio', vscode.ViewColumn.Active, {
       ...webviewOptions(context.extensionUri),
       retainContextWhenHidden: true,
     });
@@ -80,7 +80,7 @@ export function activate(context: vscode.ExtensionContext) {
         ? familyAtCursor(document.lineAt(selection.active.line).text, selection.active.character)
         : familyAtCursor(document.getText(selection), 0);
       if (!family) {
-        vscode.window.showWarningMessage(vscode.l10n.t('Font Preview: no font family found at the cursor.'));
+        vscode.window.showWarningMessage(vscode.l10n.t('Font Studio: no font family found at the cursor.'));
         return;
       }
       runInPanel({ type: 'command', command: 'inspectFamily', family });
@@ -94,10 +94,10 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('fontPreview.refreshCatalog', async () => {
       try {
         const fonts = await sources.catalog(true);
-        vscode.window.showInformationMessage(vscode.l10n.t('Font Preview: catalog refreshed ({0} fonts).', fonts.length));
+        vscode.window.showInformationMessage(vscode.l10n.t('Font Studio: catalog refreshed ({0} fonts).', fonts.length));
         panel?.webview.postMessage({ type: 'catalog', fonts });
       } catch (err) {
-        vscode.window.showErrorMessage(`Font Preview: ${(err as Error).message}`);
+        vscode.window.showErrorMessage(`Font Studio: ${(err as Error).message}`);
       }
     }),
     vscode.window.registerCustomEditorProvider(FontFileEditor.viewType, new FontFileEditor(context, sources), {

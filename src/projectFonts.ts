@@ -137,7 +137,7 @@ export async function addFontToProject(font: ProjectFontRequest): Promise<void> 
       : folders[0];
   if (!workspace) {
     if (!folders.length) {
-      vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: open a folder to add fonts to a project.'));
+      vscode.window.showErrorMessage(vscode.l10n.t('Font Studio: open a folder to add fonts to a project.'));
     }
     return;
   }
@@ -189,14 +189,14 @@ export async function addFontToProject(font: ProjectFontRequest): Promise<void> 
   const openStylesheet = vscode.l10n.t('Open Stylesheet');
   const choice = await vscode.window.showInformationMessage(
     files.length === 1
-      ? vscode.l10n.t('Font Preview: added 1 file and {0}.', relative)
-      : vscode.l10n.t('Font Preview: added {0} files and {1}.', files.length, relative),
+      ? vscode.l10n.t('Font Studio: added 1 file and {0}.', relative)
+      : vscode.l10n.t('Font Studio: added {0} files and {1}.', files.length, relative),
     insertImport,
     openStylesheet,
   );
   if (choice === insertImport) {
     if (!(await insertText(importRule(stylesheet.fsPath, targetPath())))) {
-      vscode.window.showWarningMessage(vscode.l10n.t('Font Preview: no open text editor to insert into.'));
+      vscode.window.showWarningMessage(vscode.l10n.t('Font Studio: no open text editor to insert into.'));
     }
   } else if (choice === openStylesheet) {
     await vscode.window.showTextDocument(stylesheet);
