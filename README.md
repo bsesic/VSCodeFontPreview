@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-studio"><img src="https://badgen.net/vs-marketplace/v/bsesic.vscode-font-studio?label=Marketplace&color=2A9D8F" alt="Marketplace version"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-studio&ssr=false#review-details"><img src="https://vsmarketplacebadges.dev/rating-short/bsesic.vscode-font-studio.svg?color=F4A261" alt="Rating"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-preview"><img src="https://badgen.net/vs-marketplace/v/bsesic.vscode-font-preview?label=Marketplace&color=2A9D8F" alt="Marketplace version"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-preview&ssr=false#review-details"><img src="https://vsmarketplacebadges.dev/rating-short/bsesic.vscode-font-preview.svg?color=F4A261" alt="Rating"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/bsesic/VSCodeFontPreview?color=E76F51" alt="License"></a>
 </p>
 
@@ -251,7 +251,7 @@ DAfwox4hQ7dFB4t914ckMbEiqFYWgHpTwTVyGiy4eo7D
 ```
 
 A ⭐ on [GitHub](https://github.com/bsesic/VSCodeFontPreview) or a review on the
-[Marketplace](https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-studio&ssr=false#review-details)
+[Marketplace](https://marketplace.visualstudio.com/items?itemName=bsesic.vscode-font-preview&ssr=false#review-details)
 helps too!
 
 ## 🤝 Contributing
