@@ -1,6 +1,6 @@
 {
   "description": "Przeglądaj, testuj i porównuj czcionki oraz czcionki ikon: Google Fonts, Font Awesome i inne, lokalne pliki czcionek, czcionki internetowe i systemowe, na stronie typograficznej w stylu Bootstrap.",
-  "command.open": "Otwórz Font Preview",
+  "command.open": "Otwórz Font Studio",
   "command.addFontFile": "Dodaj plik czcionki…",
   "command.insertIcon": "Wstaw ikonę…",
   "command.previewFontAtCursor": "Podgląd czcionki pod kursorem",
@@ -8,6 +8,6 @@
   "command.refreshCatalog": "Odśwież katalog Google Fonts",
   "configuration.sampleText": "Domyślny tekst przykładowy używany w podglądzie.",
   "configuration.catalogUrl": "Adres URL listy czcionek Fontsource używanej jako katalog Google Fonts.",
-  "configuration.showStatusBarItem": "Pokaż na pasku stanu przycisk, który otwiera Font Preview.",
+  "configuration.showStatusBarItem": "Pokaż na pasku stanu przycisk, który otwiera Font Studio.",
   "configuration.projectFontFolder": "Folder obszaru roboczego, do którego \"Dodaj do projektu…\" pobiera czcionki. Każda czcionka otrzymuje własny podfolder z arkuszem stylów."
 }

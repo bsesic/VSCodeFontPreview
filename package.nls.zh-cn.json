@@ -1,6 +1,6 @@
 {
   "description": "浏览、测试和比较字体与图标字体: Google Fonts、Font Awesome 等，本地字体文件、Web 字体和系统字体，均可在 Bootstrap 风格的排版页面中查看。",
-  "command.open": "打开 Font Preview",
+  "command.open": "打开 Font Studio",
   "command.addFontFile": "添加字体文件…",
   "command.insertIcon": "插入图标…",
   "command.previewFontAtCursor": "预览光标处的字体",
@@ -8,6 +8,6 @@
   "command.refreshCatalog": "刷新 Google Fonts 目录",
   "configuration.sampleText": "预览中使用的默认示例文本。",
   "configuration.catalogUrl": "用作 Google Fonts 目录的 Fontsource 字体列表的 URL。",
-  "configuration.showStatusBarItem": "显示用于打开 Font Preview 的状态栏按钮。",
+  "configuration.showStatusBarItem": "显示用于打开 Font Studio 的状态栏按钮。",
   "configuration.projectFontFolder": "“添加到项目”将字体下载到的工作区文件夹。每种字体都有自己的子文件夹，其中包含一个样式表。"
 }

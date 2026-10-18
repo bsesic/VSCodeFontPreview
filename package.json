@@ -1,6 +1,6 @@
 {
-  "name": "vscode-font-preview",
-  "displayName": "Font Preview",
+  "name": "vscode-font-studio",
+  "displayName": "Font Studio",
   "description": "%description%",
   "version": "0.4.1",
   "publisher": "bsesic",
@@ -53,32 +53,32 @@
       {
         "command": "fontPreview.open",
         "title": "%command.open%",
-        "category": "Font Preview"
+        "category": "Font Studio"
       },
       {
         "command": "fontPreview.addFontFile",
         "title": "%command.addFontFile%",
-        "category": "Font Preview"
+        "category": "Font Studio"
       },
       {
         "command": "fontPreview.insertIcon",
         "title": "%command.insertIcon%",
-        "category": "Font Preview"
+        "category": "Font Studio"
       },
       {
         "command": "fontPreview.previewFontAtCursor",
         "title": "%command.previewFontAtCursor%",
-        "category": "Font Preview"
+        "category": "Font Studio"
       },
       {
         "command": "fontPreview.previewFontFile",
         "title": "%command.previewFontFile%",
-        "category": "Font Preview"
+        "category": "Font Studio"
       },
       {
         "command": "fontPreview.refreshCatalog",
         "title": "%command.refreshCatalog%",
-        "category": "Font Preview"
+        "category": "Font Studio"
       }
     ],
     "menus": {
@@ -122,7 +122,7 @@
     "customEditors": [
       {
         "viewType": "fontPreview.fontFile",
-        "displayName": "Font Preview",
+        "displayName": "Font Studio",
         "selector": [
           {
             "filenamePattern": "*.ttf"
@@ -144,7 +144,7 @@
       }
     ],
     "configuration": {
-      "title": "Font Preview",
+      "title": "Font Studio",
       "properties": {
         "fontPreview.sampleText": {
           "type": "string",

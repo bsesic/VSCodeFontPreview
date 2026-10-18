@@ -54,7 +54,7 @@ export function attachFontPreview(
   const addAndSend = async (ref: Omit<CustomFontRef, 'id'>) => {
     const loaded = await sources.load({ ...ref, id: 'pending' });
     if (loaded.error) {
-      vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: could not load {0}: {1}', ref.location, loaded.error));
+      vscode.window.showErrorMessage(vscode.l10n.t('Font Studio: could not load {0}: {1}', ref.location, loaded.error));
       return;
     }
     const stored = await sources.addCustom(ref);
@@ -110,7 +110,7 @@ export function attachFontPreview(
         try {
           await addFontToProject(message.font);
         } catch (err) {
-          vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: could not add {0} to the project: {1}', message.font.label, (err as Error).message));
+          vscode.window.showErrorMessage(vscode.l10n.t('Font Studio: could not add {0} to the project: {1}', message.font.label, (err as Error).message));
         }
         break;
       case 'fontsourceFaces':
@@ -129,10 +129,10 @@ export function attachFontPreview(
         break;
       case 'insert': {
         if (await insertText(message.text)) {
-          vscode.window.setStatusBarMessage(vscode.l10n.t('Font Preview: {0} inserted', message.what), 3000);
+          vscode.window.setStatusBarMessage(vscode.l10n.t('Font Studio: {0} inserted', message.what), 3000);
         } else {
           await vscode.env.clipboard.writeText(message.text);
-          vscode.window.showWarningMessage(vscode.l10n.t('Font Preview: no open text editor to insert into. The text was copied to the clipboard instead.'));
+          vscode.window.showWarningMessage(vscode.l10n.t('Font Studio: no open text editor to insert into. The text was copied to the clipboard instead.'));
         }
         sendTarget();
         break;
@@ -160,7 +160,7 @@ export function attachFontPreview(
         try {
           url = new URL(message.url.trim());
         } catch {
-          vscode.window.showErrorMessage(vscode.l10n.t('Font Preview: "{0}" is not a valid URL.', message.url));
+          vscode.window.showErrorMessage(vscode.l10n.t('Font Studio: "{0}" is not a valid URL.', message.url));
           break;
         }
         const isCss = /\.css$/i.test(url.pathname) || url.hostname === 'fonts.googleapis.com' || url.hostname === 'use.typekit.net';
@@ -187,7 +187,7 @@ export function attachFontPreview(
         break;
       case 'copy':
         await vscode.env.clipboard.writeText(message.text);
-        vscode.window.setStatusBarMessage(vscode.l10n.t('Font Preview: {0} copied to clipboard', message.what), 3000);
+        vscode.window.setStatusBarMessage(vscode.l10n.t('Font Studio: {0} copied to clipboard', message.what), 3000);
         break;
     }
   });
@@ -211,7 +211,7 @@ function renderHtml(webview: vscode.Webview, extensionUri: vscode.Uri): string {
 <meta http-equiv="Content-Security-Policy" content="${csp}">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="${media('main.css')}">
-<title>Font Preview</title>
+<title>Font Studio</title>
 </head>
 <body>
 <div id="app"></div>

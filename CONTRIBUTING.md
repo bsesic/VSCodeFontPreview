@@ -1,6 +1,6 @@
-# Contributing to Font Preview
+# Contributing to Font Studio
 
-Thanks for your interest in improving Font Preview! Bug reports, feature ideas and pull requests are
+Thanks for your interest in improving Font Studio! Bug reports, feature ideas and pull requests are
 welcome.
 
 - 🐞 **Bugs and ideas:** open an issue on [GitHub](https://github.com/bsesic/VSCodeFontPreview/issues).
@@ -128,7 +128,7 @@ they do not show private paths, project names or other extensions.
 4. Publish to the marketplace:
 
    ```bash
-   npm run package                 # creates vscode-font-preview-<version>.vsix
+   npm run package                 # creates vscode-font-studio-<version>.vsix
    npx vsce login bsesic           # once, with an Azure DevOps personal access token
    npx vsce publish
    ```
