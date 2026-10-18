@@ -45,7 +45,7 @@
    Right-click a `font-family` in your code and choose **Preview Font Under Cursor** to inspect it directly.
 3. Star fonts (☆) or assign them with **H**, **Body** and **Code**, then open the **Typography** tab.
 
-Opening a `.ttf`, `.otf`, `.woff`, `.woff2` or `.ttc` file shows it in the preview directly.
+Opening a `.ttf`, `.otf`, `.woff`, `.woff2` or `.ttc` file shows it in Font Studio directly.
 
 ## 🎯 Features
 
@@ -180,7 +180,7 @@ Found a translation that could be better? Improvements are welcome, see [CONTRIB
 ## ⌨️ Commands and shortcuts
 
 All commands are available in the command palette under **Font Studio**. The **Fonts** button in the status
-bar opens the preview with one click.
+bar opens Font Studio with one click.
 
 | Command | Shortcut / menu |
 | --- | --- |
@@ -188,7 +188,7 @@ bar opens the preview with one click.
 | Preview Font Under Cursor: inspects the family of a `font-family`, `font` or `fontFamily` declaration, or the quoted name at the cursor | Editor context menu |
 | Insert Icon... | Editor context menu |
 | Add Font File... | Opens the panel and a file picker |
-| Preview Font (explorer context menu of font files) | Opens a font file in the preview |
+| Preview Font (explorer context menu of font files) | Opens a font file in Font Studio |
 | Refresh Google Fonts Catalog | Reloads the font list |
 
 ## ⚙️ Settings
@@ -263,5 +263,5 @@ Want to contribute code? See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 [MIT](LICENSE) © Benjamin Schnabel
 
-Icon fonts and web fonts shown in the preview keep their own licenses (for example SIL OFL 1.1, MIT, Apache 2.0
+Icon fonts and web fonts shown in Font Studio keep their own licenses (for example SIL OFL 1.1, MIT, Apache 2.0
 or CC BY 4.0). Check the license of a font before you use it in your project.

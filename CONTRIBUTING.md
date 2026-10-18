@@ -117,7 +117,7 @@ inkscape images/icon.svg --export-type=png --export-filename=images/icon.png -w 
 
 ## Screenshots
 
-README screenshots live in `images/screenshots/`. Crop them to the relevant part of the preview and make sure
+README screenshots live in `images/screenshots/`. Crop them to the relevant part of Font Studio and make sure
 they do not show private paths, project names or other extensions.
 
 ## Releasing
