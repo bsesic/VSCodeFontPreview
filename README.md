@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="images/icon.png" alt="VSCodeFontPreview" width="128" height="128">
+  <img src="images/icon.png" alt="Font Preview" width="128" height="128">
 </p>
 
-<h1 align="center">VSCodeFontPreview</h1>
+<h1 align="center">Font Preview</h1>
 
 <p align="center">
   <strong>Find, test and compare fonts and icon fonts without leaving VS Code, and insert icons and glyphs straight into your code.</strong>
@@ -19,9 +19,9 @@
   <a href="https://github.com/sponsors/bsesic"><img src="https://img.shields.io/badge/GitHub_Sponsors-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="48"></a>
 </p>
 
-![VSCodeFontPreview: Bootstrap-style typography page with separate fonts for headings, body text and code](images/screenshots/typography.png)
+![Font Preview: Bootstrap-style typography page with separate fonts for headings, body text and code](images/screenshots/typography.png)
 
-## ✨ Why VSCodeFontPreview?
+## ✨ Why Font Preview?
 
 - 🔤 **All Google Fonts at hand:** search about 2,000 families by name, category and script, with live previews
   of your own text.
@@ -40,7 +40,7 @@
 
 ## 🚀 Quick start
 
-1. Install **VSCodeFontPreview** from the Visual Studio Marketplace.
+1. Install **Font Preview** from the Visual Studio Marketplace.
 2. Click **Fonts** in the status bar or press `Ctrl+Alt+Shift+F` (`Cmd+Alt+Shift+F` on macOS).
    Right-click a `font-family` in your code and choose **Preview Font Under Cursor** to inspect it directly.
 3. Star fonts (☆) or assign them with **H**, **Body** and **Code**, then open the **Typography** tab.
@@ -170,7 +170,7 @@ editor, the text is copied to the clipboard.
 
 ## 🌍 Languages
 
-VSCodeFontPreview follows the display language of VS Code (**Configure Display Language**) and is available in:
+Font Preview follows the display language of VS Code (**Configure Display Language**) and is available in:
 
 English · Deutsch · Français · Español · Italiano · Português (Brasil) · 日本語 · 한국어 · 简体中文 · 繁體中文 ·
 Русский · Polski · Čeština · Türkçe
@@ -211,7 +211,7 @@ Material Symbols, from Google's GitHub repository. Local font files never leave 
 
 ## ☕ Support
 
-VSCodeFontPreview is free and open source. If it saves you time, you can support its development:
+Font Preview is free and open source. If it saves you time, you can support its development:
 
 <a href="https://www.buymeacoffee.com/bsesic"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me a Coffee" height="48"></a>
 <a href="https://github.com/sponsors/bsesic"><img src="https://img.shields.io/badge/GitHub_Sponsors-Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=white" alt="GitHub Sponsors" height="48"></a>
