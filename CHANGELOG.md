@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1
+
+### Changed
+
+- The extension is called **Font Preview** in VS Code and on the Marketplace; `VSCodeFontPreview` is the name
+  of the repository.
+
 ## 0.4.0
 
 ### New

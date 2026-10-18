@@ -1,8 +1,8 @@
 {
   "name": "vscode-font-preview",
-  "displayName": "VSCodeFontPreview",
+  "displayName": "Font Preview",
   "description": "%description%",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "publisher": "bsesic",
   "license": "MIT",
   "icon": "images/icon.png",

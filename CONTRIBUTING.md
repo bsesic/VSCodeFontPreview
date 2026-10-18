@@ -1,6 +1,6 @@
-# Contributing to VSCodeFontPreview
+# Contributing to Font Preview
 
-Thanks for your interest in improving VSCodeFontPreview! Bug reports, feature ideas and pull requests are
+Thanks for your interest in improving Font Preview! Bug reports, feature ideas and pull requests are
 welcome.
 
 - 🐞 **Bugs and ideas:** open an issue on [GitHub](https://github.com/bsesic/VSCodeFontPreview/issues).
