@@ -1,6 +1,6 @@
 {
   "description": "フォントとアイコン フォントを閲覧、テスト、比較できます: Google Fonts、Font Awesome など、ローカルのフォント ファイル、Web フォント、システム フォントを Bootstrap 風のタイポグラフィ ページで確認できます。",
-  "command.open": "Font Preview を開く",
+  "command.open": "Font Studio を開く",
   "command.addFontFile": "フォント ファイルを追加…",
   "command.insertIcon": "アイコンを挿入…",
   "command.previewFontAtCursor": "カーソル位置のフォントをプレビュー",
@@ -8,6 +8,6 @@
   "command.refreshCatalog": "Google Fonts のカタログを更新",
   "configuration.sampleText": "プレビューで使用される既定のサンプル テキスト。",
   "configuration.catalogUrl": "Google Fonts のカタログとして使用される Fontsource フォント一覧の URL。",
-  "configuration.showStatusBarItem": "Font Preview を開くステータス バー ボタンを表示します。",
+  "configuration.showStatusBarItem": "Font Studio を開くステータス バー ボタンを表示します。",
   "configuration.projectFontFolder": "「プロジェクトに追加」でフォントをダウンロードするワークスペース フォルダー。各フォントには、スタイルシートを含む専用のサブフォルダーが作成されます。"
 }

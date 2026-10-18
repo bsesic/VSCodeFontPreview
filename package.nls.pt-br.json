@@ -1,6 +1,6 @@
 {
   "description": "Navegue, teste e compare fontes e fontes de ícones: Google Fonts, Font Awesome e outras, arquivos de fonte locais, fontes web e fontes do sistema, em uma página de tipografia no estilo Bootstrap.",
-  "command.open": "Abrir Font Preview",
+  "command.open": "Abrir Font Studio",
   "command.addFontFile": "Adicionar Arquivo de Fonte…",
   "command.insertIcon": "Inserir Ícone…",
   "command.previewFontAtCursor": "Visualizar Fonte sob o Cursor",
@@ -8,6 +8,6 @@
   "command.refreshCatalog": "Atualizar Catálogo do Google Fonts",
   "configuration.sampleText": "Texto de exemplo padrão usado na visualização.",
   "configuration.catalogUrl": "URL da lista de fontes do Fontsource usada como catálogo do Google Fonts.",
-  "configuration.showStatusBarItem": "Mostrar um botão na barra de status que abre o Font Preview.",
+  "configuration.showStatusBarItem": "Mostrar um botão na barra de status que abre o Font Studio.",
   "configuration.projectFontFolder": "Pasta do workspace para a qual \"Adicionar ao projeto…\" baixa as fontes. Cada fonte recebe sua própria subpasta com uma folha de estilos."
 }

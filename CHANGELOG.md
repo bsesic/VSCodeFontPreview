@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.2
+
+### Changed
+
+- Renamed to **Font Studio**, because the name Font Preview is already taken on the Visual Studio Marketplace.
+  The extension id is now `bsesic.vscode-font-studio`; command and setting ids (`fontPreview.*`) are unchanged.
+
 ## 0.4.1
 
 ### Changed

@@ -1,6 +1,6 @@
 {
   "description": "Procházejte, testujte a porovnávejte písma a ikonová písma: Google Fonts, Font Awesome a další, místní soubory písem, webová a systémová písma na typografické stránce ve stylu Bootstrapu.",
-  "command.open": "Otevřít Font Preview",
+  "command.open": "Otevřít Font Studio",
   "command.addFontFile": "Přidat soubor písma…",
   "command.insertIcon": "Vložit ikonu…",
   "command.previewFontAtCursor": "Zobrazit náhled písma pod kurzorem",
@@ -8,6 +8,6 @@
   "command.refreshCatalog": "Aktualizovat katalog Google Fonts",
   "configuration.sampleText": "Výchozí ukázkový text použitý v náhledu.",
   "configuration.catalogUrl": "URL seznamu písem Fontsource, který se používá jako katalog Google Fonts.",
-  "configuration.showStatusBarItem": "Zobrazit na stavovém řádku tlačítko, které otevře Font Preview.",
+  "configuration.showStatusBarItem": "Zobrazit na stavovém řádku tlačítko, které otevře Font Studio.",
   "configuration.projectFontFolder": "Složka pracovního prostoru, do které „Přidat do projektu“ stahuje písma. Každé písmo dostane vlastní podsložku se šablonou stylů."
 }
