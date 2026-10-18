@@ -1,6 +1,6 @@
 {
   "name": "vscode-font-preview",
-  "displayName": "VSCodeFontPreview",
+  "displayName": "Font Preview",
   "description": "%description%",
   "version": "0.4.0",
   "publisher": "bsesic",
