@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- The extension id is `bsesic.vscode-font-preview` again, so the Marketplace item published with 0.4.0 is
+  updated instead of a new item being created. The display name stays **Font Studio**.
+
 ## 0.4.2
 
 ### Changed
