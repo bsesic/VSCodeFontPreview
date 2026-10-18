@@ -2,7 +2,7 @@
   "name": "vscode-font-studio",
   "displayName": "Font Studio",
   "description": "%description%",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "publisher": "bsesic",
   "license": "MIT",
   "icon": "images/icon.png",
